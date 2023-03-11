@@ -48,17 +48,17 @@ export class AuthService
      *
      * @param credentials
      */
-    signIn(credentials: { email: string; password: string; type: 'Admin' }): Observable<any>
+    signIn(credentials: { email: string; password: string }): Observable<any>
     {
-        return this._httpClient.post(this.baseUrl + 'auth/login', credentials).pipe(
+        return this._httpClient.post(this.baseUrl + 'auth/adminLogin', credentials).pipe(
             switchMap((response: any) => {
                 // Store the access token in the local storage
                 this.accessToken = response.access_token;
 
-				const { email, name, id} = jwt_decode(this.accessToken) as User;
+				const { email, name, id, type } = jwt_decode(this.accessToken) as User;
 
                 // Store the user on the user service
-                this._userService.user = { id, name, email };
+                this._userService.user = { id, name, email, type };
 
                 // Return a new observable with the response
                 return of(response);
@@ -118,8 +118,8 @@ export class AuthService
             return of(false);
         }
 
-		const { email, name, id, company } = jwt_decode(this.accessToken) as User;
-		this._userService.user = { id, email, name, company };
+		const { email, name, id, type } = jwt_decode(this.accessToken) as User;
+		this._userService.user = { id, email, name, type };
 
 		return of(true);
     }
