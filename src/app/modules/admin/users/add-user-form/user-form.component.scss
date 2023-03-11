@@ -1,0 +1,17 @@
+.container {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+
+	.divider {
+		width: 100%;
+		margin: .8rem 0;
+	}
+
+	.form {
+		display: flex;
+		flex-direction: column;
+		height: calc(100% - 9rem);
+		overflow-y: auto;
+	}
+}

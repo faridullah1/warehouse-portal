@@ -1,0 +1,60 @@
+<div class="container">
+	<div class="flex justify-between items-center">
+		<h2 class="text-3xl font-semibold tracking-tight leading-8" style="margin: 0;">
+			{{ id ? 'Update Supplier' : 'Add Supplier'}}
+		</h2>
+		
+		<button mat-icon-button matDialogClose>
+			<mat-icon>close</mat-icon>
+		</button>
+	</div>
+	
+	<mat-divider class="divider"></mat-divider>
+
+	<form [formGroup]="theForm" class="form">
+		<mat-form-field appearance="outline">
+			<mat-label>Name</mat-label>
+			<input matInput placeholder="Name" formControlName="name">
+			<mat-error *ngIf="theForm.controls['name'].errors">
+				<div *ngIf="theForm.controls['name'].hasError('required')">Name is required.</div>
+			</mat-error>
+		</mat-form-field>
+	
+		<mat-form-field appearance="outline">
+			<mat-label>Email</mat-label>
+			<input type="email" matInput placeholder="Email" formControlName="email">
+			<mat-error *ngIf="theForm.controls['email'].errors">
+				<div *ngIf="theForm.controls['email'].hasError('required')">Email is required.</div>
+				<div *ngIf="theForm.controls['email'].hasError('email')">Email is invalid.</div>
+			</mat-error>
+		</mat-form-field>
+
+		<div class="flex flex-col" *ngIf="!id">
+			<mat-form-field appearance="outline">
+				<mat-label>Password</mat-label>
+				<input type="password" matInput placeholder="Password" formControlName="password">
+				<mat-error *ngIf="theForm.controls['password'].errors">
+					<div *ngIf="theForm.controls['password'].hasError('required')">Password is required.</div>
+				</mat-error>
+			</mat-form-field>
+	
+			<mat-form-field appearance="outline">
+				<mat-label>Confirm Password</mat-label>
+				<input type="password" matInput placeholder="Confirm Password" formControlName="confirmPassword">
+				<mat-error *ngIf="theForm.controls['confirmPassword'].errors">
+					<div *ngIf="theForm.controls['confirmPassword'].hasError('required')">Confirm Password is required.</div>
+					<div *ngIf="theForm.get('confirmPassword')?.hasError('matching')">Passwords are not matched</div>
+				</mat-error>
+			</mat-form-field>
+		</div>
+	</form>
+
+	<mat-divider class="divider"></mat-divider>
+
+	<div class="flex justify-end">
+		<button mat-raised-button color="primary" 
+			[disabled]="theForm.invalid || !theForm.dirty || disableSaveBtn" 
+			(click)="onSave()">{{ id ? 'Update' : 'Save' }}
+		</button>
+	</div>
+</div>

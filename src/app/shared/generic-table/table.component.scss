@@ -1,0 +1,124 @@
+.table-card {
+	width: 100%;
+	height: 100%;
+
+	.container {
+		height: 100%;
+		display: flex;
+		flex-direction: column;
+	
+		.table-main-header {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+		}
+	
+		.title-section {
+			flex: 0 0 35%;
+			
+			margin-bottom: 5px;
+			h1 {
+				margin: 0;
+			}
+	
+			.mat-form-field {
+				font-size: 14px;
+				width: 100%;
+			}
+		}
+	
+		.action {
+			margin-right: 5px;
+		}
+		
+		.table {  
+			overflow: auto; 
+			height: 100%; 
+			flex: 1;
+			border: 1px solid #eee;
+	
+			table {
+				width: 100%;
+	
+				tr.mat-header-row {
+					height: 50px !important;
+					border-radius: 4px;
+				}
+	
+				td {
+					max-width: 20rem;
+				}
+			}
+	
+			.selected {
+				background-color: #a3a3a3 !important;
+			}
+	
+			.error-cell {
+				.error-title {
+					margin: 0;
+				}
+				
+				.error-msg {
+					font-size: .8rem;
+				}
+			}
+		}
+	
+		::ng-deep .mat-sort-header-arrow {
+			color: #fff;
+		}
+	
+		.paginator {
+			// height: 50px;
+			// background-color: #f1f1f1;
+			border-radius: 4px;
+		}
+	
+		.search-field {
+			::ng-deep .mat-form-field-wrapper {
+				padding-bottom: 0 !important;
+				margin: 0;
+			}
+		}
+	
+		.image {
+			width: 50px;
+			height: 50px;
+			border-radius: 50%;
+			margin-right: 1rem;
+			object-fit: cover;
+		}
+	}
+
+	.item {
+		background: #cdc9c9;
+		padding: 2px 7px;
+		border-radius: 10px;
+		margin-right: 5px;
+	}
+
+	.underlined {
+		border-bottom: 2px solid blue;
+	}
+
+	.download-icon {
+		color: #4f46e5;
+	}
+}
+
+::ng-deep .mat-sort-header-stem {
+	background-color: #999 !important;
+}
+
+::ng-deep .mat-sort-header-pointer-left {
+	background-color: #999 !important;
+}
+
+::ng-deep .mat-sort-header-pointer-right {
+	background-color: #999 !important;
+}
+
+::ng-deep .mat-sort-header-pointer-middle {
+	background-color: #999 !important;
+}
