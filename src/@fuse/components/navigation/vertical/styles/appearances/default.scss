@@ -1,7 +1,6 @@
 /* Variables */
 :root {
     --fuse-vertical-navigation-width: 280px;
-    --fuse-vertical-navigation-folded-width: 70px;
 }
 
 fuse-vertical-navigation {
@@ -48,12 +47,10 @@ fuse-vertical-navigation {
 
         /* Side mode */
         &.fuse-vertical-navigation-mode-side {
-            width: var(--fuse-vertical-navigation-folded-width);
-            min-width: var(--fuse-vertical-navigation-folded-width);
+            margin-left: calc(#{var(--fuse-vertical-navigation-width)} * -1);
 
             &.fuse-vertical-navigation-opened {
-                width: var(--fuse-vertical-navigation-width);
-                min-width: var(--fuse-vertical-navigation-width);
+                margin-left: 0;
             }
         }
 
@@ -265,15 +262,6 @@ fuse-vertical-navigation {
                         white-space: nowrap;
                         height: 20px;
                     }
-                }
-            }
-
-            .fuse-vertical-navigation-item-folded {
-                justify-content: center;
-                padding: 10px 0;
-
-                .fuse-vertical-navigation-item-icon {
-                    margin-right: 0;
                 }
             }
         }

@@ -5,7 +5,7 @@ import { FuseConfigService } from '@fuse/services/config';
 import { AppConfig, Scheme, Theme, Themes } from 'app/core/config/app.config';
 import { Layout } from 'app/layout/layout.types';
 import { NavigationService } from 'app/core/navigation/navigation.service';
-import { QuoteManagementAppNavigation } from '../navigation';
+import { Warehouse_App_Navigation } from '../navigation';
 
 
 @Component({
@@ -100,7 +100,7 @@ export class SettingsComponent implements OnInit, OnDestroy
 
             // Set the config
             this._fuseConfigService.config = {layout};
-			const navigation = QuoteManagementAppNavigation.navigation;
+			const navigation = Warehouse_App_Navigation.navigation;
 			this._navigationService.set(navigation);
         });
     }

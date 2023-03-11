@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseAlertType } from '@fuse/components/alert';
 import { AuthService } from 'app/core/auth/auth.service';
-import { QuoteManagementAppNavigation } from 'app/layout/common/navigation';
+import { Warehouse_App_Navigation } from './../../../layout/common/navigation';
 
 
 @Component({
@@ -86,7 +86,7 @@ export class AuthSignInComponent implements OnInit
 				// routing file and we don't have to touch here.
 				const redirectURL = this._activatedRoute.snapshot.queryParamMap.get('redirectURL') || '/signed-in-redirect';
 
-				this._fuseNavigationService.storeNavigation('main', QuoteManagementAppNavigation.navigation);
+				this._fuseNavigationService.storeNavigation('main', Warehouse_App_Navigation.navigation);
 
 				// Navigate to the redirect url
 				this._router.navigateByUrl(redirectURL);

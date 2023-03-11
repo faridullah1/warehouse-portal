@@ -16,7 +16,7 @@ export class UsersComponent {
 
     constructor(private dialog: MatDialog) {
 		this.tableConfig = {
-			title: 'Warehouse personnel',
+			title: 'Users',
 			slug: 'users',
 			primaryKey: 'userId',
 
