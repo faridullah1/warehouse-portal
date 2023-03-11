@@ -33,6 +33,7 @@ export class UsersComponent {
 			columns: [
 				{ name: 'name', title: 'Name' },
 				{ name: 'email', title: 'Email' },
+				{ name: 'department.name', title: 'Department' },
 				{ name: 'createdAt', title: 'Date Created', format: 'datetime' },
 			]
 		};
@@ -58,7 +59,7 @@ export class UsersComponent {
 		});
 
 		if (row) {
-			dialog.componentInstance.id = row.supplierId;
+			dialog.componentInstance.id = row.userId;
 		}
 
 		dialog.afterClosed().subscribe((resp: boolean) => {
