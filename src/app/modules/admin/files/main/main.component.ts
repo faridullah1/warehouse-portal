@@ -2,6 +2,9 @@ import { ToastrService } from 'ngx-toastr';
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from 'app/api.service';
 import { GenericApiResponse, WarehouseFile } from 'app/models';
+import * as JSZip from 'jszip';
+import { FileSaverService } from 'ngx-filesaver';
+
 
 @Component({
   selector: 'app-main',
@@ -11,7 +14,10 @@ import { GenericApiResponse, WarehouseFile } from 'app/models';
 export class FileListComponent implements OnInit {
 	files: WarehouseFile[] = [];
 	
-    constructor(private apiService: ApiService, private toaster: ToastrService) { }
+    constructor(private apiService: ApiService, 
+				private toaster: ToastrService,
+				private fileSaverService: FileSaverService) 
+	{ }
 
     ngOnInit(): void {
 		this.getAllFiles();
@@ -28,4 +34,26 @@ export class FileListComponent implements OnInit {
 			error: (error: any) => this.toaster.error(error)
 		});
 	}
+
+	onDownloadFile(file: WarehouseFile): void {
+		const zip = new JSZip()
+		const folder = zip.folder('pictures');
+
+		console.log(file.pictures);
+		
+		file.pictures.forEach((url)=> {
+			const blobPromise = fetch(url).then(r => {
+				if (r.status === 200) return r.blob()
+				return Promise.reject(new Error(r.statusText))
+			})
+			const name = url.substring(url.lastIndexOf('/'))
+			folder?.file(name, blobPromise)
+		})
+		
+		zip.generateAsync({ type:"blob" }).then(content => {
+			this.fileSaverService.save(content, 'file_pictures.zip');
+		});
+	}
+
+	getFileName = (path: string) => path.substring(path.lastIndexOf('/')+1);
 }
