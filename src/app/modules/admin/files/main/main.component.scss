@@ -1,18 +1,25 @@
-.filter-list {
-    width: 33% !important;
-    min-width: 33% !important;
+.files {
+    flex: 1 0 100%;
 
-    &:not(:last-child) {
-        margin-right: 1rem;
+    .filter-list {
+        flex: 1 0 31.5%;
+        min-width: 31.5%;
+        margin-bottom: 1rem;
+    
+        &:not(:nth-child(3n)) {
+            margin-right: 1rem;
+        }
     }
-}
+    
+    .file-image {
+        margin-bottom: 1rem;
 
-.file-image {
-    &:not(:last-child) {
-        margin-right: 2rem;
+        &:not(:nth-child(4n)) {
+            margin-right: 1rem;
+        }
     }
-}
-
-.primary {
-    color: var(--color-primary);
+    
+    .primary {
+        color: var(--color-primary);
+    }
 }

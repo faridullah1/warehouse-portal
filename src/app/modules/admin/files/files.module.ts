@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FileListComponent } from './main/main.component';
 import { Route, RouterModule } from '@angular/router';
 import { FuseCardModule } from '@fuse/components/card';
+import { FirstEightPipe } from './main/first-eight.pipe';
 
 const routes: Route[] = [
 	{
@@ -14,7 +15,8 @@ const routes: Route[] = [
 
 @NgModule({
 	declarations: [
-		FileListComponent
+		FileListComponent,
+		FirstEightPipe
 	],
 	imports: [
 		CommonModule,

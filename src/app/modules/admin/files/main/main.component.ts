@@ -19,7 +19,12 @@ export class FileListComponent implements OnInit {
 
 	getAllFiles(): void {
 		this.apiService.get('files').subscribe({
-			next: (resp: GenericApiResponse) => this.files = resp.data.files,
+			next: (resp: GenericApiResponse) => {
+				this.files = resp.data.files.map(file => {
+					file.maxImagesToShow = 8;
+					return file;
+				});
+			},
 			error: (error: any) => this.toaster.error(error)
 		});
 	}

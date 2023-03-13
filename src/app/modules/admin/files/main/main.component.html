@@ -1,4 +1,4 @@
-<div class="p-8 flex items-start w-full">
+<div class="p-8 flex flex-wrap items-stretch files">
     <fuse-card class="flex flex-col max-w-80 w-full px-8 pt-6 pb-4 filter-list" *ngFor="let file of files;">
         <div class="flex items-center justify-between">
             <div class="text-2xl font-semibold leading-tight">{{ file.reference }}</div>
@@ -21,17 +21,17 @@
             <div>Damaged</div>
         </div>
 
-        <div class="flex flex-col">
-            <div class="flex mt-6">
-                <img *ngFor="let picture of file.pictures;"
-                    class="w-14 h-14 rounded object-cover file-image"
-                    [src]="picture"
-                    alt="File Image">
-            </div>
+        <div class="flex flex-wrap mt-6">
+            <img *ngFor="let picture of file.pictures | firstEight:file.maxImagesToShow"
+                class="w-14 h-14 rounded object-cover file-image"
+                [src]="picture"
+                alt="File Image">
         </div>
-        <div class="flex items-center mt-6 -mx-3">
+
+        <div class="flex items-center mt-6 -mx-3" *ngIf="file.maxImagesToShow < file.pictures.length;">
             <a
                 class="px-3"
+                (click)="file.maxImagesToShow = file.pictures.length"
                 mat-button
                 [color]="'primary'"
                 [routerLink]="['./']">
