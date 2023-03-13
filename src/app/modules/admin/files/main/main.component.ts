@@ -23,10 +23,11 @@ export class FileListComponent implements OnInit {
 		this.getAllFiles();
     }
 
-	getAllFiles(): void {
+	private getAllFiles(): void {
 		this.apiService.get('files').subscribe({
 			next: (resp: GenericApiResponse) => {
 				this.files = resp.data.files.map(file => {
+					file.pictures = file.file_images.map(img => img.url);
 					file.maxImagesToShow = 8;
 					return file;
 				});
@@ -40,7 +41,7 @@ export class FileListComponent implements OnInit {
 		const folder = zip.folder('pictures');
 
 		console.log(file.pictures);
-		
+
 		file.pictures.forEach((url)=> {
 			const blobPromise = fetch(url).then(r => {
 				if (r.status === 200) return r.blob()
@@ -55,5 +56,9 @@ export class FileListComponent implements OnInit {
 		});
 	}
 
-	getFileName = (path: string) => path.substring(path.lastIndexOf('/')+1);
+	private getFileName = (path: string) => path.substring(path.lastIndexOf('/') +1);
+
+	onGeneratePDFReport(file: WarehouseFile): void {
+
+	}
 }
