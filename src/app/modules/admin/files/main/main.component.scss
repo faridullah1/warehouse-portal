@@ -1,0 +1,18 @@
+.filter-list {
+    width: 33% !important;
+    min-width: 33% !important;
+
+    &:not(:last-child) {
+        margin-right: 1rem;
+    }
+}
+
+.file-image {
+    &:not(:last-child) {
+        margin-right: 2rem;
+    }
+}
+
+.primary {
+    color: var(--color-primary);
+}

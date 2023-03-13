@@ -12,6 +12,20 @@ export class Warehouse_App_Navigation
 				link: 'users',
 				title: 'Warehouse Personnel',
 				id: 'warehouse_personnel',
+			},
+			{
+				type: 'basic',
+				icon: 'timeline',
+				link: 'timeline',
+				title: 'Timeline',
+				id: 'timeline',
+			},
+			{
+				type: 'basic',
+				icon: 'photo_library',
+				link: 'files',
+				title: 'Files',
+				id: 'files',
 			}
 		],
 		horizontal: [
@@ -21,6 +35,20 @@ export class Warehouse_App_Navigation
 				link: 'users',
 				title: 'Warehouse Personnel',
 				id: 'warehouse_personnel',
+			},
+			{
+				type: 'basic',
+				icon: 'timeline',
+				link: 'timeline',
+				title: 'Timeline',
+				id: 'timeline',
+			},
+			{
+				type: 'basic',
+				icon: 'photo_library',
+				link: 'files',
+				title: 'Files',
+				id: 'files',
 			}
 		]
 	};

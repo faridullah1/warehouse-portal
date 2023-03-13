@@ -15,6 +15,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatSelectModule } from '@angular/material/select';
+import { MatMenuModule } from '@angular/material/menu';
 
 
 const modules: any[] = [
@@ -33,7 +34,8 @@ const modules: any[] = [
 	MatPaginatorModule,
 	MatDialogModule,
 	MatChipsModule,
-	MatSelectModule
+	MatSelectModule,
+	MatMenuModule
 ];
 
 @NgModule({

@@ -4,36 +4,5 @@
 /* ----------------------------------------------------------------------------------------------------- */
 
 :root {
-	--color-primary: #39c66a;
-}
-
-.pointer {
-	cursor: pointer;
-}
-
-.status {
-	width: 5rem;
-	padding: 2px 10px;
-	border-radius: 10px;
-	text-align: center;
-}
-
-.approved {
-	background-color: var(--color-primary);
-	color: #000;
-}
-
-.draft {
-	background-color: #dee1ee;
-	color: #000;
-}
-
-.released {
-	background-color: var(--color-primary);
-	color: #fff;
-}
-
-.finished {
-	background: red;
-    color: #fff;
+	--color-primary: #166938;
 }

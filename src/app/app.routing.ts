@@ -54,6 +54,14 @@ export const appRoutes: Route[] = [
             {
 				path: 'users', loadChildren: () =>
 				import('app/modules/admin/users/users.module').then(m => m.UsersModule)
+			},
+            {
+				path: 'timeline', loadChildren: () =>
+				import('app/modules/admin/timeline/timeline.module').then(m => m.TimelineModule)
+			},
+            {
+				path: 'files', loadChildren: () =>
+				import('app/modules/admin/files/files.module').then(m => m.FilesModule)
 			}
         ]
     }
