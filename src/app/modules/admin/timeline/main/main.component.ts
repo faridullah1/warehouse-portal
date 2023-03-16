@@ -26,23 +26,4 @@ export class TimelineComponent implements OnInit {
 			error: (error: any) => this.toaster.error(error)
 		});
 	}
-
-	private getFileName = (path: string) => path.substring(path.lastIndexOf('/') +1);
-
-	onDownload(image: string): void {
-		// creating an invisible element
-		const element = document.createElement('a');
-
-		element.setAttribute('href', image);
-		element.setAttribute('download', this.getFileName(image));
-	 
-		// Above code is equivalent to
-		// <a href="path of file" download="file name">
-		document.body.appendChild(element);
-	 
-		// onClick property
-		element.click();
-	 
-		document.body.removeChild(element);
-	}
 }
