@@ -18,3 +18,9 @@ export interface WarehouseFile {
 	isDamaged: boolean;
 	maxImagesToShow: number;
 }
+
+export interface FilePicture {
+	fileImageId: number;
+	url: string;
+	createdAt: string;
+}

@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TimelineComponent } from './main/main.component';
 import { Route, RouterModule } from '@angular/router';
+import { MaterialModule } from './../../material/material.module';
 
 const routes: Route[] = [
     {
@@ -16,6 +17,7 @@ const routes: Route[] = [
 	],
 	imports: [
 		CommonModule,
+		MaterialModule,
 		RouterModule.forChild(routes)
 	]
 })

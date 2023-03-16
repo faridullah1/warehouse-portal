@@ -1,1 +1,20 @@
-<p>main works!</p>
+<div class="p-8 flex flex-wrap items-start files">
+    <div class="flex flex-wrap items-stretch w-full">
+        <mat-card class="file-card" *ngFor="let pic of filePictures">
+            <mat-card-header>
+                <mat-card-subtitle>{{ pic.createdAt | date:'dd/MM/YYYY hh:mm' }}</mat-card-subtitle>
+            </mat-card-header>
+            
+            <img class="file-image" [src]="pic.url" alt="File Picture">
+
+            <mat-card-actions>
+                <a [href]="pic.url" download>DOWNLOAD</a>
+
+                <!-- <button mat-button (click)="onDownload(pic.url)">
+                    <mat-icon class="download-icon">download</mat-icon>
+                    DOWNLOAD
+                </button> -->
+            </mat-card-actions>
+        </mat-card>
+    </div>
+</div>

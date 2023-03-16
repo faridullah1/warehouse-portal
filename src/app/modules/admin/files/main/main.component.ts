@@ -40,8 +40,6 @@ export class FileListComponent implements OnInit {
 		const zip = new JSZip()
 		const folder = zip.folder('pictures');
 
-		console.log(file.pictures);
-
 		file.pictures.forEach((url)=> {
 			const blobPromise = fetch(url).then(r => {
 				if (r.status === 200) return r.blob()
