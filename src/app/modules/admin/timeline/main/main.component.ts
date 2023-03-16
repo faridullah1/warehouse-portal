@@ -10,7 +10,8 @@ import { ApiService } from './../../../../api.service';
   styleUrls: ['./main.component.scss']
 })
 export class TimelineComponent implements OnInit {
-	filePictures: FilePicture[];
+	filePictures: FilePicture[] = [];
+	loading = false;
 
     constructor(private apiService: ApiService, 
 				private toaster: ToastrService) 
@@ -21,9 +22,17 @@ export class TimelineComponent implements OnInit {
     }
 
 	getAllFileImages(): void {
+		this.loading = true;
+
 		this.apiService.get('fileImages').subscribe({
-			next: (resp: GenericApiResponse) => this.filePictures = resp.data.pictures,
-			error: (error: any) => this.toaster.error(error)
+			next: (resp: GenericApiResponse) => {
+				this.filePictures = resp.data.pictures;
+				this.loading = false;
+			},
+			error: (error: any) => {
+				this.toaster.error(error);
+				this.loading = false;
+			}
 		});
 	}
 }

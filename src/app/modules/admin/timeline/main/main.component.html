@@ -1,4 +1,4 @@
-<div class="p-8 flex flex-wrap items-start w-full">
+<div class="p-8 flex flex-wrap items-start w-full" *ngIf="!loading">
     <div class="flex flex-wrap items-stretch w-full">
         <mat-card class="file-card" *ngFor="let pic of filePictures">
             <mat-card-header>
@@ -17,4 +17,12 @@
             </mat-card-actions>
         </mat-card>
     </div>
+
+    <div class="w-full flex justify-center" *ngIf="filePictures.length === 0;">
+        <h3 class="text-3xl font-bold dark:text-white">No file pictures added yet</h3>
+    </div>
+</div>
+
+<div class="p-8 w-full flex justify-center items-center" *ngIf="loading">
+    <mat-spinner diameter="60"></mat-spinner>
 </div>

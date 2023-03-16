@@ -1,4 +1,4 @@
-<div class="p-8 flex flex-wrap items-start files">
+<div class="p-8 flex flex-wrap items-start files" *ngIf="!loading">
     <div class="flex flex-wrap items-stretch w-full">
         <fuse-card class="flex flex-col max-w-80 w-full px-8 pt-6 pb-4 filter-list" *ngFor="let file of files;">
             <div class="flex items-center justify-between">
@@ -41,7 +41,13 @@
                 </a>
             </div>
         </fuse-card>
-    
-        <div *ngIf="files.length === 0">No file added yet</div>
     </div>
+
+    <div class="w-full flex justify-center" *ngIf="files.length === 0;">
+        <h3 class="text-3xl font-bold dark:text-white">No file added yet</h3>
+    </div>
+</div>
+
+<div class="p-8 w-full flex justify-center items-center" *ngIf="loading">
+    <mat-spinner diameter="60"></mat-spinner>
 </div>

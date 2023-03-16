@@ -13,6 +13,7 @@ import { FileSaverService } from 'ngx-filesaver';
 })
 export class FileListComponent implements OnInit {
 	files: WarehouseFile[] = [];
+	loading = false;
 	
     constructor(private apiService: ApiService, 
 				private toaster: ToastrService,
@@ -24,15 +25,21 @@ export class FileListComponent implements OnInit {
     }
 
 	private getAllFiles(): void {
+		this.loading = true;
+
 		this.apiService.get('files').subscribe({
 			next: (resp: GenericApiResponse) => {
+				this.loading = false;
 				this.files = resp.data.files.map(file => {
 					file.pictures = file.file_images.map(img => img.url);
 					file.maxImagesToShow = 8;
 					return file;
 				});
 			},
-			error: (error: any) => this.toaster.error(error)
+			error: (error: any) => {
+				this.toaster.error(error);
+				this.loading = false;
+			}
 		});
 	}
 
@@ -54,9 +61,5 @@ export class FileListComponent implements OnInit {
 		});
 	}
 
-	private getFileName = (path: string) => path.substring(path.lastIndexOf('/') +1);
-
-	onGeneratePDFReport(file: WarehouseFile): void {
-
-	}
+	onGeneratePDFReport(file: WarehouseFile): void { }
 }
