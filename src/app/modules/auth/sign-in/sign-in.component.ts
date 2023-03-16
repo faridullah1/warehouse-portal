@@ -95,9 +95,6 @@ export class AuthSignInComponent implements OnInit
 				// Re-enable the form
 				this.signInForm.enable();
 
-				// Reset the form
-				this.signInForm.reset();
-
 				// Set the alert
 				this.alert = {
 					type   : 'error',
