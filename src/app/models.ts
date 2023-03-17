@@ -17,6 +17,8 @@ export interface WarehouseFile {
 	pictures: string[];
 	isDamaged: boolean;
 	maxImagesToShow: number;
+	createdAt: string;
+	file_images: FilePicture[];
 }
 
 export interface FilePicture {

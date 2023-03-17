@@ -13,7 +13,23 @@
                     </button>
                     <mat-menu #listCard09Menu="matMenu">
                         <button mat-menu-item (click)="onDownloadFile(file)">Download</button>
-                        <button mat-menu-item (click)="onGeneratePDFReport(file)">Generate pdf report</button>
+
+                        <button mat-menu-item  (click)="onGeneratePDFReport(file)" [disabled]="disableGeneratePdfBtn">
+                            <div class="flex items-center">
+                                <span>Generate pdf report</span>
+                                <mat-progress-spinner *ngIf="disableGeneratePdfBtn"
+                                    diameter="20"
+                                    strokeWidth="3"
+                                    class="btn-spinner"
+                                    color="accent"
+                                    mode="indeterminate">
+                                </mat-progress-spinner>
+                            </div>
+                        </button>
+
+                        <!-- <button mat-menu-item (click)="onGeneratePDFReport(file)">
+                            <span>Generate pdf report</span>
+                        </button> -->
                     </mat-menu>
                 </div>
             </div>

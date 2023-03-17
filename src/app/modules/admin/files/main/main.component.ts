@@ -1,9 +1,11 @@
 import { ToastrService } from 'ngx-toastr';
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from 'app/api.service';
-import { GenericApiResponse, WarehouseFile } from 'app/models';
+import { FilePicture, GenericApiResponse, WarehouseFile } from 'app/models';
 import * as JSZip from 'jszip';
 import { FileSaverService } from 'ngx-filesaver';
+import { jsPDF } from "jspdf";
+import moment from 'moment';
 
 
 @Component({
@@ -14,6 +16,7 @@ import { FileSaverService } from 'ngx-filesaver';
 export class FileListComponent implements OnInit {
 	files: WarehouseFile[] = [];
 	loading = false;
+	disableGeneratePdfBtn = false;
 	
     constructor(private apiService: ApiService, 
 				private toaster: ToastrService,
@@ -61,5 +64,92 @@ export class FileListComponent implements OnInit {
 		});
 	}
 
-	onGeneratePDFReport(file: WarehouseFile): void { }
+	getFileName = (path: string) => path.substring(path.lastIndexOf('/') +1);
+	getFileType = (path: string) => path.substring(path.lastIndexOf('/') +1).split('.')[1].toLowerCase();
+
+	getFileReportSummary(doc: jsPDF, file: WarehouseFile): void {
+		const mainHeadingX = 20;
+		const istRowX = 30;
+		const secondRowX = 40;
+		
+		// Main heading
+		doc.setFontSize(24);
+		doc.text('File Summary', 10, mainHeadingX);
+
+
+		// Sub Heading
+		doc.setFontSize(14);
+		doc.text('Reference: ', 10, istRowX);
+		// Text
+		doc.setFontSize(10);
+		doc.text(file.reference, 50, istRowX);
+		// Sub Heading
+		doc.setFontSize(14);
+		doc.text('Container number(s): ', 100, istRowX);
+		// Text
+		doc.setFontSize(10);
+		doc.text('112223', 160, istRowX);
+
+
+		// Sub Heading
+		doc.setFontSize(14);
+		doc.text('Damaged goods: ', 10, secondRowX);
+		// Text
+		doc.setFontSize(10);
+		doc.text('1', 50, secondRowX);
+		// Sub Heading
+		doc.setFontSize(14);
+		doc.text('Date created: ', 100, secondRowX);
+		// Text
+		doc.setFontSize(10);
+		doc.text(moment(file.createdAt).format('D/MM/YYYY hh:mm'), 160, secondRowX);
+
+
+		// Line break for summary section
+		doc.line(10, 45, doc.internal.pageSize.width - 10, 45);
+	}
+
+	addFilePics(doc: jsPDF, file: WarehouseFile): void {
+		file.file_images.forEach((image: FilePicture, index: number) => {
+			if (index === 0) {
+				doc.addImage(image.url, this.getFileType(image.url), 40, 60, 120, 120);
+
+				// Sub Heading
+				doc.setFontSize(14);
+				doc.text('Uploaded At: ', 40, 400);
+
+				// Text
+				doc.setFontSize(10);
+				doc.text(moment(image.createdAt).format('D/MM/YYYY hh:mm'), 50, 130);
+			}
+			else {
+				doc.addPage();
+				doc.addImage(file.pictures[index], this.getFileType(image.url), 40, 60, 120, 120);
+
+				// Sub Heading
+				doc.setFontSize(14);
+				doc.text('Uploaded At: ', 40, 190);
+
+				// Text
+				doc.setFontSize(10);
+				doc.text(moment(image.createdAt).format('D/MM/YYYY hh:mm'), 50, 190);
+			}
+		});
+	}
+
+	async onGeneratePDFReport(file: WarehouseFile) {
+		this.disableGeneratePdfBtn = true;
+
+		// Create a new document
+		const doc = new jsPDF();
+
+		// Summary of file report
+		this.getFileReportSummary(doc, file);
+
+		this.addFilePics(doc, file);
+
+		doc.save("a4.pdf");
+
+		this.disableGeneratePdfBtn = false;
+	}
 }
