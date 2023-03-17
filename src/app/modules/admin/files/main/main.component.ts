@@ -16,7 +16,6 @@ import moment from 'moment';
 export class FileListComponent implements OnInit {
 	files: WarehouseFile[] = [];
 	loading = false;
-	disableGeneratePdfBtn = false;
 	
     constructor(private apiService: ApiService, 
 				private toaster: ToastrService,
@@ -116,11 +115,11 @@ export class FileListComponent implements OnInit {
 
 				// Sub Heading
 				doc.setFontSize(14);
-				doc.text('Uploaded At: ', 40, 400);
+				doc.text('Uploaded At: ', 40, 190);
 
 				// Text
 				doc.setFontSize(10);
-				doc.text(moment(image.createdAt).format('D/MM/YYYY hh:mm'), 50, 130);
+				doc.text(moment(image.createdAt).format('D/MM/YYYY hh:mm'), 75, 190);
 			}
 			else {
 				doc.addPage();
@@ -132,14 +131,12 @@ export class FileListComponent implements OnInit {
 
 				// Text
 				doc.setFontSize(10);
-				doc.text(moment(image.createdAt).format('D/MM/YYYY hh:mm'), 50, 190);
+				doc.text(moment(image.createdAt).format('D/MM/YYYY hh:mm'), 75, 190);
 			}
 		});
 	}
 
 	async onGeneratePDFReport(file: WarehouseFile) {
-		this.disableGeneratePdfBtn = true;
-
 		// Create a new document
 		const doc = new jsPDF();
 
@@ -149,7 +146,5 @@ export class FileListComponent implements OnInit {
 		this.addFilePics(doc, file);
 
 		doc.save("a4.pdf");
-
-		this.disableGeneratePdfBtn = false;
 	}
 }
