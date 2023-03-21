@@ -15,7 +15,7 @@ import moment from 'moment';
 })
 export class FileListComponent implements OnInit {
 	files: WarehouseFile[] = [];
-	loading = false;
+	loadingFiles = false;
 	
     constructor(private apiService: ApiService, 
 				private toaster: ToastrService,
@@ -27,11 +27,11 @@ export class FileListComponent implements OnInit {
     }
 
 	private getAllFiles(): void {
-		this.loading = true;
+		this.loadingFiles = true;
 
 		this.apiService.get('files').subscribe({
 			next: (resp: GenericApiResponse) => {
-				this.loading = false;
+				this.loadingFiles = false;
 				this.files = resp.data.files.map(file => {
 					file.pictures = file.file_images.map(img => img.url);
 					file.maxImagesToShow = 8;
@@ -40,7 +40,7 @@ export class FileListComponent implements OnInit {
 			},
 			error: (error: any) => {
 				this.toaster.error(error);
-				this.loading = false;
+				this.loadingFiles = false;
 			}
 		});
 	}
@@ -108,7 +108,7 @@ export class FileListComponent implements OnInit {
 		doc.line(10, 45, doc.internal.pageSize.width - 10, 45);
 	}
 
-	addFilePics(doc: jsPDF, file: WarehouseFile): void {
+	addFilePicsToPDF(doc: jsPDF, file: WarehouseFile): void {
 		file.file_images.forEach((image: FilePicture, index: number) => {
 			if (index === 0) {
 				doc.addImage(image.url, this.getFileType(image.url), 40, 60, 120, 120);
@@ -143,8 +143,9 @@ export class FileListComponent implements OnInit {
 		// Summary of file report
 		this.getFileReportSummary(doc, file);
 
-		this.addFilePics(doc, file);
+		// Add images to pdf
+		this.addFilePicsToPDF(doc, file);
 
-		doc.save("a4.pdf");
+		doc.save("file.pdf");
 	}
 }

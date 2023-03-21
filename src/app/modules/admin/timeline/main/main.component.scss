@@ -22,3 +22,30 @@
         margin-right: .5rem;
     }
 }
+
+.selected-view {
+    mat-icon {
+        color: var(--fuse-primary);
+    }
+}
+
+.list-view {
+    width: 100%;
+
+    li {
+        display: flex;
+        align-items: center;
+        padding: 1rem 0.5rem;
+        margin-bottom: 1rem;
+        border-bottom: 1px solid #ddd;
+
+        &:hover {
+            background: #ddd;
+            border-radius: 5px;
+        }
+    }
+
+    .item {
+        width: 32%;
+    }
+}

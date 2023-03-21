@@ -11,7 +11,8 @@ import { ApiService } from './../../../../api.service';
 })
 export class TimelineComponent implements OnInit {
 	filePictures: FilePicture[] = [];
-	loading = false;
+	viewType: 'list' | 'grid' = 'list';
+	loadingImages = false;
 
     constructor(private apiService: ApiService, 
 				private toaster: ToastrService) 
@@ -22,17 +23,21 @@ export class TimelineComponent implements OnInit {
     }
 
 	getAllFileImages(): void {
-		this.loading = true;
+		this.loadingImages = true;
 
 		this.apiService.get('fileImages').subscribe({
 			next: (resp: GenericApiResponse) => {
 				this.filePictures = resp.data.pictures;
-				this.loading = false;
+				this.loadingImages = false;
 			},
 			error: (error: any) => {
 				this.toaster.error(error);
-				this.loading = false;
+				this.loadingImages = false;
 			}
 		});
+	}
+
+	onViewChange(view: 'list' | 'grid'): void {
+		this.viewType = view;
 	}
 }

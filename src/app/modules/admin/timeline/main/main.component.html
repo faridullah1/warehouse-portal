@@ -1,5 +1,15 @@
-<div class="p-8 flex flex-wrap items-start w-full" *ngIf="!loading">
-    <div class="flex flex-wrap items-stretch w-full">
+<div class="p-8 flex flex-wrap items-start w-full" *ngIf="!loadingImages">
+    <div class="mb-3">
+        <button mat-icon-button [class.selected-view]="viewType === 'grid'" (click)="onViewChange('grid')">
+            <mat-icon>grid_view</mat-icon>
+        </button>
+
+        <button mat-icon-button [class.selected-view]="viewType === 'list'" (click)="onViewChange('list')">
+            <mat-icon>view_list</mat-icon>
+        </button>
+    </div>
+
+    <div class="flex flex-wrap items-stretch w-full" *ngIf="viewType === 'grid'; else listView">
         <mat-card class="file-card" *ngFor="let pic of filePictures">
             <mat-card-header>
                 <mat-card-subtitle>{{ pic.createdAt | date:'dd/MM/YYYY hh:mm' }}</mat-card-subtitle>
@@ -18,11 +28,29 @@
         </mat-card>
     </div>
 
+    <ng-template #listView>
+        <div class="flex flex-wrap items-stretch w-full">
+            <ul class="list-view">
+                <li *ngFor="let pic of filePictures">
+                    <mat-icon matListItemIcon class="mr-12">image</mat-icon>
+                    
+                    <div class="item">{{ pic.url | imageName }}</div>
+                    
+                    <div class="item">{{ pic.createdAt | date }}</div>
+
+                    <a class="flex items-center item" [href]="pic.url" download>
+                        <mat-icon class="mr-2">download</mat-icon>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </ng-template>
+
     <div class="w-full flex justify-center" *ngIf="filePictures.length === 0;">
         <h3 class="text-3xl font-bold dark:text-white">No file pictures added yet</h3>
     </div>
 </div>
 
-<div class="p-8 w-full flex justify-center items-center" *ngIf="loading">
+<div class="p-8 w-full flex justify-center items-center" *ngIf="loadingImages">
     <mat-spinner diameter="60"></mat-spinner>
 </div>

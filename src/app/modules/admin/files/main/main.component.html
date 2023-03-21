@@ -1,4 +1,4 @@
-<div class="p-8 flex flex-wrap items-start files" *ngIf="!loading">
+<div class="p-8 flex flex-wrap items-start files" *ngIf="!loadingFiles">
     <div class="flex flex-wrap items-stretch w-full">
         <fuse-card class="flex flex-col max-w-80 w-full px-8 pt-6 pb-4 filter-list" *ngFor="let file of files;">
             <div class="flex items-center justify-between">
@@ -64,6 +64,6 @@
     </div>
 </div>
 
-<div class="p-8 w-full flex justify-center items-center" *ngIf="loading">
+<div class="p-8 w-full flex justify-center items-center" *ngIf="loadingFiles">
     <mat-spinner diameter="60"></mat-spinner>
 </div>
