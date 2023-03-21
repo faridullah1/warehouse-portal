@@ -1,5 +1,5 @@
-<div class="p-8 flex flex-wrap items-start w-full" *ngIf="!loadingImages">
-    <div class="mb-3">
+<div class="p-8 flex flex-col items-start w-full" [class.justify-center]="filePictures.length === 0" *ngIf="!loadingImages">
+    <div class="mb-3" *ngIf="filePictures.length > 0">
         <button mat-icon-button [class.selected-view]="viewType === 'grid'" (click)="onViewChange('grid')">
             <mat-icon>grid_view</mat-icon>
         </button>

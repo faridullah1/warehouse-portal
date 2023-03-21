@@ -87,7 +87,8 @@ export class FileListComponent implements OnInit {
 		doc.text('Container number(s): ', 100, istRowX);
 		// Text
 		doc.setFontSize(10);
-		doc.text('112223', 160, istRowX);
+		const containerNumber = file.containerNumber || 'NA';
+		doc.text(containerNumber, 160, istRowX);
 
 
 		// Sub Heading
@@ -95,7 +96,7 @@ export class FileListComponent implements OnInit {
 		doc.text('Damaged goods: ', 10, secondRowX);
 		// Text
 		doc.setFontSize(10);
-		doc.text('1', 50, secondRowX);
+		doc.text(file.noOfDamagedGoods.toString(), 50, secondRowX);
 		// Sub Heading
 		doc.setFontSize(14);
 		doc.text('Date created: ', 100, secondRowX);

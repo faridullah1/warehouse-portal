@@ -14,8 +14,9 @@ export interface User {
 export interface WarehouseFile {
 	fileId: number;
 	reference: string;
+	containerNumber: string;
 	pictures: string[];
-	isDamaged: boolean;
+	noOfDamagedGoods: number;
 	maxImagesToShow: number;
 	createdAt: string;
 	file_images: FilePicture[];
