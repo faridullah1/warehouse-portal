@@ -11,7 +11,7 @@ import { ApiService } from './../../../../api.service';
 })
 export class TimelineComponent implements OnInit {
 	filePictures: FilePicture[] = [];
-	viewType: 'list' | 'grid' = 'list';
+	viewType: 'list' | 'grid' = 'grid';
 	loadingImages = false;
 
     constructor(private apiService: ApiService, 
