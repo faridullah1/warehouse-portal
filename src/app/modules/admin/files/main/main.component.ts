@@ -4,8 +4,9 @@ import { ApiService } from 'app/api.service';
 import { FilePicture, GenericApiResponse, WarehouseFile } from 'app/models';
 import * as JSZip from 'jszip';
 import { FileSaverService } from 'ngx-filesaver';
-import { jsPDF } from "jspdf";
+import { jsPDF } from 'jspdf';
 import moment from 'moment';
+import { FuseConfirmationService } from '@fuse/services/confirmation';
 
 
 @Component({
@@ -16,61 +17,70 @@ import moment from 'moment';
 export class FileListComponent implements OnInit {
 	files: WarehouseFile[] = [];
 	loadingFiles = false;
-	
-    constructor(private apiService: ApiService, 
+
+    constructor(private apiService: ApiService,
 				private toaster: ToastrService,
-				private fileSaverService: FileSaverService) 
+				private confirmationService: FuseConfirmationService,
+				private fileSaverService: FileSaverService)
 	{ }
 
     ngOnInit(): void {
 		this.getAllFiles();
     }
 
-	private getAllFiles(): void {
-		this.loadingFiles = true;
+	onDeleteFile(file: WarehouseFile): void {
+		const dialog = this.confirmationService.open({
+			title: 'Delete File',
+			message: `Are you sure, you want to delete "${file.reference}"`
+		});
 
-		this.apiService.get('files').subscribe({
-			next: (resp: GenericApiResponse) => {
-				this.loadingFiles = false;
-				this.files = resp.data.files.map(file => {
-					file.pictures = file.file_images.map(img => img.url);
-					file.maxImagesToShow = 8;
-					return file;
+		dialog.afterClosed().subscribe((action: 'confirmed' | 'cancelled') => {
+			if (action === 'confirmed') {
+				this.apiService.delete(`files/${file.fileId}`).subscribe({
+					next: (resp: GenericApiResponse) => {
+						const id = this.files.indexOf(file);
+						this.files.splice(id, 1);
+					},
+					error: (error: any) => {
+						this.toaster.error(error);
+						this.loadingFiles = false;
+					}
 				});
-			},
-			error: (error: any) => {
-				this.toaster.error(error);
-				this.loadingFiles = false;
 			}
 		});
 	}
 
 	onDownloadFile(file: WarehouseFile): void {
-		const zip = new JSZip()
+		const zip = new JSZip();
 		const folder = zip.folder('pictures');
 
 		file.pictures.forEach((url)=> {
-			const blobPromise = fetch(url).then(r => {
-				if (r.status === 200) return r.blob()
-				return Promise.reject(new Error(r.statusText))
-			})
-			const name = url.substring(url.lastIndexOf('/'))
-			folder?.file(name, blobPromise)
-		})
-		
-		zip.generateAsync({ type:"blob" }).then(content => {
+			const blobPromise = fetch(url).then((r) => {
+				if (r.status === 200) {
+					return r.blob();
+				}
+				return Promise.reject(new Error(r.statusText));
+			});
+
+			const name = url.substring(url.lastIndexOf('/'));
+			folder?.file(name, blobPromise);
+		});
+
+		zip.generateAsync({ type:'blob' }).then((content) => {
 			this.fileSaverService.save(content, 'file_pictures.zip');
 		});
 	}
 
+	// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 	getFileName = (path: string) => path.substring(path.lastIndexOf('/') +1);
+	// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 	getFileType = (path: string) => path.substring(path.lastIndexOf('/') +1).split('.')[1].toLowerCase();
 
 	getFileReportSummary(doc: jsPDF, file: WarehouseFile): void {
 		const mainHeadingX = 20;
 		const istRowX = 30;
 		const secondRowX = 40;
-		
+
 		// Main heading
 		doc.setFontSize(24);
 		doc.text('File Summary', 10, mainHeadingX);
@@ -137,16 +147,34 @@ export class FileListComponent implements OnInit {
 		});
 	}
 
-	async onGeneratePDFReport(file: WarehouseFile) {
+	async onGeneratePDFReport(file: WarehouseFile): Promise<any> {
 		// Create a new document
 		const doc = new jsPDF();
 
 		// Summary of file report
 		this.getFileReportSummary(doc, file);
-
 		// Add images to pdf
 		this.addFilePicsToPDF(doc, file);
 
-		doc.save("file.pdf");
+		doc.save('file.pdf');
+	}
+
+	private getAllFiles(): void {
+		this.loadingFiles = true;
+
+		this.apiService.get('files').subscribe({
+			next: (resp: GenericApiResponse) => {
+				this.loadingFiles = false;
+				this.files = resp.data.files.map((file) => {
+					file.pictures = file.file_images.map(img => img.url);
+					file.maxImagesToShow = 8;
+					return file;
+				});
+			},
+			error: (error: any) => {
+				this.toaster.error(error);
+				this.loadingFiles = false;
+			}
+		});
 	}
 }

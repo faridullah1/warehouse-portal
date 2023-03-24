@@ -3,6 +3,7 @@
         <fuse-card class="flex flex-col max-w-80 w-full px-8 pt-6 pb-4 filter-list" *ngFor="let file of files;">
             <div class="flex items-center justify-between">
                 <div class="text-2xl font-semibold leading-tight">{{ file.reference }}</div>
+                
                 <div class="-mr-3">
                     <button
                         mat-icon-button
@@ -14,22 +15,13 @@
                     <mat-menu #listCard09Menu="matMenu">
                         <button mat-menu-item (click)="onDownloadFile(file)">Download</button>
 
-                        <button mat-menu-item  (click)="onGeneratePDFReport(file)">
-                            <div class="flex items-center">
-                                <span>Generate pdf report</span>
-                                <!-- <mat-progress-spinner *ngIf="disableGeneratePdfBtn"
-                                    diameter="20"
-                                    strokeWidth="3"
-                                    class="btn-spinner"
-                                    color="accent"
-                                    mode="indeterminate">
-                                </mat-progress-spinner> -->
-                            </div>
+                        <button mat-menu-item (click)="onGeneratePDFReport(file)">
+                            <span>Generate pdf report</span>
                         </button>
 
-                        <!-- <button mat-menu-item (click)="onGeneratePDFReport(file)">
-                            <span>Generate pdf report</span>
-                        </button> -->
+                        <button mat-menu-item (click)="onDeleteFile(file)" class="delete-fg">
+                            <span>Delete File</span>
+                        </button>
                     </mat-menu>
                 </div>
             </div>
