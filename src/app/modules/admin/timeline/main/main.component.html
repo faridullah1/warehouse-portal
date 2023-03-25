@@ -36,7 +36,7 @@
                     
                     <div class="item">{{ pic.url | imageName }}</div>
                     
-                    <div class="item">{{ pic.createdAt | date }}</div>
+                    <div class="item">{{ pic.createdAt | date: 'dd MMM YYYY hh:mm a' }}</div>
 
                     <a class="flex items-center item" [href]="pic.url" download>
                         <mat-icon class="mr-2">download</mat-icon>
