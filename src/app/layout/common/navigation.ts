@@ -1,6 +1,7 @@
 import { Navigation } from 'app/core/navigation/navigation.types';
 
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 export class Warehouse_App_Navigation
 {
     // main navigation
@@ -10,8 +11,8 @@ export class Warehouse_App_Navigation
 				type: 'basic',
 				icon: 'people',
 				link: 'users',
-				title: 'Warehouse Personnel',
-				id: 'warehouse_personnel',
+				title: 'Account Management',
+				id: 'account_management',
 			},
 			{
 				type: 'basic',
@@ -33,8 +34,8 @@ export class Warehouse_App_Navigation
 				type: 'basic',
 				icon: 'people',
 				link: 'users',
-				title: 'Warehouse Personnel',
-				id: 'warehouse_personnel',
+				title: 'Account Management',
+				id: 'account_management',
 			},
 			{
 				type: 'basic',
