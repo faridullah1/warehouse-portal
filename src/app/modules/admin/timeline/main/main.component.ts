@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { FilePicture, GenericApiResponse } from 'app/models';
+import { FuseConfirmationService } from '@fuse/services/confirmation';
+import { FilePicture, GenericApiResponse, WarehouseFile } from 'app/models';
 import { ToastrService } from 'ngx-toastr';
 import { ApiService } from './../../../../api.service';
 
@@ -14,8 +15,9 @@ export class TimelineComponent implements OnInit {
 	viewType: 'list' | 'grid' = 'grid';
 	loadingImages = false;
 
-    constructor(private apiService: ApiService, 
-				private toaster: ToastrService) 
+    constructor(private apiService: ApiService,
+				private confirmationService: FuseConfirmationService,
+				private toaster: ToastrService)
 	{ }
 
     ngOnInit(): void {
@@ -39,5 +41,24 @@ export class TimelineComponent implements OnInit {
 
 	onViewChange(view: 'list' | 'grid'): void {
 		this.viewType = view;
+	}
+
+	onDeleteFileImage(pic: FilePicture): void {
+		const dialog = this.confirmationService.open({
+			title: 'Delete picture',
+			message: 'Are you sure, you want to delete picture'
+		});
+
+		dialog.afterClosed().subscribe((action: 'confirmed' | 'cancelled') => {
+			if (action === 'confirmed') {
+				this.apiService.delete(`fileImages/${pic.fileImageId}`).subscribe({
+					next: () => {
+						const id = this.filePictures.indexOf(pic);
+						this.filePictures.splice(id, 1);
+					},
+					error: (error: any) => this.toaster.error(error)
+				});
+			}
+		});
 	}
 }

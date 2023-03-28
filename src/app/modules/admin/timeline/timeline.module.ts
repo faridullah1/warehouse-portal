@@ -5,6 +5,7 @@ import { TimelineComponent } from './main/main.component';
 import { Route, RouterModule } from '@angular/router';
 import { MaterialModule } from './../../material/material.module';
 import { ImageNamePipe } from './main/image-name.pipe';
+import { FuseCardModule } from '@fuse/components/card';
 
 const routes: Route[] = [
     {
@@ -23,6 +24,7 @@ const routes: Route[] = [
 		CommonModule,
 		FormsModule,
 		MaterialModule,
+		FuseCardModule,
 		RouterModule.forChild(routes)
 	]
 })

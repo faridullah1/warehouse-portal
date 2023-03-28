@@ -6,3 +6,17 @@
 :root {
 	--color-primary: #166938;
 }
+
+.file-image-list {
+	width: 2rem;
+	min-width: 2rem;
+	height: 2rem;
+	margin-right: 1rem;
+	border-radius: 50%;
+	border: 1px solid #dddddd;
+	object-fit: cover;
+}
+
+.delete-fg {
+    color: #dc2626 !important;
+}

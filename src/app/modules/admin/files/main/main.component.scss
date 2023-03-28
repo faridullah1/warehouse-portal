@@ -39,6 +39,27 @@
     }
 }
 
-.delete-fg {
-    color: #dc2626 !important;
+.selected-view {
+    mat-icon {
+        color: var(--fuse-primary);
+    }
+}
+
+.list-view {
+    width: 100%;
+
+    li {
+        display: flex;
+        align-items: center;
+        padding: 1rem 0.5rem;
+
+        &:not(:last-child) {
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 1rem;
+        }
+    }
+
+    .item {
+        width: 32%;
+    }
 }

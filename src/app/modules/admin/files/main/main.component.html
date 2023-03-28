@@ -1,4 +1,5 @@
-<div class="p-8 flex flex-col files"> 
+<div class="p-8 flex flex-col files">
+    <!-- Search Filters -->
     <fuse-card class="flex items-center w-full p-4 mb-3">
         <form class="flex items-center w-full" [formGroup]="filters">
             <mat-form-field appearance="fill" class="search-field">
@@ -34,60 +35,76 @@
         </form>
     </fuse-card>
 
-    <div class="flex flex-wrap items-stretch w-full" *ngIf="!loadingFiles">
-        <fuse-card class="flex flex-col max-w-80 w-full px-8 pt-6 pb-4 filter-list" *ngFor="let file of files;">
-            <div class="flex items-center justify-between">
-                <div class="text-2xl font-semibold leading-tight">{{ file.reference }} <span class="file-date">({{ file.createdAt | date: 'dd/MM/YYYY' }})</span></div>
-                
-                <div class="-mr-3">
-                    <button mat-icon-button [matMenuTriggerFor]="listCard09Menu">
-                        <mat-icon
-                            class="icon-size-5"
-                            [svgIcon]="'heroicons_solid:dots-vertical'">
-                        </mat-icon>
-                    </button>
-
-                    <mat-menu #listCard09Menu="matMenu">
-                        <button mat-menu-item (click)="onDownloadFile(file)">Download</button>
-
-                        <button mat-menu-item (click)="onGeneratePDFReport(file)">
-                            <span>Generate pdf report</span>
-                        </button>
-
-                        <button mat-menu-item (click)="onAddPicture(file)">
-                            <span>Add Picture</span>
-                        </button>
-
-                        <button mat-menu-item (click)="onDeleteFile(file)" class="delete-fg">
-                            <span>Delete File</span>
-                        </button>
-                    </mat-menu>
-                </div>
-            </div>
+    <div class="flex flex-col" *ngIf="!loadingFiles">
+        <!-- Toggle buttons for list and grid view -->
+        <fuse-card class="mb-3 p-2 w-full">
+            <button mat-icon-button [class.selected-view]="viewType === 'grid'" (click)="onViewChange('grid')">
+                <mat-icon>grid_view</mat-icon>
+            </button>
     
-            <div class="flex items-center" *ngIf="file.noOfDamagedGoods > 0">
-                <mat-icon class="mr-3 primary">check_circle</mat-icon>
-                <div>Contain damaged goods</div>
-            </div>
-    
-            <div class="flex flex-wrap mt-6">
-                <img *ngFor="let picture of file.pictures | firstEight:file.maxImagesToShow"
-                    class="w-14 h-14 rounded object-cover file-image"
-                    [src]="picture"
-                    alt="File Image">
-            </div>
-    
-            <div class="flex items-center mt-6 -mx-3" *ngIf="file.maxImagesToShow < file.pictures.length;">
-                <a
-                    class="px-3"
-                    (click)="file.maxImagesToShow = file.pictures.length"
-                    mat-button
-                    [color]="'primary'"
-                    [routerLink]="['./']">
-                    See entire file list
-                </a>
-            </div>
+            <button mat-icon-button [class.selected-view]="viewType === 'list'" (click)="onViewChange('list')">
+                <mat-icon>view_list</mat-icon>
+            </button>
         </fuse-card>
+
+        <!-- Files Grid View -->
+        <div class="flex flex-wrap items-stretch w-full" *ngIf="viewType === 'grid'; else listView">
+            <fuse-card class="flex flex-col max-w-80 w-full px-8 pt-6 pb-4 filter-list" *ngFor="let file of files;">
+                <div class="flex items-center justify-between">
+                    <div class="text-2xl font-semibold leading-tight">{{ file.reference }} <span class="file-date">({{ file.createdAt | date: 'dd/MM/YYYY' }})</span></div>
+                    
+                    <div class="-mr-3">
+                        <ng-container [ngTemplateOutlet]="fileMenuTemplate" [ngTemplateOutletContext]="{file: file}"></ng-container>
+                    </div>
+                </div>
+        
+                <div class="flex items-center" *ngIf="file.noOfDamagedGoods > 0">
+                    <mat-icon class="mr-3 primary">check_circle</mat-icon>
+                    <div>Contain damaged goods</div>
+                </div>
+        
+                <div class="flex flex-wrap mt-6">
+                    <img *ngFor="let picture of file.pictures | firstEight:file.maxImagesToShow"
+                        class="w-14 h-14 rounded object-cover file-image"
+                        [src]="picture"
+                        alt="File Image">
+                </div>
+        
+                <div class="flex items-center mt-6 -mx-3" *ngIf="file.maxImagesToShow < file.pictures.length;">
+                    <a
+                        class="px-3"
+                        (click)="file.maxImagesToShow = file.pictures.length"
+                        mat-button
+                        [color]="'primary'"
+                        [routerLink]="['./']">
+                        See entire file list
+                    </a>
+                </div>
+            </fuse-card>
+        </div>
+    
+        <!-- File List View -->
+        <ng-template #listView>
+            <ul class="list-view">
+                <li *ngFor="let file of files">
+                    <img class="file-image-list" [src]="file.file_images[0].url" alt="File Image">
+
+                    <div class="item">{{ file.reference }}</div>
+                    <div class="item">{{ file.containerNumber ? file.containerNumber : 'NA' }}</div>
+                    <div class="item">
+                        <span *ngIf="file.noOfDamagedGoods > 0; else noDamageGoods">
+                            Contains {{file.noOfDamagedGoods}} damage goods
+                        </span>
+                        <ng-template #noDamageGoods>No damage goods</ng-template>
+                    </div>
+                    <div class="item">{{ file.createdAt | date: 'dd MMM YYYY hh:mm a' }}</div>
+
+                    <div class="flex justify-end item">
+                        <ng-container [ngTemplateOutlet]="fileMenuTemplate" [ngTemplateOutletContext]="{file: file}"></ng-container>
+                    </div>
+                </li>
+            </ul>
+        </ng-template>
     </div>
 
     <div class="w-full flex justify-center" *ngIf="files.length === 0 && !loadingFiles">
@@ -98,3 +115,28 @@
         <mat-spinner diameter="60"></mat-spinner>
     </div>
 </div>
+
+<ng-template #fileMenuTemplate let-file="file">
+    <button mat-icon-button [matMenuTriggerFor]="listCard09Menu">
+        <mat-icon
+            class="icon-size-5"
+            [svgIcon]="'heroicons_solid:dots-vertical'">
+        </mat-icon>
+    </button>
+
+    <mat-menu #listCard09Menu="matMenu">
+        <button mat-menu-item (click)="onDownloadFile(file)">Download</button>
+
+        <button mat-menu-item (click)="onGeneratePDFReport(file)">
+            <span>Generate pdf report</span>
+        </button>
+
+        <button mat-menu-item (click)="onAddPicture(file)">
+            <span>Add Picture</span>
+        </button>
+
+        <button mat-menu-item (click)="onDeleteFile(file)" class="delete-fg">
+            <span>Delete File</span>
+        </button>
+    </mat-menu>
+</ng-template>

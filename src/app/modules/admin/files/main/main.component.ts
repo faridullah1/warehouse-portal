@@ -21,9 +21,9 @@ export class FileListComponent implements OnInit {
 	@ViewChild('createStartDate') createStartDate: ElementRef<MatInput>;
 	@ViewChild('createEndDate') createEndDate: ElementRef<MatInput>;
 
-	filters: FormGroup;
-
 	files: WarehouseFile[] = [];
+	filters: FormGroup;
+	viewType: 'list' | 'grid' = 'grid';
 	loadingFiles = false;
 
     constructor(private apiService: ApiService,
@@ -44,6 +44,26 @@ export class FileListComponent implements OnInit {
     ngOnInit(): void {
 		this.getAllFiles();
     }
+
+	getAllFiles(): void {
+		this.loadingFiles = true;
+		const slug = this.getSlug();
+
+		this.apiService.get(slug).subscribe({
+			next: (resp: GenericApiResponse) => {
+				this.loadingFiles = false;
+				this.files = resp.data.files.map((file) => {
+					file.pictures = file.file_images.map(img => img.url);
+					file.maxImagesToShow = 8;
+					return file;
+				});
+			},
+			error: (error: any) => {
+				this.toaster.error(error);
+				this.loadingFiles = false;
+			}
+		});
+	}
 
 	onDownloadFile(file: WarehouseFile): void {
 		const zip = new JSZip();
@@ -202,24 +222,8 @@ export class FileListComponent implements OnInit {
 		this.filters.markAsDirty();
 	}
 
-	getAllFiles(): void {
-		this.loadingFiles = true;
-		const slug = this.getSlug();
-
-		this.apiService.get(slug).subscribe({
-			next: (resp: GenericApiResponse) => {
-				this.loadingFiles = false;
-				this.files = resp.data.files.map((file) => {
-					file.pictures = file.file_images.map(img => img.url);
-					file.maxImagesToShow = 8;
-					return file;
-				});
-			},
-			error: (error: any) => {
-				this.toaster.error(error);
-				this.loadingFiles = false;
-			}
-		});
+	onViewChange(view: 'list' | 'grid'): void {
+		this.viewType = view;
 	}
 
 	private getSlug(): string {
