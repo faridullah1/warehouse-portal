@@ -1,5 +1,5 @@
 import { ToastrService } from 'ngx-toastr';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ApiService } from 'app/api.service';
 import { FilePicture, GenericApiResponse, WarehouseFile } from 'app/models';
 import * as JSZip from 'jszip';
@@ -7,6 +7,9 @@ import { FileSaverService } from 'ngx-filesaver';
 import { jsPDF } from 'jspdf';
 import moment from 'moment';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
+import { FormGroup, FormControl } from '@angular/forms';
+import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { MatInput } from '@angular/material/input';
 
 
 @Component({
@@ -15,6 +18,11 @@ import { FuseConfirmationService } from '@fuse/services/confirmation';
   styleUrls: ['./main.component.scss']
 })
 export class FileListComponent implements OnInit {
+	@ViewChild('createStartDate') createStartDate: ElementRef<MatInput>;
+	@ViewChild('createEndDate') createEndDate: ElementRef<MatInput>;
+
+	filters: FormGroup;
+
 	files: WarehouseFile[] = [];
 	loadingFiles = false;
 
@@ -22,33 +30,20 @@ export class FileListComponent implements OnInit {
 				private toaster: ToastrService,
 				private confirmationService: FuseConfirmationService,
 				private fileSaverService: FileSaverService)
-	{ }
+	{
+		this.filters = new FormGroup({
+			reference: new FormControl(''),
+			isDamaged: new FormControl(false),
+			range: new FormGroup({
+				start: new FormControl<Date | null>(null),
+				end: new FormControl<Date | null>(null),
+			})
+		});
+	}
 
     ngOnInit(): void {
 		this.getAllFiles();
     }
-
-	onDeleteFile(file: WarehouseFile): void {
-		const dialog = this.confirmationService.open({
-			title: 'Delete File',
-			message: `Are you sure, you want to delete "${file.reference}"`
-		});
-
-		dialog.afterClosed().subscribe((action: 'confirmed' | 'cancelled') => {
-			if (action === 'confirmed') {
-				this.apiService.delete(`files/${file.fileId}`).subscribe({
-					next: (resp: GenericApiResponse) => {
-						const id = this.files.indexOf(file);
-						this.files.splice(id, 1);
-					},
-					error: (error: any) => {
-						this.toaster.error(error);
-						this.loadingFiles = false;
-					}
-				});
-			}
-		});
-	}
 
 	onDownloadFile(file: WarehouseFile): void {
 		const zip = new JSZip();
@@ -147,7 +142,7 @@ export class FileListComponent implements OnInit {
 		});
 	}
 
-	async onGeneratePDFReport(file: WarehouseFile): Promise<any> {
+	onGeneratePDFReport(file: WarehouseFile): void {
 		// Create a new document
 		const doc = new jsPDF();
 
@@ -159,10 +154,59 @@ export class FileListComponent implements OnInit {
 		doc.save('file.pdf');
 	}
 
-	private getAllFiles(): void {
-		this.loadingFiles = true;
+	onAddPicture(file: WarehouseFile): void { }
 
-		this.apiService.get('files').subscribe({
+	onDeleteFile(file: WarehouseFile): void {
+		const dialog = this.confirmationService.open({
+			title: 'Delete File',
+			message: `Are you sure, you want to delete "${file.reference}"`
+		});
+
+		dialog.afterClosed().subscribe((action: 'confirmed' | 'cancelled') => {
+			if (action === 'confirmed') {
+				this.apiService.delete(`files/${file.fileId}`).subscribe({
+					next: (resp: GenericApiResponse) => {
+						const id = this.files.indexOf(file);
+						this.files.splice(id, 1);
+					},
+					error: (error: any) => {
+						this.toaster.error(error);
+						this.loadingFiles = false;
+					}
+				});
+			}
+		});
+	}
+
+	onReset(): void {
+		this.createStartDate.nativeElement.value = '';
+		this.createEndDate.nativeElement.value = '';
+
+		this.filters.reset();
+		this.getAllFiles();
+	}
+
+	onDateChange(event: MatDatepickerInputEvent<any>, controlName: string): void {
+		const control = this.filters.get('range')['controls'][controlName];
+		const endOfDay = moment(event.value.valueOf()).endOf('day');
+		const startOfDay = moment(event.value.valueOf()).startOf('day');
+
+		if (controlName === 'start') {
+			control.setValue(startOfDay);
+		}
+		else
+		{
+			control.setValue(endOfDay);
+		}
+
+		this.filters.markAsDirty();
+	}
+
+	getAllFiles(): void {
+		this.loadingFiles = true;
+		const slug = this.getSlug();
+
+		this.apiService.get(slug).subscribe({
 			next: (resp: GenericApiResponse) => {
 				this.loadingFiles = false;
 				this.files = resp.data.files.map((file) => {
@@ -176,5 +220,37 @@ export class FileListComponent implements OnInit {
 				this.loadingFiles = false;
 			}
 		});
+	}
+
+	private getSlug(): string {
+		const filters = this.filters.value;
+
+		let slug = 'files';
+
+		let counter = 0;
+		let operator = '';
+
+		for (const key of Object.keys(filters))
+		{
+			if (key === 'range') {
+				const { start, end } = filters[key];
+
+				if (start && end) {
+					counter++;
+					operator = counter > 1 ? '&' : '?';
+					slug += `${operator}createdAt[gt]=${start}&createdAt[lt]=${end}`;
+				}
+
+				continue;
+			}
+
+			if (filters[key]) {
+				counter++;
+				operator = counter > 1 ? '&' : '?';
+				slug += `${operator}${key}=${filters[key]}`;
+			}
+		}
+
+		return slug;
 	}
 }

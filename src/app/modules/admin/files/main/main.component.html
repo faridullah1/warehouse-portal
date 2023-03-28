@@ -1,22 +1,61 @@
-<div class="p-8 flex flex-wrap items-start files" *ngIf="!loadingFiles">
-    <div class="flex flex-wrap items-stretch w-full">
+<div class="p-8 flex flex-col files"> 
+    <fuse-card class="flex items-center w-full p-4 mb-3">
+        <form class="flex items-center w-full" [formGroup]="filters">
+            <mat-form-field appearance="fill" class="search-field">
+                <mat-label>Search for reference</mat-label>
+                <input type="text" matInput placeholder="Search" formControlName="reference">
+            </mat-form-field>
+            
+            <mat-form-field class="date-range-field" appearance="fill">
+                <mat-label>Select upload date range</mat-label>
+                <mat-date-range-input [rangePicker]="picker">
+                    <input matStartDate #createStartDate (dateChange)="onDateChange($event, 'start')" placeholder="Start date">
+                    <input matEndDate #createEndDate (dateChange)="onDateChange($event, 'end')" placeholder="End date">
+                </mat-date-range-input>
+    
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-date-range-picker #picker></mat-date-range-picker>
+              
+                <mat-error *ngIf="filters.get('range')['controls'].start.hasError('matStartDateInvalid')">Invalid start date</mat-error>
+                <mat-error *ngIf="filters.get('range')['controls'].end.hasError('matEndDateInvalid')">Invalid end date</mat-error>
+            </mat-form-field>
+              
+            <mat-checkbox formControlName="isDamaged">Contains Damage</mat-checkbox>
+
+            <div class="flex justify-end flex-1">
+                <button type="button" mat-raised-button color="warn" class="mr-3"
+                    [disabled]="filters.invalid" (click)="onReset()">Reset
+                </button>
+
+                <button type="button" mat-raised-button color="primary" [disabled]="!filters.dirty"
+                    (click)="getAllFiles()">Apply filters
+                </button>
+            </div>
+        </form>
+    </fuse-card>
+
+    <div class="flex flex-wrap items-stretch w-full" *ngIf="!loadingFiles">
         <fuse-card class="flex flex-col max-w-80 w-full px-8 pt-6 pb-4 filter-list" *ngFor="let file of files;">
             <div class="flex items-center justify-between">
-                <div class="text-2xl font-semibold leading-tight">{{ file.reference }}</div>
+                <div class="text-2xl font-semibold leading-tight">{{ file.reference }} <span class="file-date">({{ file.createdAt | date: 'dd/MM/YYYY' }})</span></div>
                 
                 <div class="-mr-3">
-                    <button
-                        mat-icon-button
-                        [matMenuTriggerFor]="listCard09Menu">
+                    <button mat-icon-button [matMenuTriggerFor]="listCard09Menu">
                         <mat-icon
                             class="icon-size-5"
-                            [svgIcon]="'heroicons_solid:dots-vertical'"></mat-icon>
+                            [svgIcon]="'heroicons_solid:dots-vertical'">
+                        </mat-icon>
                     </button>
+
                     <mat-menu #listCard09Menu="matMenu">
                         <button mat-menu-item (click)="onDownloadFile(file)">Download</button>
 
                         <button mat-menu-item (click)="onGeneratePDFReport(file)">
                             <span>Generate pdf report</span>
+                        </button>
+
+                        <button mat-menu-item (click)="onAddPicture(file)">
+                            <span>Add Picture</span>
                         </button>
 
                         <button mat-menu-item (click)="onDeleteFile(file)" class="delete-fg">
@@ -51,11 +90,11 @@
         </fuse-card>
     </div>
 
-    <div class="w-full flex justify-center" *ngIf="files.length === 0;">
-        <h3 class="text-3xl font-bold dark:text-white">No file added yet</h3>
+    <div class="w-full flex justify-center" *ngIf="files.length === 0 && !loadingFiles">
+        <h3 class="text-3xl font-bold dark:text-white">No file found</h3>
     </div>
-</div>
 
-<div class="p-8 w-full flex justify-center items-center" *ngIf="loadingFiles">
-    <mat-spinner diameter="60"></mat-spinner>
+    <div class="p-8 w-full flex justify-center items-center" *ngIf="loadingFiles">
+        <mat-spinner diameter="60"></mat-spinner>
+    </div>
 </div>

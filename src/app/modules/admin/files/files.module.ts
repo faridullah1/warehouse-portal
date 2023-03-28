@@ -1,3 +1,4 @@
+import { ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from './../../material/material.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -20,6 +21,7 @@ const routes: Route[] = [
 	],
 	imports: [
 		CommonModule,
+		ReactiveFormsModule,
 		FuseCardModule,
 		MaterialModule,
 		RouterModule.forChild(routes)
