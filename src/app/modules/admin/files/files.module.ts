@@ -6,6 +6,7 @@ import { FileListComponent } from './main/main.component';
 import { Route, RouterModule } from '@angular/router';
 import { FuseCardModule } from '@fuse/components/card';
 import { FirstEightPipe } from './main/first-eight.pipe';
+import { UploadFileComponent } from './upload-file/upload-file.component';
 
 const routes: Route[] = [
 	{
@@ -17,7 +18,8 @@ const routes: Route[] = [
 @NgModule({
 	declarations: [
 		FileListComponent,
-		FirstEightPipe
+		FirstEightPipe,
+  		UploadFileComponent
 	],
 	imports: [
 		CommonModule,

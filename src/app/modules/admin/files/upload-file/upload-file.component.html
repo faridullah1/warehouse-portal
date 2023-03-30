@@ -1,0 +1,38 @@
+<div class="container">
+	<div class="flex justify-between items-center">
+		<h2 class="text-3xl font-semibold tracking-tight leading-8" style="margin: 0;">
+			Upload new images
+		</h2>
+		
+		<button mat-icon-button matDialogClose>
+			<mat-icon>close</mat-icon>
+		</button>
+	</div>
+	
+	<mat-divider class="divider"></mat-divider>
+
+	<div class="content">
+        <mat-chip-list class="mb-3" *ngIf="files.length > 0">
+            <mat-chip *ngFor="let file of files" [removable]="true" (removed)="onRemoveFile(file)">
+                {{file.name}} <mat-icon matChipRemove>cancel</mat-icon>
+            </mat-chip>
+        </mat-chip-list>
+    
+        <button class="mb-3" mat-raised-button color="primary" (click)="onUploadFile()">
+            {{ files.length > 0 ? 'Add New Images' : 'Browse Images' }}
+        </button>
+    
+        <input hidden type="file" [accept]="allowedFileTypes" [multiple]="true" #uploadFilesField (change)="onFileChange()">
+    
+        <mat-checkbox [formControl]="isDamaged">Is damaged</mat-checkbox>
+    </div>
+
+	<mat-divider class="divider"></mat-divider>
+
+	<div class="flex justify-end">
+		<button mat-raised-button color="primary" 
+			[disabled]="files.length === 0 || disableSaveBtn" 
+			(click)="onSubmit()">Submit
+		</button>
+	</div>
+</div>

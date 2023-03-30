@@ -1,3 +1,4 @@
+import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ApiService } from 'app/api.service';
@@ -10,6 +11,7 @@ import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { FormGroup, FormControl } from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { MatInput } from '@angular/material/input';
+import { UploadFileComponent } from './../upload-file/upload-file.component';
 
 
 @Component({
@@ -29,6 +31,7 @@ export class FileListComponent implements OnInit {
     constructor(private apiService: ApiService,
 				private toaster: ToastrService,
 				private confirmationService: FuseConfirmationService,
+				private matDialog: MatDialog,
 				private fileSaverService: FileSaverService)
 	{
 		this.filters = new FormGroup({
@@ -174,7 +177,19 @@ export class FileListComponent implements OnInit {
 		doc.save('file.pdf');
 	}
 
-	onAddPicture(file: WarehouseFile): void { }
+	onAddPicture(file: WarehouseFile): void {
+		const dialog = this.matDialog.open(UploadFileComponent, {
+			width: '25vw'
+		});
+
+		dialog.componentInstance.fileId = file.fileId;
+
+		dialog.afterClosed().subscribe((resp) => {
+			if (resp) {
+				this.getAllFiles();
+			}
+		});
+	}
 
 	onDeleteFile(file: WarehouseFile): void {
 		const dialog = this.confirmationService.open({

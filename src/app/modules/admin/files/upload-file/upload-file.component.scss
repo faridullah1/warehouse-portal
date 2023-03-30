@@ -1,0 +1,16 @@
+.container {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+
+	.divider {
+		width: 100%;
+		margin: .8rem 0;
+	}
+
+	.content {
+		display: flex;
+		flex-direction: column;
+		height: calc(100% - 9rem);
+	}
+}
