@@ -90,8 +90,6 @@ export class FileListComponent implements OnInit {
 	}
 
 	// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-	getFileName = (path: string) => path.substring(path.lastIndexOf('/') +1);
-	// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 	getFileType = (path: string) => path.substring(path.lastIndexOf('/') +1).split('.')[1].toLowerCase();
 
 	getFileReportSummary(doc: jsPDF, file: WarehouseFile): void {
@@ -138,30 +136,21 @@ export class FileListComponent implements OnInit {
 	}
 
 	addFilePicsToPDF(doc: jsPDF, file: WarehouseFile): void {
-		file.file_images.forEach((image: FilePicture, index: number) => {
-			if (index === 0) {
-				doc.addImage(image.url, this.getFileType(image.url), 40, 60, 120, 120);
-
-				// Sub Heading
-				doc.setFontSize(14);
-				doc.text('Uploaded At: ', 40, 190);
-
-				// Text
-				doc.setFontSize(10);
-				doc.text(moment(image.createdAt).format('D/MM/YYYY hh:mm'), 75, 190);
-			}
-			else {
+		file.file_images.forEach((image: FilePicture, index: number) =>
+		{
+			if (index !== 0) {
 				doc.addPage();
-				doc.addImage(file.pictures[index], this.getFileType(image.url), 40, 60, 120, 120);
-
-				// Sub Heading
-				doc.setFontSize(14);
-				doc.text('Uploaded At: ', 40, 190);
-
-				// Text
-				doc.setFontSize(10);
-				doc.text(moment(image.createdAt).format('D/MM/YYYY hh:mm'), 75, 190);
 			}
+
+			doc.addImage(image.url, this.getFileType(image.url), 40, 60, 120, 120);
+
+			// Sub Heading
+			doc.setFontSize(14);
+			doc.text('Uploaded At: ', 40, 190);
+
+			// Text
+			doc.setFontSize(10);
+			doc.text(moment(image.createdAt).format('D/MM/YYYY hh:mm'), 75, 190);
 		});
 	}
 
