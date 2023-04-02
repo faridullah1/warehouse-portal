@@ -1,0 +1,25 @@
+::ng-deep .image-viewer-dlg .mat-dialog-container {
+    padding: 0 !important;
+}
+
+.panzoom {
+    height: 100%;
+    position: relative;
+
+    .content {
+        height: calc(100% - 40px);
+        overflow: auto;
+    }
+
+    .actions {
+        position: absolute;
+        bottom: 4rem;
+        right: 2rem;
+    }
+    
+    .panzoom-img {
+        width: 20rem;
+        height: 20rem;
+        object-fit: cover;
+    }
+}

@@ -1,8 +1,10 @@
+import { MatDialog } from '@angular/material/dialog';
 import { Component, OnInit } from '@angular/core';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
-import { FilePicture, GenericApiResponse, WarehouseFile } from 'app/models';
+import { FilePicture, GenericApiResponse } from 'app/models';
 import { ToastrService } from 'ngx-toastr';
 import { ApiService } from './../../../../api.service';
+import { ImageViewerComponent } from './../../../../shared/image-viewer/image-viewer.component';
 
 
 @Component({
@@ -17,6 +19,7 @@ export class TimelineComponent implements OnInit {
 
     constructor(private apiService: ApiService,
 				private confirmationService: FuseConfirmationService,
+				private dialog: MatDialog,
 				private toaster: ToastrService)
 	{ }
 
@@ -41,6 +44,18 @@ export class TimelineComponent implements OnInit {
 
 	onViewChange(view: 'list' | 'grid'): void {
 		this.viewType = view;
+	}
+
+	onImageViewer(pic: FilePicture): void {
+		const dialog = this.dialog.open(ImageViewerComponent, {
+			width: '80vw',
+			maxWidth: '80vw',
+			height: '80vh',
+			maxHeight: '80vh',
+			panelClass: 'image-viewer-dlg'
+		});
+
+		dialog.componentInstance.imageSrc = pic.url;
 	}
 
 	onDeleteFileImage(pic: FilePicture): void {
