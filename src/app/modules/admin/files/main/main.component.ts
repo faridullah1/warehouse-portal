@@ -26,7 +26,12 @@ export class FileListComponent implements OnInit {
 	files: WarehouseFile[] = [];
 	filters: FormGroup;
 	viewType: 'list' | 'grid' = 'grid';
-	loadingFiles = false;
+	loadingPage = false;
+	loadMore = true;
+
+	page = 1;
+	limit = 5;
+	total = 0;
 
     constructor(private apiService: ApiService,
 				private toaster: ToastrService,
@@ -48,22 +53,33 @@ export class FileListComponent implements OnInit {
 		this.getAllFiles();
     }
 
-	getAllFiles(): void {
-		this.loadingFiles = true;
+	getAllFiles(loadMore = false): void {
+		if (loadMore) {
+			this.loadMore = true;
+		}
+		else {
+			this.loadingPage = true;
+		}
+
 		const slug = this.getSlug();
 
 		this.apiService.get(slug).subscribe({
 			next: (resp: GenericApiResponse) => {
-				this.loadingFiles = false;
-				this.files = resp.data.files.map((file) => {
+				this.loadingPage = false;
+				this.loadMore = false;
+				const newData = resp.data.files.rows.map((file) => {
 					file.pictures = file.file_images.map(img => img.url);
 					file.maxImagesToShow = 8;
 					return file;
 				});
+
+				this.files = [...this.files, ...newData];
+				this.total = resp.data.files.count;
 			},
 			error: (error: any) => {
 				this.toaster.error(error);
-				this.loadingFiles = false;
+				this.loadingPage = false;
+				this.loadMore = false;
 			}
 		});
 	}
@@ -195,7 +211,7 @@ export class FileListComponent implements OnInit {
 					},
 					error: (error: any) => {
 						this.toaster.error(error);
-						this.loadingFiles = false;
+						this.loadingPage = false;
 					}
 				});
 			}
@@ -230,13 +246,15 @@ export class FileListComponent implements OnInit {
 		this.viewType = view;
 	}
 
+	onLoadMore(): void {
+		this.page++;
+		this.getAllFiles(true);
+	}
+
 	private getSlug(): string {
 		const filters = this.filters.value;
 
-		let slug = 'files';
-
-		let counter = 0;
-		let operator = '';
+		let slug = `files?page=${this.page}&limit=${this.limit}`;
 
 		for (const key of Object.keys(filters))
 		{
@@ -244,18 +262,14 @@ export class FileListComponent implements OnInit {
 				const { start, end } = filters[key];
 
 				if (start && end) {
-					counter++;
-					operator = counter > 1 ? '&' : '?';
-					slug += `${operator}createdAt[gt]=${start}&createdAt[lt]=${end}`;
+					slug += `&createdAt[gt]=${start}&createdAt[lt]=${end}`;
 				}
 
 				continue;
 			}
 
 			if (filters[key]) {
-				counter++;
-				operator = counter > 1 ? '&' : '?';
-				slug += `${operator}${key}=${filters[key]}`;
+				slug += `&${key}=${filters[key]}`;
 			}
 		}
 
