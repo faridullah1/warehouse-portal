@@ -87,7 +87,7 @@
         <ng-template #listView>
             <ul class="list-view">
                 <li *ngFor="let file of files">
-                    <img class="file-image-list" [src]="file.file_images[0].url" alt="File Image">
+                    <img class="file-image-list" [src]="file.file_images[0]?.url" alt="File Image">
 
                     <div class="item">{{ file.reference }}</div>
                     <div class="item">{{ file.containerNumber ? file.containerNumber : 'NA' }}</div>
@@ -106,7 +106,7 @@
             </ul>
         </ng-template>
 
-        <div class="flex justify-center">
+        <div class="flex justify-center" #scrollElem>
             <button *ngIf="files.length < total" mat-flat-button
                 (click)="onLoadMore()" [disabled]="loadMore">
                 <div class="flex justify-between">

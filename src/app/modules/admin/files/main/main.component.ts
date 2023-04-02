@@ -22,6 +22,7 @@ import { UploadFileComponent } from './../upload-file/upload-file.component';
 export class FileListComponent implements OnInit {
 	@ViewChild('createStartDate') createStartDate: ElementRef<MatInput>;
 	@ViewChild('createEndDate') createEndDate: ElementRef<MatInput>;
+	@ViewChild('scrollElem') scrollElem: ElementRef<HTMLElement>;
 
 	files: WarehouseFile[] = [];
 	filters: FormGroup;
@@ -30,7 +31,7 @@ export class FileListComponent implements OnInit {
 	loadMore = true;
 
 	page = 1;
-	limit = 5;
+	limit = 10;
 	total = 0;
 
     constructor(private apiService: ApiService,
@@ -75,6 +76,14 @@ export class FileListComponent implements OnInit {
 
 				this.files = [...this.files, ...newData];
 				this.total = resp.data.files.count;
+
+				if (loadMore) {
+					setTimeout(() => {
+						this.scrollElem.nativeElement.scrollIntoView({
+							behavior: 'smooth'
+						});
+					}, 100);
+				}
 			},
 			error: (error: any) => {
 				this.toaster.error(error);

@@ -1,5 +1,5 @@
 import { MatDialog } from '@angular/material/dialog';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { FilePicture, GenericApiResponse } from 'app/models';
 import { ToastrService } from 'ngx-toastr';
@@ -13,9 +13,16 @@ import { ImageViewerComponent } from './../../../../shared/image-viewer/image-vi
   styleUrls: ['./main.component.scss']
 })
 export class TimelineComponent implements OnInit {
+	@ViewChild('scrollElem') scrollElem: ElementRef<HTMLElement>;
+
 	filePictures: FilePicture[] = [];
 	viewType: 'list' | 'grid' = 'grid';
-	loadingImages = false;
+	loadingPage = false;
+	loadMore = false;
+
+	page = 1;
+	limit = 20;
+	total = 0;
 
     constructor(private apiService: ApiService,
 				private confirmationService: FuseConfirmationService,
@@ -27,23 +34,44 @@ export class TimelineComponent implements OnInit {
 		this.getAllFileImages();
     }
 
-	getAllFileImages(): void {
-		this.loadingImages = true;
+	getAllFileImages(scrollTo = false): void {
+		if (scrollTo) {
+			this.loadMore = true;
+		}
+		else {
+			this.loadingPage = true;
+		}
 
-		this.apiService.get('fileImages').subscribe({
+		this.apiService.get(`fileImages?page=${this.page}&limit=${this.limit}`).subscribe({
 			next: (resp: GenericApiResponse) => {
-				this.filePictures = resp.data.pictures;
-				this.loadingImages = false;
+				this.filePictures = [...this.filePictures, ...resp.data.pictures.rows];
+				this.total = resp.data.pictures.count;
+				this.loadingPage = false;
+				this.loadMore = false;
+
+				if (scrollTo) {
+					setTimeout(() => {
+						this.scrollElem.nativeElement.scrollIntoView({
+							behavior: 'smooth'
+						});
+					}, 100);
+				}
 			},
 			error: (error: any) => {
 				this.toaster.error(error);
-				this.loadingImages = false;
+				this.loadingPage = false;
+				this.loadMore = false;
 			}
 		});
 	}
 
 	onViewChange(view: 'list' | 'grid'): void {
 		this.viewType = view;
+	}
+
+	onLoadMore(): void {
+		this.page++;
+		this.getAllFileImages(true);
 	}
 
 	onImageViewer(pic: FilePicture): void {

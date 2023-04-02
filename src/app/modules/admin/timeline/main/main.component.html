@@ -1,4 +1,4 @@
-<div class="p-8 flex flex-col items-start w-full" [class.justify-center]="filePictures.length === 0" *ngIf="!loadingImages">
+<div class="p-8 flex flex-col items-start w-full" [class.justify-center]="filePictures.length === 0" *ngIf="!loadingPage">
     <fuse-card class="mb-3 p-2 w-full" *ngIf="filePictures.length > 0">
         <button mat-icon-button [class.selected-view]="viewType === 'grid'" (click)="onViewChange('grid')">
             <mat-icon>grid_view</mat-icon>
@@ -47,11 +47,27 @@
         </div>
     </ng-template>
 
+    <div class="flex justify-center w-full" #scrollElem>
+        <button class="mt-4" *ngIf="filePictures.length < total" mat-flat-button
+            (click)="onLoadMore()" [disabled]="loadMore">
+            <div class="flex justify-between">
+                <span class="mr-3">Load more</span>
+                <mat-progress-spinner *ngIf="loadMore"
+                    diameter="20"
+                    strokeWidth="3"
+                    class="btn-spinner"
+                    color="accent"
+                    mode="indeterminate">
+                </mat-progress-spinner>
+            </div>
+        </button>
+    </div>
+
     <div class="w-full flex justify-center" *ngIf="filePictures.length === 0;">
         <h3 class="text-3xl font-bold dark:text-white">No file pictures added yet</h3>
     </div>
 </div>
 
-<div class="p-8 w-full flex justify-center items-center" *ngIf="loadingImages">
+<div class="p-8 w-full flex justify-center items-center" *ngIf="loadingPage">
     <mat-spinner diameter="60"></mat-spinner>
 </div>
