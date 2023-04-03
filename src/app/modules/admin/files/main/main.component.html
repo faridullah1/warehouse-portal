@@ -134,7 +134,7 @@
 </div>
 
 <ng-template #fileMenuTemplate let-file="file">
-    <button mat-icon-button [matMenuTriggerFor]="listCard09Menu">
+    <button (click)="onMenuTrigger($event)" mat-icon-button [matMenuTriggerFor]="listCard09Menu">
         <mat-icon
             class="icon-size-5"
             [svgIcon]="'heroicons_solid:dots-vertical'">

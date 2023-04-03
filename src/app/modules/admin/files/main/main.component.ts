@@ -117,6 +117,10 @@ export class FileListComponent implements OnInit {
 		});
 	}
 
+	onMenuTrigger(ev: MouseEvent): void {
+		ev.stopPropagation();
+	}
+
 	onDownloadFile(file: WarehouseFile): void {
 		const zip = new JSZip();
 		const folder = zip.folder('pictures');
