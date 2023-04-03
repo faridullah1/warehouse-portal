@@ -7,6 +7,8 @@ import { Route, RouterModule } from '@angular/router';
 import { FuseCardModule } from '@fuse/components/card';
 import { FirstEightPipe } from './main/first-eight.pipe';
 import { UploadFileComponent } from './upload-file/upload-file.component';
+import { FileDetailComponent } from './file-detail/file-detail.component';
+import { DialogHeaderComponent } from 'app/shared/dialog-header/dialog-header.component';
 
 const routes: Route[] = [
 	{
@@ -19,13 +21,15 @@ const routes: Route[] = [
 	declarations: [
 		FileListComponent,
 		FirstEightPipe,
-  		UploadFileComponent
+  		UploadFileComponent,
+    	FileDetailComponent
 	],
 	imports: [
 		CommonModule,
 		ReactiveFormsModule,
 		FuseCardModule,
 		MaterialModule,
+		DialogHeaderComponent,
 		RouterModule.forChild(routes)
 	]
 })

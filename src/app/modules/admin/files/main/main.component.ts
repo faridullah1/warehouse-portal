@@ -12,6 +12,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { MatInput } from '@angular/material/input';
 import { UploadFileComponent } from './../upload-file/upload-file.component';
+import { FileDetailComponent } from './../file-detail/file-detail.component';
 
 
 @Component({
@@ -28,7 +29,7 @@ export class FileListComponent implements OnInit {
 	filters: FormGroup;
 	viewType: 'list' | 'grid' = 'grid';
 	loadingPage = false;
-	loadMore = true;
+	disableLoadMoreBtn = false;
 
 	page = 1;
 	limit = 10;
@@ -54,9 +55,10 @@ export class FileListComponent implements OnInit {
 		this.getAllFiles();
     }
 
-	getAllFiles(loadMore = false): void {
+	getAllFiles(loadMore = false, resetFiles = false): void {
+		// Either load complete page or disableLoadMoreBtn and add files to the existing array;
 		if (loadMore) {
-			this.loadMore = true;
+			this.disableLoadMoreBtn = true;
 		}
 		else {
 			this.loadingPage = true;
@@ -67,7 +69,8 @@ export class FileListComponent implements OnInit {
 		this.apiService.get(slug).subscribe({
 			next: (resp: GenericApiResponse) => {
 				this.loadingPage = false;
-				this.loadMore = false;
+				this.disableLoadMoreBtn = false;
+
 				const newData = resp.data.files.rows.map((file) => {
 					file.pictures = file.file_images.map(img => img.url);
 					file.maxImagesToShow = 8;
@@ -76,6 +79,10 @@ export class FileListComponent implements OnInit {
 
 				this.files = [...this.files, ...newData];
 				this.total = resp.data.files.count;
+
+				if (resetFiles) {
+					this.files = [...newData];
+				}
 
 				if (loadMore) {
 					setTimeout(() => {
@@ -88,7 +95,24 @@ export class FileListComponent implements OnInit {
 			error: (error: any) => {
 				this.toaster.error(error);
 				this.loadingPage = false;
-				this.loadMore = false;
+				this.disableLoadMoreBtn = false;
+			}
+		});
+	}
+
+	onViewFileDetail(file: WarehouseFile): void {
+		const dialog = this.matDialog.open(FileDetailComponent, {
+			width: '40vw',
+			height: '80vh',
+			panelClass: 'file-detail-dlg'
+		});
+
+		dialog.componentInstance.file = file;
+
+		dialog.afterClosed().subscribe((resp) => {
+			if (resp) {
+				this.page = 1;
+				this.getAllFiles(false, true);
 			}
 		});
 	}

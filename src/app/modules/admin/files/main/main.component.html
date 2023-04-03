@@ -49,7 +49,8 @@
 
         <!-- Files Grid View -->
         <div class="flex flex-wrap items-stretch w-full" *ngIf="viewType === 'grid'; else listView">
-            <fuse-card class="flex flex-col max-w-80 w-full px-8 pt-6 pb-4 filter-list" *ngFor="let file of files;">
+            <fuse-card class="flex flex-col max-w-80 w-full px-8 pt-6 pb-4 cursor-pointer filter-list" 
+                *ngFor="let file of files;" (click)="onViewFileDetail(file)">
                 <div class="flex items-center justify-between">
                     <div class="text-2xl font-semibold leading-tight">{{ file.reference }} <span class="file-date">({{ file.createdAt | date: 'dd/MM/YYYY' }})</span></div>
                     
@@ -108,10 +109,10 @@
 
         <div class="flex justify-center" #scrollElem>
             <button *ngIf="files.length < total" mat-flat-button
-                (click)="onLoadMore()" [disabled]="loadMore">
+                (click)="onLoadMore()" [disabled]="disableLoadMoreBtn">
                 <div class="flex justify-between">
                     <span class="mr-3">Load more</span>
-                    <mat-progress-spinner *ngIf="loadMore"
+                    <mat-progress-spinner *ngIf="disableLoadMoreBtn"
                         diameter="20"
                         strokeWidth="3"
                         class="btn-spinner"
