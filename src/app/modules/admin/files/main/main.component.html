@@ -55,7 +55,7 @@
                 <div class="flex items-center justify-between">
                     <div class="text-2xl font-semibold leading-tight">
                         {{ file.reference }} 
-                        <span class="file-date">({{ file.createdAt | date: 'dd/MM/YYYY' }})</span>
+                        <span class="file-date">({{ file.createdAt | date: 'dd/MM/YYYY hh:mm a' }})</span>
                     </div>
     
                     <div class="-mr-3">
@@ -70,7 +70,7 @@
         
                 <div class="flex items-center" *ngIf="file.noOfDamagedGoods > 0">
                     <mat-icon class="mr-3 primary">check_circle</mat-icon>
-                    <div>Contain damaged goods</div>
+                    <div>Contains damage</div>
                 </div>
         
                 <div class="flex flex-wrap mt-6">
