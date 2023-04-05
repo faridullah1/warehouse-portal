@@ -31,6 +31,7 @@
                     <input
                         id="email"
                         matInput
+                        (keyup.enter)="signIn()"
                         [formControlName]="'email'">
 					
                     <mat-error *ngIf="signInForm.get('email').invalid">
@@ -44,6 +45,7 @@
                     <mat-label>Password</mat-label>
                     <input
                         id="password"
+                        (keyup.enter)="signIn()"
                         matInput
                         type="password"
                         [formControlName]="'password'"
@@ -56,11 +58,13 @@
                         <mat-icon
                             class="icon-size-5"
                             *ngIf="passwordField.type === 'password'"
-                            [svgIcon]="'heroicons_solid:eye'"></mat-icon>
+                            [svgIcon]="'heroicons_solid:eye'">
+                        </mat-icon>
                         <mat-icon
                             class="icon-size-5"
                             *ngIf="passwordField.type === 'text'"
-                            [svgIcon]="'heroicons_solid:eye-off'"></mat-icon>
+                            [svgIcon]="'heroicons_solid:eye-off'">
+                        </mat-icon>
                     </button>
                     <mat-error>
                         Password is required
