@@ -26,4 +26,5 @@ export interface FilePicture {
 	fileImageId: number;
 	url: string;
 	createdAt: string;
+	file: WarehouseFile;
 }
