@@ -20,6 +20,7 @@ export interface WarehouseFile {
 	maxImagesToShow: number;
 	createdAt: string;
 	file_images: FilePicture[];
+	user: User;
 }
 
 export interface FilePicture {

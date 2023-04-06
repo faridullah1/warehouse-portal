@@ -11,7 +11,7 @@
 
     <!-- Grid View-->
     <div class="flex flex-wrap items-stretch w-full" *ngIf="viewType === 'grid'; else listView">
-        <mat-card class="file-card" *ngFor="let pic of filePictures">
+        <mat-card class="file-image-card" *ngFor="let pic of filePictures">
             <mat-card-header>
                 <mat-card-subtitle>{{ pic.createdAt | date:'dd/MM/YYYY hh:mm a' }}</mat-card-subtitle>
             </mat-card-header>
@@ -25,7 +25,12 @@
 
             <div class="flex">
                 <div class="bold">Containuer Number:&nbsp;</div>
-                <div>{{pic.file.containerNumber.trim() ? pic.file.containerNumber : 'NA'}}</div>
+                <div>{{pic.file.containerNumber ? pic.file.containerNumber : 'NA'}}</div>
+            </div>
+
+            <div class="flex">
+                <div class="bold">Uploaded By:&nbsp;</div>
+                <div>{{pic.file.user.name   }}</div>
             </div>
 
             <mat-card-actions>
@@ -47,6 +52,7 @@
                     <img class="file-image-list" [src]="pic.url" alt="File Image">
                                         
                     <div>{{ pic.createdAt | date: 'dd MMM YYYY hh:mm a' }}</div>
+                    <div>{{ pic.file.user.name }}</div>
 
                     <div class="flex justify-end">
                         <a [href]="pic.url" download>
@@ -63,8 +69,8 @@
         <button class="mt-4" *ngIf="filePictures.length < total" mat-flat-button
             (click)="onLoadMore()" [disabled]="loadMore">
             <div class="flex justify-between">
-                <span class="mr-3">Load more</span>
-                <mat-progress-spinner *ngIf="loadMore"
+                <span>Load more</span>
+                <mat-progress-spinner *ngIf="loadMore" class="ml-3"
                     diameter="20"
                     strokeWidth="3"
                     class="btn-spinner"

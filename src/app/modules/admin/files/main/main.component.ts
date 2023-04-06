@@ -9,10 +9,10 @@ import { jsPDF } from 'jspdf';
 import moment from 'moment';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { FormGroup, FormControl } from '@angular/forms';
-import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { MatInput } from '@angular/material/input';
 import { UploadFileComponent } from './../upload-file/upload-file.component';
 import { FileDetailComponent } from './../file-detail/file-detail.component';
+import { debounceTime, distinctUntilChanged } from 'rxjs';
 
 
 @Component({
@@ -21,8 +21,6 @@ import { FileDetailComponent } from './../file-detail/file-detail.component';
   styleUrls: ['./main.component.scss']
 })
 export class FileListComponent implements OnInit {
-	@ViewChild('createStartDate') createStartDate: ElementRef<MatInput>;
-	@ViewChild('createEndDate') createEndDate: ElementRef<MatInput>;
 	@ViewChild('scrollElem') scrollElem: ElementRef<HTMLElement>;
 
 	files: WarehouseFile[] = [];
@@ -49,13 +47,18 @@ export class FileListComponent implements OnInit {
 				end: new FormControl<Date | null>(null),
 			})
 		});
+
+		this.filters.valueChanges.pipe(debounceTime(500), distinctUntilChanged()).subscribe((form: any) => {
+			this.page = 1;
+			this.getAllFiles();
+		});
 	}
 
     ngOnInit(): void {
 		this.getAllFiles();
     }
 
-	getAllFiles(loadMore = false, resetFiles = false): void {
+	getAllFiles(loadMore = false): void {
 		// Either load complete page or disableLoadMoreBtn and add files to the existing array;
 		if (loadMore) {
 			this.disableLoadMoreBtn = true;
@@ -76,21 +79,21 @@ export class FileListComponent implements OnInit {
 					file.maxImagesToShow = 8;
 					return file;
 				});
-
-				this.files = [...this.files, ...newData];
 				this.total = resp.data.files.count;
 
-				if (resetFiles) {
-					this.files = [...newData];
-				}
-
 				if (loadMore) {
+					this.files = [...this.files, ...newData];
+
 					setTimeout(() => {
 						this.scrollElem.nativeElement.scrollIntoView({
 							behavior: 'smooth'
 						});
 					}, 100);
 				}
+				else {
+					this.files = [...newData];
+				}
+
 			},
 			error: (error: any) => {
 				this.toaster.error(error);
@@ -112,7 +115,7 @@ export class FileListComponent implements OnInit {
 		dialog.afterClosed().subscribe((resp) => {
 			if (resp) {
 				this.page = 1;
-				this.getAllFiles(false, true);
+				this.getAllFiles();
 			}
 		});
 	}
@@ -256,27 +259,7 @@ export class FileListComponent implements OnInit {
 	}
 
 	onReset(): void {
-		this.createStartDate.nativeElement.value = '';
-		this.createEndDate.nativeElement.value = '';
-
 		this.filters.reset();
-		this.getAllFiles();
-	}
-
-	onDateChange(event: MatDatepickerInputEvent<any>, controlName: string): void {
-		const control = this.filters.get('range')['controls'][controlName];
-		const endOfDay = moment(event.value.valueOf()).endOf('day');
-		const startOfDay = moment(event.value.valueOf()).startOf('day');
-
-		if (controlName === 'start') {
-			control.setValue(startOfDay);
-		}
-		else
-		{
-			control.setValue(endOfDay);
-		}
-
-		this.filters.markAsDirty();
 	}
 
 	onViewChange(view: 'list' | 'grid'): void {
@@ -286,6 +269,16 @@ export class FileListComponent implements OnInit {
 	onLoadMore(): void {
 		this.page++;
 		this.getAllFiles(true);
+	}
+
+	onApplyFilters(): void {
+		this.page = 1;
+		this.getAllFiles();
+	}
+
+	onSeeEntireList(event: MouseEvent, file: WarehouseFile): void {
+		event.stopPropagation();
+		file.maxImagesToShow = file.pictures.length;
 	}
 
 	private getSlug(): string {
@@ -299,7 +292,17 @@ export class FileListComponent implements OnInit {
 				const { start, end } = filters[key];
 
 				if (start && end) {
-					slug += `&createdAt[gt]=${start}&createdAt[lt]=${end}`;
+					const startOfDay = moment(start.valueOf()).startOf('day');
+					const endOfDay = moment(end.valueOf()).endOf('day');
+
+					slug += `&createdAt[gt]=${startOfDay}&createdAt[lt]=${endOfDay}`;
+				}
+
+				if (start && end == null) {
+					const startOfDay = moment(start.valueOf()).startOf('day');
+					const endOfDay = moment(start.valueOf()).endOf('day');
+
+					slug += `&createdAt[gt]=${startOfDay}&createdAt[lt]=${endOfDay}`;
 				}
 
 				continue;
