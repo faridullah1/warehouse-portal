@@ -27,6 +27,8 @@
                 <button type="button" mat-raised-button color="warn" class="mr-3"
                     [disabled]="filters.invalid" (click)="onReset()">Reset
                 </button>
+
+                <button mat-raised-button color="primary" (click)="onCreateFile()">Create File</button>
             </div>
         </form>
     </fuse-card>
@@ -49,8 +51,8 @@
                 *ngFor="let file of files;" (click)="onViewFileDetail(file)">
                 
                 <div class="flex items-center justify-between">
-                    <div class="text-2xl font-semibold leading-tight">
-                        {{ file.reference }} 
+                    <div class="flex items-center text-2xl font-semibold leading-tight">
+                        <span class="text-overflow mr-2">{{ file.reference }} </span>
                         <span class="file-date">({{ file.createdAt | date: 'dd/MM/YYYY hh:mm a' }})</span>
                     </div>
     
@@ -160,6 +162,10 @@
 
         <button mat-menu-item (click)="onAddPicture(file)">
             <span>Add Pictures</span>
+        </button>
+
+        <button mat-menu-item (click)="onUpdateFile(file)">
+            <span>Update File</span>
         </button>
 
         <button mat-menu-item (click)="onDeleteFile(file)" class="delete-fg">

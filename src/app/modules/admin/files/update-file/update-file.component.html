@@ -1,0 +1,35 @@
+<div class="container">
+	<div class="flex justify-between items-center">
+		<h2 class="text-3xl font-semibold tracking-tight leading-8" style="margin: 0;">
+			Update File
+		</h2>
+		
+		<button mat-icon-button matDialogClose>
+			<mat-icon>close</mat-icon>
+		</button>
+	</div>
+	
+	<mat-divider class="divider"></mat-divider>
+
+	<form [formGroup]="theForm" class="content">    
+		<mat-form-field appearance="outline">
+			<mat-label>Reference</mat-label>
+			<input type="text" matInput formControlName="reference" placeholder="Reference">
+			<mat-error *ngIf="theForm.get('reference').hasError('required')">Reference is required</mat-error>
+		</mat-form-field>
+
+		<mat-form-field appearance="outline">
+			<mat-label>Container Number</mat-label>
+			<input type="text" matInput formControlName="containerNumber" placeholder="Container Number">
+		</mat-form-field>
+    </form>
+
+	<mat-divider class="divider"></mat-divider>
+
+	<div class="flex justify-end">
+		<button mat-raised-button color="primary" 
+			[disabled]="theForm.invalid || !theForm.dirty || disableUpdateBtn" 
+			(click)="onSubmit()">Update File
+		</button>
+	</div>
+</div>

@@ -6,11 +6,11 @@ import { ApiService } from 'app/api.service';
 
 
 @Component({
-  selector: 'app-upload-file',
-  templateUrl: './upload-file.component.html',
-  styleUrls: ['./upload-file.component.scss']
+  selector: 'upload-new-pictures',
+  templateUrl: './upload-pictures.component.html',
+  styleUrls: ['./upload-pictures.component.scss']
 })
-export class UploadFileComponent {
+export class UploadPicturesToExistingFileComponent {
 	@ViewChild('uploadFilesField') uploadFilesField: ElementRef<HTMLInputElement>;
 
 	fileId: number;
@@ -20,7 +20,7 @@ export class UploadFileComponent {
 	disableSaveBtn = false;
 
     constructor(private apiService: ApiService,
-				private dialogRef: MatDialogRef<UploadFileComponent>,
+				private dialogRef: MatDialogRef<UploadPicturesToExistingFileComponent>,
 				private toaster: ToastrService)
 	{ }
 

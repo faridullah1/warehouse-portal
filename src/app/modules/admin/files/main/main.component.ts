@@ -1,3 +1,4 @@
+import { UpdateFileComponent } from './../update-file/update-file.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
@@ -9,16 +10,39 @@ import { jsPDF } from 'jspdf';
 import moment from 'moment';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { FormGroup, FormControl } from '@angular/forms';
-import { MatInput } from '@angular/material/input';
-import { UploadFileComponent } from './../upload-file/upload-file.component';
 import { FileDetailComponent } from './../file-detail/file-detail.component';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
+import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
+import { DateAdapter, MAT_DATE_LOCALE, MAT_DATE_FORMATS } from '@angular/material/core';
+import { UploadPicturesToExistingFileComponent } from '../upload-new-pictures/upload-pictures.component';
+import { CreateFileComponent } from '../create-file/create-file.component';
 
+
+export const MY_FORMATS = {
+	parse: {
+	  	dateInput: 'L',
+	},
+	display: {
+		dateInput: 'L',
+		monthYearLabel: 'MM YYYY',
+		dateA11yLabel: 'L',
+		monthYearA11yLabel: 'MM YYYY',
+	}
+};
 
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
-  styleUrls: ['./main.component.scss']
+  styleUrls: ['./main.component.scss'],
+  providers: [
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
+    },
+
+    {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS},
+  ],
 })
 export class FileListComponent implements OnInit {
 	@ViewChild('scrollElem') scrollElem: ElementRef<HTMLElement>;
@@ -223,7 +247,7 @@ export class FileListComponent implements OnInit {
 	}
 
 	onAddPicture(file: WarehouseFile): void {
-		const dialog = this.matDialog.open(UploadFileComponent, {
+		const dialog = this.matDialog.open(UploadPicturesToExistingFileComponent, {
 			width: '25vw'
 		});
 
@@ -279,6 +303,32 @@ export class FileListComponent implements OnInit {
 	onSeeEntireList(event: MouseEvent, file: WarehouseFile): void {
 		event.stopPropagation();
 		file.maxImagesToShow = file.pictures.length;
+	}
+
+	onCreateFile(): void {
+		const dialog = this.matDialog.open(CreateFileComponent, {
+			width: '25vw'
+		});
+
+		dialog.afterClosed().subscribe((resp) => {
+			if (resp) {
+				this.getAllFiles();
+			}
+		});
+	}
+
+	onUpdateFile(file: WarehouseFile): void {
+		const dialog = this.matDialog.open(UpdateFileComponent, {
+			width: '25vw'
+		});
+
+		dialog.componentInstance.fileId = file.fileId;
+
+		dialog.afterClosed().subscribe((resp) => {
+			if (resp) {
+				this.getAllFiles();
+			}
+		});
 	}
 
 	private getSlug(): string {
