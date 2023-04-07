@@ -1,7 +1,7 @@
 import { ApiService } from 'app/api.service';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Component, OnInit } from '@angular/core';
-import { FilePicture, WarehouseFile } from 'app/models';
+import { FilePicture, GenericApiResponse, WarehouseFile } from 'app/models';
 import { ImageViewerComponent } from 'app/shared/image-viewer/image-viewer.component';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { ToastrService } from 'ngx-toastr';
@@ -16,6 +16,8 @@ export class FileDetailComponent implements OnInit {
 	file: WarehouseFile;
 	imagesDeleted = false;
 
+	fromTimelineView = false;
+
     constructor(private dialogRef: MatDialogRef<FileDetailComponent>,
 				private dialog: MatDialog,
 				private apiService: ApiService,
@@ -24,7 +26,17 @@ export class FileDetailComponent implements OnInit {
 	{ }
 
     ngOnInit(): void {
+		if (this.fromTimelineView) {
+			this.getFile();
+		}
     }
+
+	getFile(): void {
+		this.apiService.get(`files/${this.file.fileId}`).subscribe({
+			next: (resp: GenericApiResponse) => this.file = resp.data.file,
+			error: (error: any) => this.toaster.error(error)
+		});
+	}
 
 	onDialogClose(): void {
 		this.dialogRef.close(this.imagesDeleted);

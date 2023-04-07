@@ -1,10 +1,11 @@
 import { MatDialog } from '@angular/material/dialog';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
-import { FilePicture, GenericApiResponse } from 'app/models';
+import { FilePicture, GenericApiResponse, WarehouseFile } from 'app/models';
 import { ToastrService } from 'ngx-toastr';
 import { ApiService } from './../../../../api.service';
 import { ImageViewerComponent } from './../../../../shared/image-viewer/image-viewer.component';
+import { FileDetailComponent } from '../../files/file-detail/file-detail.component';
 
 
 @Component({
@@ -44,17 +45,22 @@ export class TimelineComponent implements OnInit {
 
 		this.apiService.get(`fileImages?page=${this.page}&limit=${this.limit}`).subscribe({
 			next: (resp: GenericApiResponse) => {
-				this.filePictures = [...this.filePictures, ...resp.data.pictures.rows];
-				this.total = resp.data.pictures.count;
+				const { rows, count } = resp.data.pictures;
+				this.total = count;
 				this.loadingPage = false;
 				this.loadMore = false;
 
 				if (scrollTo) {
+					this.filePictures = [...this.filePictures, ...rows];
+
 					setTimeout(() => {
 						this.scrollElem.nativeElement.scrollIntoView({
 							behavior: 'smooth'
 						});
 					}, 100);
+				}
+				else {
+					this.filePictures = [...rows];
 				}
 			},
 			error: (error: any) => {
@@ -101,6 +107,23 @@ export class TimelineComponent implements OnInit {
 					},
 					error: (error: any) => this.toaster.error(error)
 				});
+			}
+		});
+	}
+
+	onViewFile(file: WarehouseFile): void {
+		const dialog = this.dialog.open(FileDetailComponent, {
+			width: '40vw',
+			height: '80vh',
+			panelClass: 'file-detail-dlg'
+		});
+
+		dialog.componentInstance.file = file;
+		dialog.componentInstance.fromTimelineView = true;
+
+		dialog.afterClosed().subscribe((resp) => {
+			if (resp) {
+				this.getAllFileImages();
 			}
 		});
 	}

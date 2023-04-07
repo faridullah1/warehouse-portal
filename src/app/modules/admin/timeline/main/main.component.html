@@ -20,7 +20,7 @@
 
             <div class="flex mt-2">
                 <div class="bold">Reference:&nbsp;</div>
-                <div>{{pic.file.reference}}</div>
+                <a class="link" (click)="onViewFile(pic.file)">{{pic.file.reference}}</a>
             </div>
 
             <div class="flex">
