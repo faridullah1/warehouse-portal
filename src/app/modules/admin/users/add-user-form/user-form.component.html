@@ -19,6 +19,24 @@
 				<div *ngIf="theForm.controls['name'].hasError('required')">Name is required.</div>
 			</mat-error>
 		</mat-form-field>
+
+		<mat-form-field appearance="outline">
+			<mat-label>Username</mat-label>
+			<input matInput placeholder="Username" formControlName="username">
+			<mat-error *ngIf="theForm.controls['username'].errors">
+				<div *ngIf="theForm.controls['username'].hasError('required')">Username is required.</div>
+			</mat-error>
+		</mat-form-field>
+
+		<mat-form-field appearance="outline">
+			<mat-label>Type</mat-label>
+			<mat-select formControlName="type">
+				<mat-option *ngFor="let type of userTypes" [value]="type">{{ type }}</mat-option>
+			</mat-select>
+			<mat-error *ngIf="theForm.controls['type'].errors">
+				<div *ngIf="theForm.controls['type'].hasError('required')">Type is required.</div>
+			</mat-error>
+		</mat-form-field>
 	
 		<mat-form-field appearance="outline">
 			<mat-label>Email</mat-label>

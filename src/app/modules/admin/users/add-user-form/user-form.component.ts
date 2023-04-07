@@ -16,6 +16,7 @@ export class UserFormComponent implements OnInit {
 	id: string;
 	theForm: FormGroup;
 	disableSaveBtn = false;
+	userTypes = ['Admin', 'Warehouse_Personnel'];
 
 	constructor(private apiService: ApiService,
 				private fb: FormBuilder,
@@ -24,7 +25,9 @@ export class UserFormComponent implements OnInit {
 	{
 		this.theForm = fb.group({
 			name: [null, [Validators.required]],
+			username: [null, [Validators.required]],
 			email: [null, [Validators.required, Validators.email]],
+			type: ['Warehouse_Personnel', [Validators.required]],
 			password: [null, [Validators.required]],
 			confirmPassword: [null, [Validators.required]],
 			departmentId: [1]

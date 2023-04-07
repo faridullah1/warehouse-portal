@@ -33,6 +33,8 @@ export class UsersComponent {
 			columns: [
 				{ name: 'name', title: 'Name' },
 				{ name: 'email', title: 'Email' },
+				{ name: 'username', title: 'Username' },
+				{ name: 'type', title: 'Type' },
 				{ name: 'department.name', title: 'Department' },
 				{ name: 'createdAt', title: 'Date Created', format: 'datetime' },
 			]
