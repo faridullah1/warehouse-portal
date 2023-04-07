@@ -6,9 +6,11 @@ import { FileListComponent } from './main/main.component';
 import { Route, RouterModule } from '@angular/router';
 import { FuseCardModule } from '@fuse/components/card';
 import { FirstEightPipe } from './main/first-eight.pipe';
-import { UploadFileComponent } from './upload-file/upload-file.component';
+import { UploadPicturesToExistingFileComponent } from './upload-new-pictures/upload-pictures.component';
 import { FileDetailComponent } from './file-detail/file-detail.component';
 import { DialogHeaderComponent } from 'app/shared/dialog-header/dialog-header.component';
+import { CreateFileComponent } from './create-file/create-file.component';
+import { UpdateFileComponent } from './update-file/update-file.component';
 
 const routes: Route[] = [
 	{
@@ -21,8 +23,10 @@ const routes: Route[] = [
 	declarations: [
 		FileListComponent,
 		FirstEightPipe,
-  		UploadFileComponent,
-    	FileDetailComponent
+		UploadPicturesToExistingFileComponent,
+    	FileDetailComponent,
+		CreateFileComponent,
+		UpdateFileComponent
 	],
 	imports: [
 		CommonModule,
