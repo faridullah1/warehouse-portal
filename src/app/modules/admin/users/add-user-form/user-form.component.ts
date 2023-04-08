@@ -17,6 +17,7 @@ export class UserFormComponent implements OnInit {
 	theForm: FormGroup;
 	disableSaveBtn = false;
 	userTypes = ['Admin', 'Warehouse_Personnel'];
+	languages = ['en', 'dutch'];
 
 	constructor(private apiService: ApiService,
 				private fb: FormBuilder,
@@ -28,6 +29,7 @@ export class UserFormComponent implements OnInit {
 			username: [null, [Validators.required]],
 			email: [null, [Validators.required, Validators.email]],
 			type: ['Warehouse_Personnel', [Validators.required]],
+			language: ['en', [Validators.required]],
 			password: [null, [Validators.required]],
 			confirmPassword: [null, [Validators.required]],
 			departmentId: [1]

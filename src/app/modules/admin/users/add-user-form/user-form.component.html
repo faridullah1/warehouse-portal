@@ -37,6 +37,16 @@
 				<div *ngIf="theForm.controls['type'].hasError('required')">Type is required.</div>
 			</mat-error>
 		</mat-form-field>
+
+		<mat-form-field appearance="outline">
+			<mat-label>Language</mat-label>
+			<mat-select formControlName="language">
+				<mat-option *ngFor="let lang of languages" [value]="lang">{{ lang }}</mat-option>
+			</mat-select>
+			<mat-error *ngIf="theForm.controls['language'].errors">
+				<div *ngIf="theForm.controls['language'].hasError('required')">Language is required.</div>
+			</mat-error>
+		</mat-form-field>
 	
 		<mat-form-field appearance="outline">
 			<mat-label>Email</mat-label>
