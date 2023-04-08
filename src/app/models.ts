@@ -1,14 +1,24 @@
+export type UserLanguage = 'en' | 'dutch';
+export type UserType = 'Admin' | 'Warehouse_Personnel';
+
 export interface GenericApiResponse {
 	status: 'success' | 'failed';
 	data: any;
 	totalRecords?: number;
 };
 
+export interface Department {
+	departmentId: number;
+	name: string;
+}
+
 export interface User {
 	userId: number;
 	name: string;
 	email: string;
-	password: string;
+	department: Department;
+	language: UserLanguage;
+	type: UserType;
 }
 
 export interface WarehouseFile {

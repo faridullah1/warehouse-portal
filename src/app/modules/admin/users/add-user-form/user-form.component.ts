@@ -46,9 +46,7 @@ export class UserFormComponent implements OnInit {
 
 	getUser(): void {
 		this.apiService.get(`users/${this.id}`).subscribe({
-			next: (resp: GenericApiResponse) => {
-				this.theForm.patchValue(resp.data['user']);
-			},
+			next: (resp: GenericApiResponse) => this.theForm.patchValue(resp.data['user']),
 			error: (error: any) => this.toastr.error(error)
 		});
 	}
