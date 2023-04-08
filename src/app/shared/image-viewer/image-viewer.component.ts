@@ -28,22 +28,22 @@ export class ImageViewerComponent implements AfterViewInit {
 
 	initPanzoom(): void {
         this.currentPanZoom = panzoom(this.scene.nativeElement, {
-            beforeWheel: (e) => {
-                // allow wheel-zoom only if altKey is down. Otherwise - ignore
-                const shouldIgnore = !e.altKey;
-                return shouldIgnore;
-            }
+            // beforeWheel: (e) => {
+            //     // allow wheel-zoom only if altKey is down. Otherwise - ignore
+            //     const shouldIgnore = !e.altKey;
+            //     return shouldIgnore;
+            // }
         });
 
         /*
             Minimum Width upto which current image can be zoomed;
             if image width is less than that then ZOOMING WILL BE PAUSED
         */
-        this.currentPanZoom.on('zoom', (ev: any) => {
-            if (this.isImageTooSmall()) {
-                ev.pause();
-            }
-        });
+        // this.currentPanZoom.on('zoom', (ev: any) => {
+        //     if (this.isImageTooSmall()) {
+        //         ev.pause();
+        //     }
+        // });
     }
 
 	isImageTooSmall(): boolean {
@@ -55,22 +55,6 @@ export class ImageViewerComponent implements AfterViewInit {
 
 	onDialogClose(): void {
 		this.dialogRef.close();
-	}
-
-	zoom(scale: number, isSmooth: boolean = true): void {
-		if (scale) {
-			const transform = this.currentPanZoom.getTransform();
-			const deltaX = transform.x;
-			const deltaY = transform.y;
-			const offsetX = scale + deltaX;
-			const offsetY = scale + deltaY;
-
-			if (isSmooth) {
-				this.currentPanZoom.smoothZoom(offsetX, offsetY, scale);
-			} else {
-				this.currentPanZoom.zoomTo(offsetX, offsetY, scale);
-			}
-		}
 	}
 
 	onZoom(type: 'in' | 'out'): void {
