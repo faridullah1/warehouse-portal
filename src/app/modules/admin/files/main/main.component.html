@@ -3,12 +3,20 @@
     <fuse-card class="flex items-center w-full p-4 mb-3">
         <form class="flex items-center w-full" [formGroup]="filters">
             <mat-form-field appearance="fill" class="search-field">
-                <mat-label>Search for reference or container number</mat-label>
+                <mat-label>
+                    <ng-container *transloco="let t">
+                        {{t('Search')}}
+                    </ng-container>
+                </mat-label>
                 <input type="text" matInput placeholder="Search" formControlName="reference">
             </mat-form-field>
             
             <mat-form-field class="date-range-field" appearance="fill">
-                <mat-label>Select upload date range</mat-label>
+                <mat-label>
+                    <ng-container *transloco="let t">
+                        {{t('Date_Range')}}
+                    </ng-container>
+                </mat-label>
                 <mat-date-range-input [rangePicker]="picker" formGroupName="range">
                     <input matStartDate formControlName="start" placeholder="Start date">
                     <input matEndDate formControlName="end" placeholder="End date">
@@ -21,14 +29,25 @@
                 <mat-error *ngIf="filters.get('range')['controls'].end.hasError('matEndDateInvalid')">Invalid end date</mat-error>
             </mat-form-field>
               
-            <mat-checkbox formControlName="isDamaged">Contains Damage</mat-checkbox>
+            <mat-checkbox formControlName="isDamaged">
+                <ng-container *transloco="let t">
+                    {{t('Contains_Damage')}}
+                </ng-container>
+            </mat-checkbox>
 
             <div class="flex justify-end flex-1">
                 <button type="button" mat-raised-button color="warn" class="mr-3"
-                    [disabled]="filters.invalid" (click)="onReset()">Reset
+                    [disabled]="filters.invalid" (click)="onReset()"> 
+                    <ng-container *transloco="let t">
+                        {{t('Reset')}}
+                    </ng-container>
                 </button>
 
-                <button mat-raised-button color="primary" (click)="onCreateFile()">Create File</button>
+                <button mat-raised-button color="primary" (click)="onCreateFile()">
+                    <ng-container *transloco="let t">
+                        {{t('Create_File')}}
+                    </ng-container>
+                </button>
             </div>
         </form>
     </fuse-card>
@@ -62,18 +81,24 @@
                 </div>
 
                 <div class="flex mb-2" *ngIf="file.containerNumber">
-                    <div class="bold">Container Number: &nbsp;</div>
+                    <ng-container *transloco="let t">
+                        <div class="bold">{{t('Container_Number')}}: &nbsp;</div>
+                    </ng-container>
                     <div>{{ file.containerNumber }}</div>
                 </div>
 
                 <div class="flex mb-2">
-                    <div class="bold">Uploaded By: &nbsp;</div>
+                    <ng-container *transloco="let t">
+                        <div class="bold">{{t('Uploaded_By')}}: &nbsp;</div>
+                    </ng-container>
                     <div>{{ file.user.name }}</div>
                 </div>
         
                 <div class="flex items-center" *ngIf="file.noOfDamagedGoods > 0">
                     <mat-icon class="mr-3 primary">check_circle</mat-icon>
-                    <div>Contains damage</div>
+                    <ng-container *transloco="let t">
+                        <div>{{t('Contains_Damage')}}</div>
+                    </ng-container>
                 </div>
         
                 <div class="flex flex-wrap mt-6">
@@ -90,7 +115,9 @@
                         mat-button
                         [color]="'primary'"
                         [routerLink]="['./']">
-                        See entire file list
+                        <ng-container *transloco="let t">
+                            {{t('See_Full_List')}}
+                        </ng-container>
                     </a>
                 </div>
             </fuse-card>
@@ -123,7 +150,11 @@
             <button *ngIf="files.length < total" mat-flat-button
                 (click)="onLoadMore()" [disabled]="disableLoadMoreBtn">
                 <div class="flex justify-between">
-                    <span class="mr-3">Load more</span>
+                    <span class="mr-3">
+                        <ng-container *transloco="let t">
+                            {{t('Load_More')}}
+                        </ng-container>
+                    </span>
                     <mat-progress-spinner *ngIf="disableLoadMoreBtn"
                         diameter="20"
                         strokeWidth="3"

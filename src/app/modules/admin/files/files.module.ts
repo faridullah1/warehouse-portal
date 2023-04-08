@@ -11,6 +11,7 @@ import { FileDetailComponent } from './file-detail/file-detail.component';
 import { DialogHeaderComponent } from 'app/shared/dialog-header/dialog-header.component';
 import { CreateFileComponent } from './create-file/create-file.component';
 import { UpdateFileComponent } from './update-file/update-file.component';
+import { TranslocoModule } from '@ngneat/transloco';
 
 const routes: Route[] = [
 	{
@@ -34,7 +35,8 @@ const routes: Route[] = [
 		FuseCardModule,
 		MaterialModule,
 		DialogHeaderComponent,
-		RouterModule.forChild(routes)
+		RouterModule.forChild(routes),
+		TranslocoModule
 	]
 })
 export class FilesModule { }
