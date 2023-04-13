@@ -5,6 +5,8 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { ApiService } from 'app/api.service';
 import { GenericApiResponse } from '../../../../models';
 import Validation from 'app/shared/validators';
+import { TranslocoService } from '@ngneat/transloco';
+import { take } from 'rxjs';
 
 
 @Component({
@@ -18,10 +20,13 @@ export class UserFormComponent implements OnInit {
 	disableSaveBtn = false;
 	userTypes = ['Admin', 'Warehouse_Personnel'];
 	languages = ['en', 'dutch'];
+	title: string;
+	submitBtnText: string;
 
 	constructor(private apiService: ApiService,
 				private fb: FormBuilder,
 				private toastr: ToastrService,
+				private translocoService: TranslocoService,
 				private dialogRef: MatDialogRef<UserFormComponent>)
 	{
 		this.theForm = fb.group({
@@ -37,10 +42,33 @@ export class UserFormComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
+		this.updateLanguage();
+
 		if (this.id) {
 			this.theForm.removeControl('password');
 			this.theForm.removeControl('confirmPassword');
 			this.getUser();
+		}
+	}
+
+	updateLanguage(): void {
+		if (this.id) {
+			this.translocoService.selectTranslate('Update_User').pipe(take(1)).subscribe((translation: string) => {
+				this.title = translation;
+			});
+
+			this.translocoService.selectTranslate('Update').pipe(take(1)).subscribe((translation: string) => {
+				this.submitBtnText = translation;
+			});
+		}
+		else {
+			this.translocoService.selectTranslate('Add_User').pipe(take(1)).subscribe((translation: string) => {
+				this.title = translation;
+			});
+
+			this.translocoService.selectTranslate('Save').pipe(take(1)).subscribe((translation: string) => {
+				this.submitBtnText = translation;
+			});
 		}
 	}
 

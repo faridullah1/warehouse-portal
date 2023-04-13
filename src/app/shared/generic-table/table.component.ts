@@ -3,7 +3,7 @@ import { FormControl } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, Subject, take } from 'rxjs';
 
 // Services
 import { ApiService } from 'app/api.service';
@@ -13,6 +13,7 @@ import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { TableAction, TableConfig, TableRowAction, TableSignal } from './models';
 import { GenericApiResponse } from 'app/models';
 import { WhereData } from './models';
+import { TranslocoService } from '@ngneat/transloco';
 
 
 @Component({
@@ -45,12 +46,18 @@ export class TableComponent implements OnInit {
 	// eslint-disable-next-line @typescript-eslint/member-ordering
 	constructor(private apiService: ApiService,
 				private confirmationService: FuseConfirmationService,
+				private translocoService: TranslocoService,
 				private cdr: ChangeDetectorRef)
 	{
 		this.dataSource = new MatTableDataSource();
 	}
 
 	ngOnInit(): void {
+		// Subscribe to language changes
+		this.translocoService.langChanges$.subscribe(() => {
+			this.updateLanguage();
+        });
+
 		this.actions.subscribe((ac: TableAction) => {
 			if (ac.type === 'reload') {
 				this.selectedRow = null;
@@ -62,15 +69,40 @@ export class TableComponent implements OnInit {
 			.subscribe(val => this.searchData(val));
 
 		if (this.config) {
-			for (const col of this.config.columns) {
-				if (col.visible === false) {
-					continue;
-				};
-
-				this.displayedColumns.push(col.name);
-			}
-
+			this.config.addBtnText = this.config.addBtnText || 'Add New';
+			this.setTableColumns();
 			this.loadData();
+		}
+	}
+
+
+	updateLanguage(): void {{
+		this.translocoService.selectTranslate(this.config.titleTranslationKey).pipe(take(1)).subscribe((translation: string) => {
+			this.config.title = translation;
+		});
+
+		this.translocoService.selectTranslate(this.config.addBtnTextTranslationKey || 'Add_New').pipe(take(1)).subscribe((translation: string) => {
+			this.config.addBtnText = translation;
+		});
+
+		for (const col of this.config.columns) {
+			if (col.visible === false) {
+				continue;
+			};
+
+			this.translocoService.selectTranslate(col.translationKey).pipe(take(1)).subscribe((translation: string) => {
+				col.title = translation;
+			});
+		}
+	}}
+
+	setTableColumns(): void {
+		for (const col of this.config.columns) {
+			if (col.visible === false) {
+				continue;
+			};
+
+			this.displayedColumns.push(col.name);
 		}
 	}
 
@@ -112,8 +144,6 @@ export class TableComponent implements OnInit {
 
 			this.dataSource = [r];
 		}
-
-		// this.cdr.detectChanges();
 	}
 
 	handleError(error: string): void {

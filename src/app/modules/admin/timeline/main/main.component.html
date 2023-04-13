@@ -19,17 +19,27 @@
             <img class="file-image cursor-pointer" [src]="pic.url" alt="File Picture" (click)="onImageViewer(pic)">
 
             <div class="flex mt-2">
-                <div class="bold">Reference:&nbsp;</div>
+                <div class="bold">
+                    <ng-container *transloco="let t">
+                        {{t('Reference')}}:&nbsp;
+                    </ng-container>
+                </div>
                 <a class="link" (click)="onViewFile(pic.file)">{{pic.file.reference}}</a>
             </div>
 
             <div class="flex">
-                <div class="bold">Container Number:&nbsp;</div>
+                <div class="bold">
+                    <ng-container *transloco="let t">
+                        {{t('Container_Number')}}:&nbsp;
+                    </ng-container>
+                </div>
                 <div>{{pic.file.containerNumber ? pic.file.containerNumber : 'NA'}}</div>
             </div>
 
             <div class="flex">
-                <div class="bold">Uploaded By:&nbsp;</div>
+                <div class="bold"><ng-container *transloco="let t">
+                    {{t('Uploaded_By')}}:&nbsp;
+                </ng-container></div>
                 <div>{{pic.file.user.name   }}</div>
             </div>
 
@@ -37,7 +47,9 @@
                 <button mat-button>
                     <a class="flex items-center" [href]="pic.url" download>
                         <mat-icon class="mr-2">download</mat-icon>
-                        DOWNLOAD
+                        <div *transloco="let t" class="uppercase">
+                            {{t('Download')}}
+                        </div>
                     </a>
                 </button>
             </mat-card-actions>
@@ -69,7 +81,11 @@
         <button class="mt-4" *ngIf="filePictures.length < total" mat-flat-button
             (click)="onLoadMore()" [disabled]="loadMore">
             <div class="flex justify-between">
-                <span>Load more</span>
+                <span>
+                    <ng-container *transloco="let t">
+                        {{t('Load_More')}}
+                    </ng-container>
+                </span>
                 <mat-progress-spinner *ngIf="loadMore" class="ml-3"
                     diameter="20"
                     strokeWidth="3"
@@ -82,7 +98,11 @@
     </div>
 
     <div class="w-full flex justify-center" *ngIf="filePictures.length === 0;">
-        <h3 class="text-3xl font-bold dark:text-white">No file pictures added yet</h3>
+        <h3 class="text-3xl font-bold dark:text-white">
+            <ng-container *transloco="let t">
+                {{t('No_File_Pics')}}
+            </ng-container>
+        </h3>
     </div>
 </div>
 

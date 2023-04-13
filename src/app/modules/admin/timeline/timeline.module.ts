@@ -6,6 +6,7 @@ import { Route, RouterModule } from '@angular/router';
 import { MaterialModule } from './../../material/material.module';
 import { ImageNamePipe } from './main/image-name.pipe';
 import { FuseCardModule } from '@fuse/components/card';
+import { TranslocoModule } from '@ngneat/transloco';
 
 const routes: Route[] = [
     {
@@ -25,6 +26,7 @@ const routes: Route[] = [
 		FormsModule,
 		MaterialModule,
 		FuseCardModule,
+		TranslocoModule,
 		RouterModule.forChild(routes)
 	]
 })

@@ -1,4 +1,3 @@
-import { UpdateFileComponent } from './../update-file/update-file.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
@@ -11,11 +10,13 @@ import moment from 'moment';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { FormGroup, FormControl } from '@angular/forms';
 import { FileDetailComponent } from './../file-detail/file-detail.component';
-import { debounceTime, distinctUntilChanged } from 'rxjs';
+import { debounceTime, distinctUntilChanged, take } from 'rxjs';
 import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_LOCALE, MAT_DATE_FORMATS } from '@angular/material/core';
 import { UploadPicturesToExistingFileComponent } from '../upload-new-pictures/upload-pictures.component';
 import { CreateFileComponent } from '../create-file/create-file.component';
+import { TranslocoService } from '@ngneat/transloco';
+import { UpdateFileComponent } from './../update-file/update-file.component';
 
 
 export const MY_FORMATS = {
@@ -57,11 +58,14 @@ export class FileListComponent implements OnInit {
 	limit = 10;
 	total = 0;
 
+	activeLang: string;
+
     constructor(private apiService: ApiService,
 				private toaster: ToastrService,
 				private confirmationService: FuseConfirmationService,
 				private matDialog: MatDialog,
-				private fileSaverService: FileSaverService)
+				private fileSaverService: FileSaverService,
+				private translocoService: TranslocoService)
 	{
 		this.filters = new FormGroup({
 			reference: new FormControl(''),
@@ -79,6 +83,13 @@ export class FileListComponent implements OnInit {
 	}
 
     ngOnInit(): void {
+		// Subscribe to language changes
+		this.translocoService.langChanges$.subscribe((activeLang) => {
+
+            // Get the active lang
+            this.activeLang = activeLang;
+        });
+
 		this.getAllFiles();
     }
 
@@ -261,10 +272,18 @@ export class FileListComponent implements OnInit {
 	}
 
 	onDeleteFile(file: WarehouseFile): void {
-		const dialog = this.confirmationService.open({
-			title: 'Delete File',
-			message: `Are you sure, you want to delete "${file.reference}"`
+		let title;
+		let message;
+
+		this.translocoService.selectTranslate('Delete_File').pipe(take(1)).subscribe((translation) => {
+			title = translation;
 		});
+
+		this.translocoService.selectTranslate('Delete_Message').pipe(take(1)).subscribe((translation) => {
+			message = `${translation} "${file.reference}"`;
+		});
+
+		const dialog = this.confirmationService.open({ title, message });
 
 		dialog.afterClosed().subscribe((action: 'confirmed' | 'cancelled') => {
 			if (action === 'confirmed') {

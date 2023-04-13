@@ -17,6 +17,7 @@ export class UsersComponent {
     constructor(private dialog: MatDialog) {
 		this.tableConfig = {
 			title: 'Users',
+			titleTranslationKey: 'Users',
 			slug: 'users',
 			primaryKey: 'userId',
 
@@ -31,12 +32,12 @@ export class UsersComponent {
 			],
 
 			columns: [
-				{ name: 'name', title: 'Name' },
-				{ name: 'email', title: 'Email' },
-				{ name: 'username', title: 'Username' },
-				{ name: 'type', title: 'Type' },
-				{ name: 'department.name', title: 'Department' },
-				{ name: 'createdAt', title: 'Date Created', format: 'datetime' },
+				{ name: 'name', title: 'Name', translationKey: 'Name' },
+				{ name: 'email', title: 'Email', translationKey: 'Email' },
+				{ name: 'username', title: 'Username', translationKey: 'Username' },
+				{ name: 'type', title: 'Type', translationKey: 'User_Type' },
+				{ name: 'department.name', title: 'Department', translationKey: 'Department' },
+				{ name: 'createdAt', title: 'Date Created', format: 'datetime', translationKey: 'Created_At' },
 			]
 		};
 	}

@@ -1,7 +1,7 @@
 <div class="container">
 	<div class="flex justify-between items-center">
 		<h2 class="text-3xl font-semibold tracking-tight leading-8" style="margin: 0;">
-			{{ id ? 'Update User' : 'Add User'}}
+			{{ title }}
 		</h2>
 		
 		<button mat-icon-button matDialogClose>
@@ -13,65 +13,129 @@
 
 	<form [formGroup]="theForm" class="form">
 		<mat-form-field appearance="outline">
-			<mat-label>Name</mat-label>
+			<mat-label>
+				<ng-container *transloco="let t">
+					{{t('Name')}}
+				</ng-container>
+			</mat-label>
 			<input matInput placeholder="Name" formControlName="name">
 			<mat-error *ngIf="theForm.controls['name'].errors">
-				<div *ngIf="theForm.controls['name'].hasError('required')">Name is required.</div>
+				<div *ngIf="theForm.controls['name'].hasError('required')">
+					<ng-container *transloco="let t">
+						{{t('Name_Required')}}
+					</ng-container>
+				</div>
 			</mat-error>
 		</mat-form-field>
 
 		<mat-form-field appearance="outline">
-			<mat-label>Username</mat-label>
+			<mat-label>
+				<ng-container *transloco="let t">
+					{{t('Username')}}
+				</ng-container>
+			</mat-label>
 			<input matInput placeholder="Username" formControlName="username">
 			<mat-error *ngIf="theForm.controls['username'].errors">
-				<div *ngIf="theForm.controls['username'].hasError('required')">Username is required.</div>
+				<div *ngIf="theForm.controls['username'].hasError('required')">
+					<ng-container *transloco="let t">
+						{{t('Username_Required')}}
+					</ng-container>
+				</div>
 			</mat-error>
 		</mat-form-field>
 
 		<mat-form-field appearance="outline">
-			<mat-label>Type</mat-label>
+			<mat-label>
+				<ng-container *transloco="let t">
+					{{t('User_Type')}}
+				</ng-container>
+			</mat-label>
 			<mat-select formControlName="type">
 				<mat-option *ngFor="let type of userTypes" [value]="type">{{ type }}</mat-option>
 			</mat-select>
 			<mat-error *ngIf="theForm.controls['type'].errors">
-				<div *ngIf="theForm.controls['type'].hasError('required')">Type is required.</div>
+				<div *ngIf="theForm.controls['type'].hasError('required')">
+					<ng-container *transloco="let t">
+						{{t('Type_Required')}}
+					</ng-container>
+				</div>
 			</mat-error>
 		</mat-form-field>
 
 		<mat-form-field appearance="outline">
-			<mat-label>Language</mat-label>
+			<mat-label>
+				<ng-container *transloco="let t">
+					{{t('Language')}}
+				</ng-container>
+			</mat-label>
 			<mat-select formControlName="language">
 				<mat-option *ngFor="let lang of languages" [value]="lang">{{ lang }}</mat-option>
 			</mat-select>
 			<mat-error *ngIf="theForm.controls['language'].errors">
-				<div *ngIf="theForm.controls['language'].hasError('required')">Language is required.</div>
+				<div *ngIf="theForm.controls['language'].hasError('required')">
+					<ng-container *transloco="let t">
+						{{t('Language_Required')}}
+					</ng-container>
+				</div>
 			</mat-error>
 		</mat-form-field>
 	
 		<mat-form-field appearance="outline">
-			<mat-label>Email</mat-label>
+			<mat-label>
+				<ng-container *transloco="let t">
+					{{t('Email')}}
+				</ng-container>
+			</mat-label>
 			<input type="email" matInput placeholder="Email" formControlName="email">
 			<mat-error *ngIf="theForm.controls['email'].errors">
-				<div *ngIf="theForm.controls['email'].hasError('required')">Email is required.</div>
-				<div *ngIf="theForm.controls['email'].hasError('email')">Email is invalid.</div>
+				<div *ngIf="theForm.controls['email'].hasError('required')">
+					<ng-container *transloco="let t">
+						{{t('Email_Required')}}
+					</ng-container>
+				</div>
+				<div *ngIf="theForm.controls['email'].hasError('email')">
+					<ng-container *transloco="let t">
+						{{t('Invalid_Email')}}
+					</ng-container>
+				</div>
 			</mat-error>
 		</mat-form-field>
 
 		<div class="flex flex-col" *ngIf="!id">
 			<mat-form-field appearance="outline">
-				<mat-label>Password</mat-label>
+				<mat-label>
+					<ng-container *transloco="let t">
+						{{t('Password')}}
+					</ng-container>
+				</mat-label>
 				<input type="password" matInput placeholder="Password" formControlName="password">
 				<mat-error *ngIf="theForm.controls['password'].errors">
-					<div *ngIf="theForm.controls['password'].hasError('required')">Password is required.</div>
+					<div *ngIf="theForm.controls['password'].hasError('required')">
+						<ng-container *transloco="let t">
+							{{t('Password_Required')}}
+						</ng-container>
+					</div>
 				</mat-error>
 			</mat-form-field>
 	
 			<mat-form-field appearance="outline">
-				<mat-label>Confirm Password</mat-label>
+				<mat-label>
+					<ng-container *transloco="let t">
+						{{t('Confirm_Password')}}
+					</ng-container>
+				</mat-label>
 				<input type="password" matInput placeholder="Confirm Password" formControlName="confirmPassword">
 				<mat-error *ngIf="theForm.controls['confirmPassword'].errors">
-					<div *ngIf="theForm.controls['confirmPassword'].hasError('required')">Confirm Password is required.</div>
-					<div *ngIf="theForm.get('confirmPassword')?.hasError('matching')">Passwords are not matched</div>
+					<div *ngIf="theForm.controls['confirmPassword'].hasError('required')">
+						<ng-container *transloco="let t">
+							{{t('Confirm_Password_Required')}}
+						</ng-container>
+					</div>
+					<div *ngIf="theForm.get('confirmPassword')?.hasError('matching')">
+						<ng-container *transloco="let t">
+							{{t('Password_NotMatched')}}
+						</ng-container>
+					</div>
 				</mat-error>
 			</mat-form-field>
 		</div>
@@ -82,7 +146,7 @@
 	<div class="flex justify-end">
 		<button mat-raised-button color="primary" 
 			[disabled]="theForm.invalid || !theForm.dirty || disableSaveBtn" 
-			(click)="onSave()">{{ id ? 'Update' : 'Save' }}
+			(click)="onSave()">{{ submitBtnText }}
 		</button>
 	</div>
 </div>

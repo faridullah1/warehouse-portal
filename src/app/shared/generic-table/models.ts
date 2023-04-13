@@ -2,10 +2,12 @@ export type TableFormat = 'number' | 'image' | 'boolean' | 'date' | 'datetime' |
 
 export interface TableConfig {
     title: string;
+	titleTranslationKey?: string;
     slug: string;
 	primaryKey: string;
 
 	addBtnText?: string;
+	addBtnTextTranslationKey?: string;
 	showAdd: boolean;
 	showSearch: boolean;
 
@@ -24,6 +26,7 @@ export interface TableColumn {
     format?: TableFormat;
 	isArray?: boolean;
 	columnName?: string;
+	translationKey?: string;
 }
 
 export interface WhereData {

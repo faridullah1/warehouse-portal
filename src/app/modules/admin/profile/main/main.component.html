@@ -1,29 +1,53 @@
 <div class="flex flex-col p-8 container">
-	<h2 class="text-3xl font-bold mb-3">Profile</h2>
+	<h2 class="text-3xl font-bold mb-3">
+		<ng-container *transloco="let t">
+			{{t('Profile')}}
+		</ng-container>
+	</h2>
 
 	<div class="flex flex-col" *ngIf="!loading">
 		<div class="flex mb-3">
-			<div class="label">Name:</div>
+			<div class="label">
+				<ng-container *transloco="let t">
+                    {{t('Name')}}:
+                </ng-container>
+			</div>
 			<div>{{ profile.name }}</div>
 		</div>
 		
 		<div class="flex mb-3">
-			<div class="label">Email:</div>
+			<div class="label">
+				<ng-container *transloco="let t">
+					{{t('Email')}}:
+				</ng-container>
+			</div>
 			<div>{{ profile.email }}</div>
 		</div>
 
 		<div class="flex">
-			<div class="label mb-3">Department:</div>
+			<div class="label mb-3">
+				<ng-container *transloco="let t">
+					{{t('Department')}}:
+				</ng-container>
+			</div>
 			<div>{{ profile.department.name }}</div>
 		</div>
 
 		<div class="flex">
-			<div class="label mb-3">User Type:</div>
+			<div class="label mb-3">
+				<ng-container *transloco="let t">
+					{{t('User_Type')}}:
+				</ng-container>
+			</div>
 			<div>{{ profile.type }}</div>
 		</div>
 
 		<div class="flex">
-			<div class="label">Language:</div>
+			<div class="label">
+				<ng-container *transloco="let t">
+					{{t('Language')}}:
+				</ng-container>
+			</div>
 			<div>{{ profile.language === 'en' ? 'English' : 'Dutch' }}</div>
 		</div>
 	</div>

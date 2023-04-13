@@ -6,6 +6,7 @@ import { GenericTableModule } from 'app/shared/generic-table/module';
 import { MaterialModule } from 'app/modules/material/material.module';
 import { Route, RouterModule } from '@angular/router';
 import { UserFormComponent } from './add-user-form/user-form.component';
+import { TranslocoModule } from '@ngneat/transloco';
 
 const routes: Route[] = [
 	{
@@ -24,6 +25,7 @@ const routes: Route[] = [
 	  ReactiveFormsModule,
     GenericTableModule,
     MaterialModule,
+    TranslocoModule,
 	  RouterModule.forChild(routes)
   ]
 })

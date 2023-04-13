@@ -185,22 +185,34 @@
     </button>
 
     <mat-menu #listCard09Menu="matMenu">
-        <button mat-menu-item (click)="onDownloadFile(file)">Download</button>
+        <button mat-menu-item (click)="onDownloadFile(file)">
+            <ng-container *transloco="let t">
+                {{t('Download')}}
+            </ng-container>
+        </button>
 
         <button mat-menu-item (click)="onGeneratePDFReport(file)">
-            <span>Generate pdf report</span>
+            <ng-container *transloco="let t">
+                {{t('Generate_Pdf_Report')}}
+            </ng-container>
         </button>
 
         <button mat-menu-item (click)="onAddPicture(file)">
-            <span>Add Pictures</span>
+            <ng-container *transloco="let t">
+                {{t('Add_Pictures')}}
+            </ng-container>
         </button>
 
         <button mat-menu-item (click)="onUpdateFile(file)">
-            <span>Update File</span>
+            <ng-container *transloco="let t">
+                {{t('Update_File')}}
+            </ng-container>
         </button>
 
         <button mat-menu-item (click)="onDeleteFile(file)" class="delete-fg">
-            <span>Delete File</span>
+            <ng-container *transloco="let t">
+                {{t('Delete_File')}}
+            </ng-container>
         </button>
     </mat-menu>
 </ng-template>

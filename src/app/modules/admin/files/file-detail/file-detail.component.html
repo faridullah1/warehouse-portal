@@ -4,22 +4,38 @@
 	<div class="flex flex-col p-8 content">
 		<div class="flex mb-3">
             <div class="flex w-1/2">
-                <div class="label">Reference No:</div>
+                <div class="label">
+                    <ng-container *transloco="let t">
+                        {{t('Reference')}}:
+                    </ng-container>
+                </div>
                 <div>{{ file.reference }}</div>
             </div>
             <div class="flex w-1/2">
-                <div class="label">Container No:</div>
+                <div class="label">
+                    <ng-container *transloco="let t">
+                        {{t('Container_Number')}}
+                    </ng-container>
+                </div>
                 <div>{{ file.containerNumber }}</div>
             </div>
         </div>
 
         <div class="flex mb-3">
             <div class="flex w-1/2">
-                <div class="label">Number of damaged goods: </div>
+                <div class="label">
+                    <ng-container *transloco="let t">
+                        {{t('Number_Of_Damaged_Goods')}}
+                    </ng-container>
+                </div>
                 <div>{{ file.noOfDamagedGoods }}</div>
             </div>
             <div class="flex w-1/2">
-                <div class="label">Created At:</div>
+                <div class="label">
+                    <ng-container *transloco="let t">
+                        {{t('Created_At')}}
+                    </ng-container>
+                </div>
                 <div>{{ file.createdAt | date: 'dd/MM/YYYY' }}</div>
             </div>
         </div>

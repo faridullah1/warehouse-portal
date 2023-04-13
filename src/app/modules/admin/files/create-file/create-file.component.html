@@ -1,7 +1,9 @@
 <div class="container">
 	<div class="flex justify-between items-center">
 		<h2 class="text-3xl font-semibold tracking-tight leading-8" style="margin: 0;">
-			Create File
+			<ng-container *transloco="let t">
+                {{t('Create_File')}}
+            </ng-container>
 		</h2>
 		
 		<button mat-icon-button matDialogClose>
@@ -25,17 +27,33 @@
         <input hidden type="file" [accept]="allowedFileTypes" [multiple]="true" #uploadFilesField (change)="onFileChange()">
     
 		<mat-form-field appearance="outline">
-			<mat-label>Reference</mat-label>
+			<mat-label>
+				<ng-container *transloco="let t">
+					{{t('Reference')}}
+				</ng-container>
+			</mat-label>
 			<input type="text" matInput formControlName="reference" placeholder="Reference">
-			<mat-error *ngIf="theForm.get('reference').hasError('required')">Reference is required</mat-error>
+			<mat-error *ngIf="theForm.get('reference').hasError('required')">
+				<ng-container *transloco="let t">
+					{{t('Reference_Required')}}
+				</ng-container>
+			</mat-error>
 		</mat-form-field>
 
 		<mat-form-field appearance="outline">
-			<mat-label>Container Number</mat-label>
+			<mat-label>
+				<ng-container *transloco="let t">
+					{{t('Container_Number')}}
+				</ng-container>
+			</mat-label>
 			<input type="text" matInput formControlName="containerNumber" placeholder="Container Number">
 		</mat-form-field>
 
-        <mat-checkbox formControlName="isDamaged">Is damaged</mat-checkbox>
+        <mat-checkbox formControlName="isDamaged">
+			<ng-container *transloco="let t">
+				{{t('Is_Damaged')}}
+			</ng-container>
+		</mat-checkbox>
     </form>
 
 	<mat-divider class="divider"></mat-divider>
@@ -43,7 +61,10 @@
 	<div class="flex justify-end">
 		<button mat-raised-button color="primary" 
 			[disabled]="theForm.invalid || disableCreateBtn" 
-			(click)="onSubmit()">Create File
+			(click)="onSubmit()">
+			<ng-container *transloco="let t">
+				{{t('Create_File')}}
+			</ng-container>
 		</button>
 	</div>
 </div>
