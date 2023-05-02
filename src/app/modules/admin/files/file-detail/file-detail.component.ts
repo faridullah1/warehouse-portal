@@ -57,7 +57,7 @@ export class FileDetailComponent implements OnInit {
 	onDeleteImage(pic: FilePicture): void {
 		const dialog = this.confirmationService.open({
 			title: 'Delete picture',
-			message: 'Are you sure, you want to delete picture'
+			message: 'Are you sure, you want to delete picture?'
 		});
 
 		dialog.afterClosed().subscribe((action: 'confirmed' | 'cancelled') => {

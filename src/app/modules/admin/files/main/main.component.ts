@@ -280,7 +280,7 @@ export class FileListComponent implements OnInit {
 		});
 
 		this.translocoService.selectTranslate('Delete_Message').pipe(take(1)).subscribe((translation) => {
-			message = `${translation} "${file.reference}"`;
+			message = `${translation} "${file.reference}"?`;
 		});
 
 		const dialog = this.confirmationService.open({ title, message });
@@ -288,9 +288,10 @@ export class FileListComponent implements OnInit {
 		dialog.afterClosed().subscribe((action: 'confirmed' | 'cancelled') => {
 			if (action === 'confirmed') {
 				this.apiService.delete(`files/${file.fileId}`).subscribe({
-					next: (resp: GenericApiResponse) => {
+					next: () => {
 						const id = this.files.indexOf(file);
 						this.files.splice(id, 1);
+						this.total -= 1;
 					},
 					error: (error: any) => {
 						this.toaster.error(error);
