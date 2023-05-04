@@ -18,7 +18,7 @@ export class UserFormComponent implements OnInit {
 	id: string;
 	theForm: FormGroup;
 	disableSaveBtn = false;
-	userTypes = ['Admin', 'Warehouse_Personnel'];
+	userTypes = ['Admin', 'User'];
 	languages = ['en', 'dutch'];
 	title: string;
 	submitBtnText: string;
@@ -33,7 +33,7 @@ export class UserFormComponent implements OnInit {
 			name: [null, [Validators.required]],
 			username: [null, [Validators.required]],
 			email: [null, [Validators.required, Validators.email]],
-			type: ['Warehouse_Personnel', [Validators.required]],
+			type: ['User', [Validators.required]],
 			language: ['en', [Validators.required]],
 			password: [null, [Validators.required]],
 			confirmPassword: [null, [Validators.required]],

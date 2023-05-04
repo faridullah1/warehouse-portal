@@ -1,8 +1,10 @@
 import { MatDialogRef } from '@angular/material/dialog';
-import { Component, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, ElementRef, ViewChild, AfterViewInit, OnInit } from '@angular/core';
 import { DialogHeaderComponent } from '../dialog-header/dialog-header.component';
 import panzoom, { PanZoom } from 'panzoom';
 import { MaterialModule } from 'app/modules/material/material.module';
+import { TranslocoService } from '@ngneat/transloco';
+import { take } from 'rxjs';
 
 
 @Component({
@@ -12,14 +14,23 @@ import { MaterialModule } from 'app/modules/material/material.module';
   standalone: true,
   imports: [DialogHeaderComponent, MaterialModule]
 })
-export class ImageViewerComponent implements AfterViewInit {
+export class ImageViewerComponent implements AfterViewInit, OnInit {
     @ViewChild('scene') scene: ElementRef<HTMLImageElement>;
 
     imageSrc: string = '';
 	currentPanZoom: PanZoom;
     initialImageWidth: number;
+    dialogTitle: string;
 
-    constructor(private dialogRef: MatDialogRef<DialogHeaderComponent>) {}
+    constructor(private dialogRef: MatDialogRef<DialogHeaderComponent>,
+                private translocoService: TranslocoService)
+    { }
+
+    ngOnInit(): void {
+        this.translocoService.selectTranslate('Image_Viewer').pipe(take(1)).subscribe((translation: string) => {
+			this.dialogTitle = translation;
+		});
+    }
 
 	ngAfterViewInit(): void {
         this.initialImageWidth = this.scene.nativeElement.width;

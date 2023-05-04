@@ -5,6 +5,8 @@ import { FilePicture, GenericApiResponse, WarehouseFile } from 'app/models';
 import { ImageViewerComponent } from 'app/shared/image-viewer/image-viewer.component';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { ToastrService } from 'ngx-toastr';
+import { TranslocoService } from '@ngneat/transloco';
+import { take } from 'rxjs';
 
 
 @Component({
@@ -17,15 +19,21 @@ export class FileDetailComponent implements OnInit {
 	imagesDeleted = false;
 
 	fromTimelineView = false;
+	dialogTitle: string;
 
     constructor(private dialogRef: MatDialogRef<FileDetailComponent>,
 				private dialog: MatDialog,
 				private apiService: ApiService,
 				private toaster: ToastrService,
+				private translocoService: TranslocoService,
 				private confirmationService: FuseConfirmationService)
 	{ }
 
     ngOnInit(): void {
+		this.translocoService.selectTranslate('File_Detail').pipe(take(1)).subscribe((translation: string) => {
+			this.dialogTitle = translation;
+		});
+
 		if (this.fromTimelineView) {
 			this.getFile();
 		}

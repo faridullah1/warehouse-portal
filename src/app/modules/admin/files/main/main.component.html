@@ -43,7 +43,7 @@
                     </ng-container>
                 </button>
 
-                <button mat-raised-button color="primary" (click)="onCreateFile()">
+                <button mat-raised-button type="button" color="primary" (click)="onCreateFile()">
                     <ng-container *transloco="let t">
                         {{t('Create_File')}}
                     </ng-container>
@@ -72,7 +72,6 @@
                 <div class="flex items-center justify-between">
                     <div class="flex items-center text-2xl font-semibold leading-tight">
                         <span class="text-overflow mr-2">{{ file.reference }} </span>
-                        <span class="file-date">({{ file.createdAt | date: 'dd/MM/YYYY hh:mm a' }})</span>
                     </div>
     
                     <div class="-mr-3">
@@ -100,6 +99,8 @@
                         <div>{{t('Contains_Damage')}}</div>
                     </ng-container>
                 </div>
+
+                <div class="file-date">{{ file.createdAt | date: 'dd/MM/YYYY HH:mm' }}</div>
         
                 <div class="flex flex-wrap mt-6">
                     <img *ngFor="let picture of file.pictures | firstEight:file.maxImagesToShow"
@@ -137,7 +138,7 @@
                         </span>
                         <ng-template #noDamageGoods>No damage goods</ng-template>
                     </div>
-                    <div class="item">{{ file.createdAt | date: 'dd MMM YYYY hh:mm a' }}</div>
+                    <div class="item">{{ file.createdAt | date: 'dd MMM YYYY HH:mm' }}</div>
 
                     <div class="flex justify-end item">
                         <ng-container [ngTemplateOutlet]="fileMenuTemplate" [ngTemplateOutletContext]="{file: file}"></ng-container>

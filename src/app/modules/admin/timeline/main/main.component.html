@@ -13,7 +13,7 @@
     <div class="flex flex-wrap items-stretch w-full" *ngIf="viewType === 'grid'; else listView">
         <mat-card class="file-image-card" *ngFor="let pic of filePictures">
             <mat-card-header>
-                <mat-card-subtitle>{{ pic.createdAt | date:'dd/MM/YYYY hh:mm a' }}</mat-card-subtitle>
+                <mat-card-subtitle>{{ pic.createdAt | date:'dd/MM/YYYY HH:mm' }}</mat-card-subtitle>
             </mat-card-header>
             
             <img class="file-image cursor-pointer" [src]="pic.url" alt="File Picture" (click)="onImageViewer(pic)">
@@ -63,8 +63,10 @@
                 <li class="justify-between" *ngFor="let pic of filePictures">
                     <img class="file-image-list" [src]="pic.url" alt="File Image">
                                         
-                    <div>{{ pic.createdAt | date: 'dd MMM YYYY hh:mm a' }}</div>
+                    <div>{{ pic.file.reference }}</div>
+                    <div>{{ pic.file.containerNumber }}</div>
                     <div>{{ pic.file.user.name }}</div>
+                    <div>{{ pic.createdAt | date: 'dd MMM YYYY HH:mm' }}</div>
 
                     <div class="flex justify-end">
                         <a [href]="pic.url" download>

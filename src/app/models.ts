@@ -1,5 +1,5 @@
 export type UserLanguage = 'en' | 'dutch';
-export type UserType = 'Admin' | 'Warehouse_Personnel';
+export type UserType = 'Admin' | 'User';
 
 export interface GenericApiResponse {
 	status: 'success' | 'failed';
