@@ -1,4 +1,4 @@
-export type UserLanguage = 'en' | 'dutch';
+export type UserLanguage = 'en' | 'nl';
 export type UserType = 'Admin' | 'User';
 
 export interface GenericApiResponse {

@@ -19,7 +19,7 @@ import { TranslocoHttpLoader } from 'app/core/transloco/transloco.http-loader';
                     },
                     {
                         id   : 'nl',
-                        label: 'Dutch'
+                        label: 'Nederlands'
                     }
                 ],
                 defaultLang         : 'en',

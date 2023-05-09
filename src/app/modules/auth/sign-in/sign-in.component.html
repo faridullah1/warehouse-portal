@@ -7,7 +7,11 @@
             </div>
 
             <!-- Title -->
-            <div class="mt-8 text-4xl font-extrabold tracking-tight leading-tight text-center">Sign in</div>
+            <div class="mt-8 text-4xl font-extrabold tracking-tight leading-tight text-center">
+                <ng-container *transloco="let t">
+					{{t('Sign_In')}}
+				</ng-container>
+            </div>
 
             <!-- Alert -->
             <fuse-alert
@@ -27,7 +31,11 @@
 
                 <!-- Email field -->
                 <mat-form-field class="w-full">
-                    <mat-label>Email</mat-label>
+                    <mat-label>
+                        <ng-container *transloco="let t">
+                            {{t('Email')}}
+                        </ng-container>
+                    </mat-label>
                     <input
                         id="email"
                         matInput
@@ -35,14 +43,26 @@
                         [formControlName]="'email'">
 					
                     <mat-error *ngIf="signInForm.get('email').invalid">
-                        <div *ngIf="signInForm.get('email').hasError('required')">Email address is required</div>
-						<div *ngIf="signInForm.get('email').hasError('email')">Please enter a valid email address</div>
+                        <div *ngIf="signInForm.get('email').hasError('required')">
+                            <ng-container *transloco="let t">
+                                {{t('Email_Required')}}
+                            </ng-container>
+                        </div>
+						<div *ngIf="signInForm.get('email').hasError('email')">
+                            <ng-container *transloco="let t">
+                                {{t('Invalid_Email')}}
+                            </ng-container>
+                        </div>
                     </mat-error>
                 </mat-form-field>
 
                 <!-- Password field -->
                 <mat-form-field class="w-full">
-                    <mat-label>Password</mat-label>
+                    <mat-label>
+                        <ng-container *transloco="let t">
+                            {{t('Password')}}
+                        </ng-container>
+                    </mat-label>
                     <input
                         id="password"
                         (keyup.enter)="signIn()"
@@ -67,7 +87,9 @@
                         </mat-icon>
                     </button>
                     <mat-error>
-                        Password is required
+                        <ng-container *transloco="let t">
+                            {{t('Password_Required')}}
+                        </ng-container>
                     </mat-error>
                 </mat-form-field>
 				
@@ -80,7 +102,9 @@
 						type="button"
 						(click)="signIn()">
 						<span *ngIf="!signInForm.disabled">
-							Sign in
+							<ng-container *transloco="let t">
+                                {{t('Sign_In')}}
+                            </ng-container>
 						</span>
 						<mat-progress-spinner
 							*ngIf="signInForm.disabled"

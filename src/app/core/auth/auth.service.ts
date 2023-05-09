@@ -118,8 +118,8 @@ export class AuthService
             return of(false);
         }
 
-		const { email, name, id, type } = jwt_decode(this.accessToken) as User;
-		this._userService.user = { id, email, name, type };
+		const { email, name, id, type, language } = jwt_decode(this.accessToken) as User;
+		this._userService.user = { id, email, name, type, language };
 
 		return of(true);
     }

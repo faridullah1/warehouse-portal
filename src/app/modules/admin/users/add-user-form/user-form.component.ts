@@ -19,7 +19,7 @@ export class UserFormComponent implements OnInit {
 	theForm: FormGroup;
 	disableSaveBtn = false;
 	userTypes = ['Admin', 'User'];
-	languages = ['en', 'dutch'];
+	languages = ['en', 'nl'];
 	title: string;
 	submitBtnText: string;
 

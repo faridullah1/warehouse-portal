@@ -6,6 +6,8 @@ import { fuseAnimations } from '@fuse/animations';
 import { FuseAlertType } from '@fuse/components/alert';
 import { AuthService } from 'app/core/auth/auth.service';
 import { Kolli_App_Navigation } from './../../../layout/common/navigation';
+import { TranslocoService } from '@ngneat/transloco';
+import { UserService } from 'app/core/user/user.service';
 
 
 @Component({
@@ -31,7 +33,8 @@ export class AuthSignInComponent implements OnInit
         private _authService: AuthService,
         private _formBuilder: UntypedFormBuilder,
         private _router: Router,
-		private _fuseNavigationService: FuseNavigationService
+		private _fuseNavigationService: FuseNavigationService,
+        private translocoService: TranslocoService,
     )
     { }
 
@@ -49,6 +52,8 @@ export class AuthSignInComponent implements OnInit
             email     : ['', [Validators.required, Validators.email]],
             password  : ['', Validators.required],
         });
+
+        this.translocoService.setActiveLang('nl');
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -84,6 +89,7 @@ export class AuthSignInComponent implements OnInit
 				// The '/signed-in-redirect' is a dummy url to catch the request and redirect the user
 				// to the correct page after a successful sign in. This way, that url can be set via
 				// routing file and we don't have to touch here.
+
 				const redirectURL = this._activatedRoute.snapshot.queryParamMap.get('redirectURL') || '/signed-in-redirect';
 
 				this._fuseNavigationService.storeNavigation('main', Kolli_App_Navigation.navigation);
