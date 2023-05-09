@@ -5,6 +5,7 @@ import { TranslocoService } from '@ngneat/transloco';
 import { UserService } from './core/user/user.service';
 import { Subscription } from 'rxjs';
 
+
 @Component({
     selector   : 'app-root',
     templateUrl: './app.component.html',
@@ -12,7 +13,7 @@ import { Subscription } from 'rxjs';
 })
 export class AppComponent implements OnInit, OnDestroy
 {
-	subscription: Subscription;
+	subscription = new Subscription();
 
 	/**
 	 * Constructor

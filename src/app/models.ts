@@ -14,9 +14,10 @@ export interface Department {
 
 export interface User {
 	userId: number;
+	avatar: string;
 	name: string;
 	email: string;
-	department: Department;
+	department?: Department;
 	language: UserLanguage;
 	type: UserType;
 }

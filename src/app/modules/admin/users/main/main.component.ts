@@ -1,8 +1,10 @@
 import { MatDialog } from '@angular/material/dialog';
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { TableAction, TableConfig, TableSignal } from 'app/shared/generic-table/models';
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { UserFormComponent } from '../add-user-form/user-form.component';
+import { User } from 'app/models';
+import { UserService } from 'app/core/user/user.service';
 
 
 @Component({
@@ -10,11 +12,13 @@ import { UserFormComponent } from '../add-user-form/user-form.component';
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.scss']
 })
-export class UsersComponent {
+export class UsersComponent implements OnInit, OnDestroy {
 	tableConfig: TableConfig;
 	actions = new Subject<TableAction>();
+	subscription = new Subscription();
+	user: User;
 
-    constructor(private dialog: MatDialog) {
+    constructor(private dialog: MatDialog, private userService: UserService) {
 		this.tableConfig = {
 			title: 'Users',
 			titleTranslationKey: 'Users',
@@ -28,7 +32,7 @@ export class UsersComponent {
 
 			rowActions: [
 				{ name: 'edit', title: 'Edit', action: 'OnEdit' },
-				{ name: 'delete', title: 'Delete', action: 'OnDelete' },
+				{ name: 'delete', title: 'Delete', action: 'OnDelete', condition: this.showDeleteButton },
 			],
 
 			columns: [
@@ -41,6 +45,21 @@ export class UsersComponent {
 			]
 		};
 	}
+
+	ngOnInit(): void {
+		this.subscription = this.userService.user$.subscribe((user) => {
+			if (user) {
+				this.user = user;
+			}
+		});
+	}
+
+	ngOnDestroy(): void {
+		this.subscription.unsubscribe();
+		this.subscription = null;
+	}
+
+	showDeleteButton = (user: User): boolean => user.userId !== this.user?.userId;
 
     onTableSignal(ev: TableSignal): void {
 		switch(ev.type) {

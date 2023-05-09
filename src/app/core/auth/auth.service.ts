@@ -1,11 +1,11 @@
-import { environment } from './../../../environments/environment';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of, switchMap, throwError } from 'rxjs';
+import { Observable, of, switchMap } from 'rxjs';
 import { AuthUtils } from 'app/core/auth/auth.utils';
 import { UserService } from 'app/core/user/user.service';
 import jwt_decode  from 'jwt-decode';
-import { User } from '../user/user.types';
+import { environment } from './../../../environments/environment';
+import { User } from 'app/models';
 
 
 @Injectable()
@@ -55,33 +55,8 @@ export class AuthService
                 // Store the access token in the local storage
                 this.accessToken = response.access_token;
 
-				const { email, name, id, type } = jwt_decode(this.accessToken) as User;
-
                 // Store the user on the user service
-                this._userService.user = { id, name, email, type };
-
-                // Return a new observable with the response
-                return of(response);
-            })
-        );
-    }
-
-	/**
-	 * Sign in
-	 *
-	 * @param credentials
-	 */
-    register(credentials: { email: string; password: string; company: false }): Observable<any>
-    {
-        return this._httpClient.post(this.baseUrl + 'companies', credentials).pipe(
-            switchMap((response: any) => {
-                // Store the access token in the local storage
-                this.accessToken = response.access_token;
-
-				const { email, name, id} = jwt_decode(this.accessToken) as User;
-
-                // Store the user on the user service
-                this._userService.user = { id, name, email };
+                this._userService.user = jwt_decode(this.accessToken) as User;
 
                 // Return a new observable with the response
                 return of(response);
@@ -118,9 +93,7 @@ export class AuthService
             return of(false);
         }
 
-		const { email, name, id, type, language } = jwt_decode(this.accessToken) as User;
-		this._userService.user = { id, email, name, type, language };
-
+		this._userService.user = jwt_decode(this.accessToken) as User;
 		return of(true);
     }
 }
