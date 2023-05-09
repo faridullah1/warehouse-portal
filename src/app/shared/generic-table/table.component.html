@@ -6,7 +6,7 @@
 
 				<div class="search-field flex-1">
 					<mat-form-field class="flex-1" *ngIf="config.showSearch">
-						<input type="text" [placeholder]="'Search by ' + config.searchColumn" matInput [formControl]="searchFC">
+						<input type="text" [placeholder]="searchPlaceholder" matInput [formControl]="searchFC">
 					</mat-form-field>
 				</div>
 			</div>

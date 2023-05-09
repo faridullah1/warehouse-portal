@@ -5,15 +5,13 @@ export interface TableConfig {
 	titleTranslationKey?: string;
     slug: string;
 	primaryKey: string;
-
 	addBtnText?: string;
 	addBtnTextTranslationKey?: string;
 	showAdd: boolean;
 	showSearch: boolean;
-
 	searchColumn?: string;
+	searchColumnTranslationKey?: string;
 	where?: WhereData;
-
     rowActions: TableRowAction[];
     columns: TableColumn[];
 }

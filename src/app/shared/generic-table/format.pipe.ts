@@ -21,7 +21,7 @@ export class FormatDataPipe implements PipeTransform {
 
 			case 'datetime':
 				const dateTimeValue = typeof value === 'number' ? new Date(value).getTime() * 1000 : value;
-				return this.dateFormater.transform(dateTimeValue, 'dd MMM YYYY hh:mm');
+				return this.dateFormater.transform(dateTimeValue, 'dd-MM-YYYY HH:MM');
 
 			case 'number':
 				return this.numberFormater.transform(value);

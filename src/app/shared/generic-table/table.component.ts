@@ -3,7 +3,7 @@ import { FormControl } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { debounceTime, distinctUntilChanged, Subject, take } from 'rxjs';
+import { combineLatest, debounceTime, distinctUntilChanged, forkJoin, Subject, take } from 'rxjs';
 
 // Services
 import { ApiService } from 'app/api.service';
@@ -39,6 +39,7 @@ export class TableComponent implements OnInit {
 	dataError = false;
 
 	searchFC = new FormControl();
+	searchPlaceholder = 'Search by';
 
 	// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 	showError = () => this.dataError;
@@ -83,6 +84,14 @@ export class TableComponent implements OnInit {
 
 		this.translocoService.selectTranslate(this.config.addBtnTextTranslationKey || 'Add_New').pipe(take(1)).subscribe((translation: string) => {
 			this.config.addBtnText = translation;
+		});
+
+		combineLatest([
+			this.translocoService.selectTranslate('Search_By'), 
+			this.translocoService.selectTranslate(this.config.searchColumnTranslationKey)
+		])
+		.subscribe((res) => {
+			this.searchPlaceholder = `${res[0]} ${res[1]}`;
 		});
 
 		for (const col of this.config.columns) {
@@ -234,7 +243,8 @@ export class TableComponent implements OnInit {
 
 		if (ac.action === 'OnDelete') {
 			const dialog = this.confirmationService.open({
-				title: 'Are you sure, you want to delete the record?'
+				title: 'Are you sure you want to delete this user?',
+				message: ''
 			});
 
 			dialog.afterClosed().subscribe((action: 'confirmed' | 'cancelled') => {

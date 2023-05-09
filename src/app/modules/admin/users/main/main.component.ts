@@ -25,10 +25,13 @@ export class UsersComponent implements OnInit, OnDestroy {
 			slug: 'users',
 			primaryKey: 'userId',
 
+			addBtnText: 'Add User',
+			addBtnTextTranslationKey: 'Add_User',
 			showAdd: true,
 			showSearch: true,
 
 			searchColumn: 'name',
+			searchColumnTranslationKey: 'Name',
 
 			rowActions: [
 				{ name: 'edit', title: 'Edit', action: 'OnEdit' },
