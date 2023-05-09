@@ -21,7 +21,7 @@ export interface User {
 	type: UserType;
 }
 
-export interface WarehouseFile {
+export interface KolliAppFile {
 	fileId: number;
 	reference: string;
 	containerNumber: string;
@@ -37,5 +37,5 @@ export interface FilePicture {
 	fileImageId: number;
 	url: string;
 	createdAt: string;
-	file: WarehouseFile;
+	file: KolliAppFile;
 }

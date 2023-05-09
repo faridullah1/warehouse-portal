@@ -2,7 +2,7 @@ import { Navigation } from 'app/core/navigation/navigation.types';
 
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
-export class Warehouse_App_Navigation
+export class Kolli_App_Navigation
 {
     // main navigation
     public static navigation: Navigation = {

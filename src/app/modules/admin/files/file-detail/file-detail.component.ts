@@ -1,7 +1,7 @@
 import { ApiService } from 'app/api.service';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Component, OnInit } from '@angular/core';
-import { FilePicture, GenericApiResponse, WarehouseFile } from 'app/models';
+import { FilePicture, GenericApiResponse, KolliAppFile } from 'app/models';
 import { ImageViewerComponent } from 'app/shared/image-viewer/image-viewer.component';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { ToastrService } from 'ngx-toastr';
@@ -15,7 +15,7 @@ import { take } from 'rxjs';
   styleUrls: ['./file-detail.component.scss']
 })
 export class FileDetailComponent implements OnInit {
-	file: WarehouseFile;
+	file: KolliAppFile;
 	imagesDeleted = false;
 
 	fromTimelineView = false;

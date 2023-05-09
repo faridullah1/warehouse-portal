@@ -1,7 +1,7 @@
 import { MatDialog } from '@angular/material/dialog';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
-import { FilePicture, GenericApiResponse, WarehouseFile } from 'app/models';
+import { FilePicture, GenericApiResponse, KolliAppFile } from 'app/models';
 import { ToastrService } from 'ngx-toastr';
 import { ApiService } from './../../../../api.service';
 import { ImageViewerComponent } from './../../../../shared/image-viewer/image-viewer.component';
@@ -111,7 +111,7 @@ export class TimelineComponent implements OnInit {
 		});
 	}
 
-	onViewFile(file: WarehouseFile): void {
+	onViewFile(file: KolliAppFile): void {
 		const dialog = this.dialog.open(FileDetailComponent, {
 			width: '40vw',
 			height: '80vh',

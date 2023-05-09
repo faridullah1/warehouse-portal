@@ -1,6 +1,6 @@
 import { FuseNavigationService } from '@fuse/components/navigation';
 import { Component } from '@angular/core';
-import { Warehouse_App_Navigation } from './layout/common/navigation';
+import { Kolli_App_Navigation } from './layout/common/navigation';
 
 
 @Component({
@@ -15,6 +15,6 @@ export class AppComponent
 	 */
 	constructor(private _fuseNavigationService: FuseNavigationService)
 	{
-		this._fuseNavigationService.storeNavigation('main', Warehouse_App_Navigation.navigation);
+		this._fuseNavigationService.storeNavigation('main', Kolli_App_Navigation.navigation);
 	}
 }

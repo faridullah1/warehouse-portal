@@ -1,4 +1,4 @@
-# warehouse_portal
+# Kolli Portal
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli)
 

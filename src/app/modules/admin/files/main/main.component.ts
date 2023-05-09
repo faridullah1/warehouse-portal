@@ -2,7 +2,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ApiService } from 'app/api.service';
-import { FilePicture, GenericApiResponse, WarehouseFile } from 'app/models';
+import { FilePicture, GenericApiResponse, KolliAppFile } from 'app/models';
 import * as JSZip from 'jszip';
 import { FileSaverService } from 'ngx-filesaver';
 import { jsPDF } from 'jspdf';
@@ -48,7 +48,7 @@ export const MY_FORMATS = {
 export class FileListComponent implements OnInit {
 	@ViewChild('scrollElem') scrollElem: ElementRef<HTMLElement>;
 
-	files: WarehouseFile[] = [];
+	files: KolliAppFile[] = [];
 	filters: FormGroup;
 	viewType: 'list' | 'grid' = 'grid';
 	loadingPage = false;
@@ -138,7 +138,7 @@ export class FileListComponent implements OnInit {
 		});
 	}
 
-	onViewFileDetail(file: WarehouseFile): void {
+	onViewFileDetail(file: KolliAppFile): void {
 		const dialog = this.matDialog.open(FileDetailComponent, {
 			width: '40vw',
 			height: '80vh',
@@ -159,7 +159,7 @@ export class FileListComponent implements OnInit {
 		ev.stopPropagation();
 	}
 
-	onDownloadFile(file: WarehouseFile): void {
+	onDownloadFile(file: KolliAppFile): void {
 		const zip = new JSZip();
 		const folder = zip.folder('pictures');
 
@@ -183,7 +183,7 @@ export class FileListComponent implements OnInit {
 	// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 	getFileType = (path: string) => path.substring(path.lastIndexOf('/') +1).split('.')[1].toLowerCase();
 
-	getFileReportSummary(doc: jsPDF, file: WarehouseFile): void {
+	getFileReportSummary(doc: jsPDF, file: KolliAppFile): void {
 		const mainHeadingX = 20;
 		const istRowX = 30;
 		const secondRowX = 40;
@@ -226,7 +226,7 @@ export class FileListComponent implements OnInit {
 		doc.line(10, 45, doc.internal.pageSize.width - 10, 45);
 	}
 
-	addFilePicsToPDF(doc: jsPDF, file: WarehouseFile): void {
+	addFilePicsToPDF(doc: jsPDF, file: KolliAppFile): void {
 		file.file_images.forEach((image: FilePicture, index: number) =>
 		{
 			if (index !== 0) {
@@ -245,7 +245,7 @@ export class FileListComponent implements OnInit {
 		});
 	}
 
-	onGeneratePDFReport(file: WarehouseFile): void {
+	onGeneratePDFReport(file: KolliAppFile): void {
 		// Create a new document
 		const doc = new jsPDF();
 
@@ -257,7 +257,7 @@ export class FileListComponent implements OnInit {
 		doc.save('file.pdf');
 	}
 
-	onAddPicture(file: WarehouseFile): void {
+	onAddPicture(file: KolliAppFile): void {
 		const dialog = this.matDialog.open(UploadPicturesToExistingFileComponent, {
 			width: '25vw'
 		});
@@ -271,7 +271,7 @@ export class FileListComponent implements OnInit {
 		});
 	}
 
-	onDeleteFile(file: WarehouseFile): void {
+	onDeleteFile(file: KolliAppFile): void {
 		let title;
 		let message;
 
@@ -320,7 +320,7 @@ export class FileListComponent implements OnInit {
 		this.getAllFiles();
 	}
 
-	onSeeEntireList(event: MouseEvent, file: WarehouseFile): void {
+	onSeeEntireList(event: MouseEvent, file: KolliAppFile): void {
 		event.stopPropagation();
 		file.maxImagesToShow = file.pictures.length;
 	}
@@ -337,7 +337,7 @@ export class FileListComponent implements OnInit {
 		});
 	}
 
-	onUpdateFile(file: WarehouseFile): void {
+	onUpdateFile(file: KolliAppFile): void {
 		const dialog = this.matDialog.open(UpdateFileComponent, {
 			width: '25vw'
 		});

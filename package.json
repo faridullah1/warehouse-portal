@@ -1,7 +1,7 @@
 {
-    "name": "warehouse_portal",
+    "name": "kolli_portal",
     "version": "1.0.0",
-    "description": "This is admin portal for warehouse app. The aim of the app is to exchange pictures of incoming/outgoing goods with the colleagues in the office.",
+    "description": "This is admin portal for kolli app. The aim of the app is to exchange pictures of incoming/outgoing goods with the colleagues in the office.",
     "author": "Farid ullah",
     "private": true,
     "scripts": {
