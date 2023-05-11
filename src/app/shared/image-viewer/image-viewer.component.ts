@@ -93,7 +93,7 @@ export class ImageViewerComponent implements AfterViewInit, OnInit {
 	}
 
     onReset(): void {
-        this.currentPanZoom.smoothZoom(0, 0, 1);
+        this.currentPanZoom.moveTo(0, 0);
     }
 
     getFileImageSrc(): string {
