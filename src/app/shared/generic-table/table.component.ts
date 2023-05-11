@@ -39,7 +39,8 @@ export class TableComponent implements OnInit {
 	dataError = false;
 
 	searchFC = new FormControl();
-	searchPlaceholder = 'Search by';
+	searchPlaceholder: string;
+	userDeletePrompt: string;
 
 	// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 	showError = () => this.dataError;
@@ -86,8 +87,12 @@ export class TableComponent implements OnInit {
 			this.config.addBtnText = translation;
 		});
 
+		this.translocoService.selectTranslate('Delete_User_Prompt').pipe(take(1)).subscribe((translation: string) => {
+			this.userDeletePrompt = translation;
+		});
+
 		combineLatest([
-			this.translocoService.selectTranslate('Search_By'), 
+			this.translocoService.selectTranslate('Search_By'),
 			this.translocoService.selectTranslate(this.config.searchColumnTranslationKey)
 		])
 		.subscribe((res) => {
@@ -101,6 +106,12 @@ export class TableComponent implements OnInit {
 
 			this.translocoService.selectTranslate(col.translationKey).pipe(take(1)).subscribe((translation: string) => {
 				col.title = translation;
+			});
+		}
+
+		for (const ac of this.config.rowActions) {
+			this.translocoService.selectTranslate(ac.translationKey).pipe(take(1)).subscribe((translation: string) => {
+				ac.title = translation;
 			});
 		}
 	}}
@@ -243,7 +254,7 @@ export class TableComponent implements OnInit {
 
 		if (ac.action === 'OnDelete') {
 			const dialog = this.confirmationService.open({
-				title: 'Are you sure you want to delete this user?',
+				title: this.userDeletePrompt,
 				message: ''
 			});
 

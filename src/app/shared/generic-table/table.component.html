@@ -14,7 +14,7 @@
 			<div class="flex flex-1 justify-end">
 				<div class="row-actions mr-3" *ngIf="selectedRow">
 					<ng-container *ngFor="let ac of config.rowActions">
-						<button mat-button color="primary" class="action"
+						<button mat-button color="primary" class="action" [class]="ac.class"
 							*ngIf="ac.condition === undefined || ac.condition(selectedRow, ac.action)" 
 							(click)="onRowAction(ac)">
 							{{ac.title}}

@@ -1,6 +1,6 @@
 {
     "Contains_Damage": "Contains Damage",
-    "Is_Damaged": "Is damaged",
+    "Is_Damaged": "Contains damage",
     "Number_Of_Damaged_Goods": "Number of damaged goods",
     "Account_Management": "Account Management",
     "Timeline": "Timeline",
@@ -13,7 +13,10 @@
     "Create_File": "Create File",
     "Search": "Search for reference or container number",
     "Search_By": "Search By",
+    "File_Search_Placeholder": "Search",
     "Date_Range": "Select upload date range",
+    "Start_Date_Placeholder": "Start date",
+    "End_Date_Placeholder": "End date",
     "See_Full_List": "See entire file list",
     "Load_More": "Load more",
     "No_File_Pics": "No file pictures added yet",
@@ -21,9 +24,11 @@
 
     "Download": "Download",
     "Generate_Pdf_Report": "Generate pdf report",
-    "Add_Pictures": "Add pictures",
-    "Update_File": "Update file",
+    "Add_Pictures": "Add files",
+    "Update_File": "Edit file",
     "Delete_File": "Delete file",
+    "Delete": "Delete",
+    "Edit": "Edit",
     "File_Detail": "File Detail",
     "Add_User": "Add User",
     "Update_User": "Update user",
@@ -54,11 +59,15 @@
     "Password_Required": "Password is required",
     "Confirm_Password_Required": "Confirm password is required",
     "Password_NotMatched": "Passwords are not matched",
-    "Delete_Message": "Are you sure, you want to delete",
+    "Delete_User_Prompt": "Are you sure you want to delete this user?",
+    "Delete_Picture_Prompt": "Are you sure you want to delete this picture?",
 
-    "Upload_New_Image": "Upload new images",
-    "Submit": "Submit",
-
+    "Upload_New_Image": "Add files",
+    "Browse_Files": "Browse files",
+    "Submit": "Confirm",
+    "Cancel": "Cancel",
     "Users": "Users",
+    "User": "User",
+    "Admin": "Admin",
     "Add_New": "Add New"
 }
