@@ -111,6 +111,10 @@
 	background-color: #999 !important;
 }
 
+::ng-deep .mat-table-sticky {
+	z-index: 1 !important;
+}
+
 ::ng-deep .mat-sort-header-pointer-left {
 	background-color: #999 !important;
 }

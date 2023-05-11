@@ -11,6 +11,7 @@ import { FuseNavigationModule } from '@fuse/components/navigation';
 import { UserModule } from 'app/layout/common/user/user.module';
 import { SharedModule } from 'app/shared/shared.module';
 import { ClassicLayoutComponent } from 'app/layout/layouts/vertical/classic/classic.component';
+import { SettingsModule } from 'app/layout/common/settings/settings.module';
 
 @NgModule({
     declarations: [
@@ -27,7 +28,8 @@ import { ClassicLayoutComponent } from 'app/layout/layouts/vertical/classic/clas
         FuseLoadingBarModule,
         FuseNavigationModule,
         UserModule,
-        SharedModule
+        SharedModule,
+        SettingsModule
     ],
     exports     : [
         ClassicLayoutComponent
