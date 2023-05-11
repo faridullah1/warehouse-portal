@@ -3,10 +3,14 @@
 	
 	<div class="flex justify-center items-center p-8 content">
 		<div class="panzoom-parent-elem">
-			<img #scene [src]="imageSrc" alt="Panzoom image" class="panzoom-img">
+			<img #scene [src]="getFileImageSrc()" alt="Panzoom image" class="panzoom-img">
 		</div>
 
-		<div class="actions">
+		<div class="actions" *ngIf="!['pdf', 'docx', 'doc', 'xlsx'].includes(this.fileExtension)">
+			<button class="mr-2" mat-icon-button (click)="onReset()">
+				<mat-icon>delete</mat-icon>
+			</button>
+
 			<button class="mr-2" mat-icon-button (click)="onZoom('in')">
 				<mat-icon>zoom_in</mat-icon>
 			</button>

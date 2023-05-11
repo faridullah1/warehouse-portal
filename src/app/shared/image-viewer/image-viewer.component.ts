@@ -5,6 +5,7 @@ import panzoom, { PanZoom } from 'panzoom';
 import { MaterialModule } from 'app/modules/material/material.module';
 import { TranslocoService } from '@ngneat/transloco';
 import { take } from 'rxjs';
+import { CommonModule } from '@angular/common';
 
 
 @Component({
@@ -12,7 +13,7 @@ import { take } from 'rxjs';
   templateUrl: './image-viewer.component.html',
   styleUrls: ['./image-viewer.component.scss'],
   standalone: true,
-  imports: [DialogHeaderComponent, MaterialModule]
+  imports: [DialogHeaderComponent, MaterialModule, CommonModule]
 })
 export class ImageViewerComponent implements AfterViewInit, OnInit {
     @ViewChild('scene') scene: ElementRef<HTMLImageElement>;
@@ -21,6 +22,7 @@ export class ImageViewerComponent implements AfterViewInit, OnInit {
 	currentPanZoom: PanZoom;
     initialImageWidth: number;
     dialogTitle: string;
+    fileExtension: string;
 
     constructor(private dialogRef: MatDialogRef<DialogHeaderComponent>,
                 private translocoService: TranslocoService)
@@ -34,7 +36,12 @@ export class ImageViewerComponent implements AfterViewInit, OnInit {
 
 	ngAfterViewInit(): void {
         this.initialImageWidth = this.scene.nativeElement.width;
-        this.initPanzoom();
+
+		this.fileExtension = this.imageSrc?.split('.').pop();
+
+        if (!['pdf', 'docx', 'doc', 'xlsx'].includes(this.fileExtension)) {
+            this.initPanzoom();
+        }
     }
 
 	initPanzoom(): void {
@@ -82,6 +89,29 @@ export class ImageViewerComponent implements AfterViewInit, OnInit {
 			}
 
 			this.currentPanZoom.smoothZoom(0, 0, 0.5);
+		}
+	}
+
+    onReset(): void {
+        this.currentPanZoom.smoothZoom(0, 0, 1);
+    }
+
+    getFileImageSrc(): string {
+		const fileExtension = this.imageSrc?.split('.').pop();
+
+		switch(fileExtension) {
+			case 'pdf':
+				return '/assets/images/pdf_img.jpg';
+
+			case 'docx':
+			case 'doc':
+				return '/assets/images/word_img.png';
+
+			case 'xlsx':
+				return '/assets/images/excel_img.png';
+
+			default:
+				return this.imageSrc;
 		}
 	}
 }
