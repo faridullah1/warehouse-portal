@@ -3,6 +3,8 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { merge } from 'lodash-es';
 import { FuseConfirmationDialogComponent } from '@fuse/services/confirmation/dialog/dialog.component';
 import { FuseConfirmationConfig } from '@fuse/services/confirmation/confirmation.types';
+import { TranslocoService } from '@ngneat/transloco';
+import { take } from 'rxjs';
 
 @Injectable()
 export class FuseConfirmationService
@@ -32,10 +34,18 @@ export class FuseConfirmationService
     /**
      * Constructor
      */
-    constructor(
-        private _matDialog: MatDialog
-    )
+    constructor(private _matDialog: MatDialog,
+                private translocoService: TranslocoService)
     {
+        this.translocoService.langChanges$.subscribe(() => {
+			this.translocoService.selectTranslate('Submit').pipe(take(1)).subscribe((translation: string) => {
+                this._defaultConfig.actions.confirm.label = translation;
+            });
+
+            this.translocoService.selectTranslate('Cancel').pipe(take(1)).subscribe((translation: string) => {
+                this._defaultConfig.actions.cancel.label = translation;
+            });
+        });
     }
 
     // -----------------------------------------------------------------------------------------------------
