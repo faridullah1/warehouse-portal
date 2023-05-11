@@ -18,7 +18,6 @@ import { CreateFileComponent } from '../create-file/create-file.component';
 import { TranslocoService } from '@ngneat/transloco';
 import { UpdateFileComponent } from './../update-file/update-file.component';
 
-
 export const MY_FORMATS = {
 	parse: {
 	  	dateInput: 'L',
@@ -58,7 +57,9 @@ export class FileListComponent implements OnInit {
 	limit = 10;
 	total = 0;
 
-	activeLang: string;
+	searchPlaceholder: string;
+	startDatePlaceholder: string;
+	endDatePlaceholder: string;
 
     constructor(private apiService: ApiService,
 				private toaster: ToastrService,
@@ -84,10 +85,18 @@ export class FileListComponent implements OnInit {
 
     ngOnInit(): void {
 		// Subscribe to language changes
-		this.translocoService.langChanges$.subscribe((activeLang) => {
+		this.translocoService.langChanges$.subscribe(() => {
+			this.translocoService.selectTranslate('File_Search_Placeholder').pipe(take(1)).subscribe((translation: string) => {
+				this.searchPlaceholder = translation;
+			});
 
-            // Get the active lang
-            this.activeLang = activeLang;
+			this.translocoService.selectTranslate('Start_Date_Placeholder').pipe(take(1)).subscribe((translation: string) => {
+				this.startDatePlaceholder = translation;
+			});
+
+			this.translocoService.selectTranslate('End_Date_Placeholder').pipe(take(1)).subscribe((translation: string) => {
+				this.endDatePlaceholder = translation;
+			});
         });
 
 		this.getAllFiles();
@@ -349,6 +358,25 @@ export class FileListComponent implements OnInit {
 				this.getAllFiles();
 			}
 		});
+	}
+
+	getFileImage(picture: string): string {
+		const fileExtension = picture?.split('.').pop();
+
+		switch(fileExtension) {
+			case 'pdf':
+				return '/assets/images/pdf_img.jpg';
+
+			case 'docx':
+			case 'doc':
+				return '/assets/images/word_img.png';
+
+			case 'xlsx':
+				return '/assets/images/excel_img.png';
+
+			default:
+				return picture;
+		}
 	}
 
 	private getSlug(): string {

@@ -16,7 +16,9 @@
                 <mat-card-subtitle>{{ pic.createdAt | date:'dd/MM/YYYY HH:mm' }}</mat-card-subtitle>
             </mat-card-header>
             
-            <img class="file-image cursor-pointer" [src]="pic.url" alt="File Picture" (click)="onImageViewer(pic)">
+            <img class="file-image cursor-pointer" 
+                [class.object-contained]="['pdf', 'docx', 'doc', 'xlsx'].includes(getFileExtension(pic.url))" 
+                [src]="getFileImageSrc(pic.url)" alt="File Picture" (click)="onImageViewer(pic)">
 
             <div class="flex mt-2">
                 <div class="bold">
@@ -24,23 +26,23 @@
                         {{t('Reference')}}:&nbsp;
                     </ng-container>
                 </div>
-                <a class="link" (click)="onViewFile(pic.file)">{{pic.file.reference}}</a>
+                <a class="link" (click)="onViewFile($event, pic.file)">{{pic.file.reference}}</a>
             </div>
 
-            <div class="flex">
+            <div class="flex" *ngIf="pic.file.containerNumber">
                 <div class="bold">
                     <ng-container *transloco="let t">
                         {{t('Container_Number')}}:&nbsp;
                     </ng-container>
                 </div>
-                <div>{{pic.file.containerNumber ? pic.file.containerNumber : 'NA'}}</div>
+                <div>{{pic.file.containerNumber}}</div>
             </div>
 
             <div class="flex">
                 <div class="bold"><ng-container *transloco="let t">
                     {{t('Uploaded_By')}}:&nbsp;
                 </ng-container></div>
-                <div>{{pic.file.user.name   }}</div>
+                <div>{{ pic.file?.user?.name }}</div>
             </div>
 
             <mat-card-actions>
@@ -60,13 +62,13 @@
     <ng-template #listView>
         <div class="flex flex-wrap items-stretch w-full">
             <ul class="list-view">
-                <li class="justify-between" *ngFor="let pic of filePictures">
+                <li class="justify-between cursor-pointer" (click)="onImageViewer(pic)" *ngFor="let pic of filePictures">
                     <img class="file-image-list" [src]="pic.url" alt="File Image">
                                         
-                    <div>{{ pic.file.reference }}</div>
-                    <div>{{ pic.file.containerNumber }}</div>
-                    <div>{{ pic.file.user.name }}</div>
-                    <div>{{ pic.createdAt | date: 'dd MMM YYYY HH:mm' }}</div>
+                    <div class="list-item link" (click)="onViewFile($event, pic.file)">{{ pic.file.reference }}</div>
+                    <div class="list-item">{{ pic.file.containerNumber }}</div>
+                    <div class="list-item">{{ pic.file.user.name }}</div>
+                    <div class="list-item">{{ pic.createdAt | date: 'dd MMM YYYY HH:mm' }}</div>
 
                     <div class="flex justify-end">
                         <a [href]="pic.url" download>

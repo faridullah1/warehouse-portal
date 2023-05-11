@@ -2,7 +2,7 @@
     flex: 1 0 100%;
 
     .file-date {
-        font-size: 0.8rem;
+        font-size: 0.7rem;
         font-weight: 400;
     }
 
@@ -17,8 +17,8 @@
     }
 
     .filter-list {
-        flex: 1 0 31.5%;
-        min-width: 31.5%;
+        flex: 1 0 32.4%;
+        min-width: 32.4%;
         margin-bottom: 1rem;
     
         &:not(:nth-child(3n)) {
@@ -27,11 +27,7 @@
     }
     
     .file-image {
-        margin-bottom: 1rem;
-
-        &:not(:nth-child(4n)) {
-            margin-right: 1rem;
-        }
+        margin: 0 1rem 1rem 0;
     }
     
     .primary {

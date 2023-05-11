@@ -6,8 +6,17 @@ import { ApiService } from 'app/api.service';
 import { GenericApiResponse } from '../../../../models';
 import Validation from 'app/shared/validators';
 import { TranslocoService } from '@ngneat/transloco';
-import { take } from 'rxjs';
+import { combineLatest, take } from 'rxjs';
 
+interface Lang {
+	name: string;
+	title: string;
+}
+
+interface UserType {
+	name: string;
+	title: string;
+}
 
 @Component({
   selector: 'user-form',
@@ -18,8 +27,8 @@ export class UserFormComponent implements OnInit {
 	id: string;
 	theForm: FormGroup;
 	disableSaveBtn = false;
-	userTypes = ['Admin', 'User'];
-	languages = ['en', 'nl'];
+	userTypes: UserType[] = [];
+	languages: Lang[];
 	title: string;
 	submitBtnText: string;
 
@@ -34,11 +43,16 @@ export class UserFormComponent implements OnInit {
 			username: [null, [Validators.required]],
 			email: [null, [Validators.required, Validators.email]],
 			type: ['User', [Validators.required]],
-			language: ['en', [Validators.required]],
+			language: ['nl', [Validators.required]],
 			password: [null, [Validators.required]],
 			confirmPassword: [null, [Validators.required]],
 			departmentId: [1]
 		}, { validators: [Validation.match('password', 'confirmPassword')]});
+
+		this.languages = [
+			{ name: 'en', title: 'English' },
+			{ name: 'nl', title: 'Nederlands' }
+		];
 	}
 
 	ngOnInit(): void {
@@ -52,6 +66,14 @@ export class UserFormComponent implements OnInit {
 	}
 
 	updateLanguage(): void {
+		combineLatest([this.translocoService.selectTranslate('User'), this.translocoService.selectTranslate('Admin')])
+		.subscribe((res) => {
+			this.userTypes = [
+				{ name: 'User', title: res[0] },
+				{ name: 'Admin', title: res[1] }
+			];
+		});
+
 		if (this.id) {
 			this.translocoService.selectTranslate('Update_User').pipe(take(1)).subscribe((translation: string) => {
 				this.title = translation;

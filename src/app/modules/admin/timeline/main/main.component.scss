@@ -1,6 +1,6 @@
 .file-image-card {
-    width: 30%;
-    min-width: 30%;
+    width: 31.9%;
+    min-width: 31.9%;
     margin: 0 1rem 1rem 0;
 
     @media screen and (max-width: 960px) {
@@ -18,6 +18,10 @@
         object-fit: cover;
     }
 
+    .object-contained {
+        object-fit: contain !important;
+    }
+
     .download-icon {
         margin-right: .5rem;
     }
@@ -25,17 +29,17 @@
     .bold {
         font-weight: 600;
     }
-
-    .link {
-        text-decoration: underline;
-        cursor: pointer;
-    }
 }
 
 .selected-view {
     mat-icon {
         color: var(--fuse-primary);
     }
+}
+
+.link {
+    text-decoration: underline;
+    cursor: pointer;
 }
 
 .list-view {
@@ -54,7 +58,7 @@
         }
     }
 
-    .item {
-        width: 32%;
+    .list-item {
+        width: 20%;
     }
 }

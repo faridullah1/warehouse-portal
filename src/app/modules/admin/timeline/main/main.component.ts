@@ -111,7 +111,9 @@ export class TimelineComponent implements OnInit {
 		});
 	}
 
-	onViewFile(file: KolliAppFile): void {
+	onViewFile(event: MouseEvent, file: KolliAppFile): void {
+		event.stopPropagation();
+
 		const dialog = this.dialog.open(FileDetailComponent, {
 			width: '40vw',
 			height: '80vh',
@@ -126,5 +128,28 @@ export class TimelineComponent implements OnInit {
 				this.getAllFileImages();
 			}
 		});
+	}
+
+	getFileExtension(image: string): string {
+		return image?.split('.').pop();
+	}
+
+	getFileImageSrc(image: string): string {
+		const fileExtension = image?.split('.').pop();
+
+		switch(fileExtension) {
+			case 'pdf':
+				return '/assets/images/pdf_img.jpg';
+
+			case 'docx':
+			case 'doc':
+				return '/assets/images/word_img.png';
+
+			case 'xlsx':
+				return '/assets/images/excel_img.png';
+
+			default:
+				return image;
+		}
 	}
 }

@@ -21,7 +21,9 @@
         </mat-chip-list>
     
         <button class="mb-3" mat-raised-button color="primary" (click)="onUploadFile()">
-            {{ files.length > 0 ? 'Add New Images' : 'Browse Images' }}
+            <ng-container *transloco="let t">
+                {{t('Browse_Files')}}
+            </ng-container>
         </button>
     
         <input hidden type="file" [accept]="allowedFileTypes" [multiple]="true" #uploadFilesField (change)="onFileChange()">

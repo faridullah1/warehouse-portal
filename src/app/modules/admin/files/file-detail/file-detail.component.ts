@@ -63,22 +63,47 @@ export class FileDetailComponent implements OnInit {
 	}
 
 	onDeleteImage(pic: FilePicture): void {
-		const dialog = this.confirmationService.open({
-			title: 'Delete picture',
-			message: 'Are you sure, you want to delete picture?'
-		});
+		this.translocoService.selectTranslate('Delete_Picture_Prompt').pipe(take(1)).subscribe((translation: string) => {
+			const dialog = this.confirmationService.open({
+				title: translation,
+				message: ''
+			});
 
-		dialog.afterClosed().subscribe((action: 'confirmed' | 'cancelled') => {
-			if (action === 'confirmed') {
-				this.apiService.delete(`fileImages/${pic.fileImageId}`).subscribe({
-					next: () => {
-						const id = this.file.file_images.indexOf(pic);
-						this.file.file_images.splice(id, 1);
-						this.imagesDeleted = true;
-					},
-					error: (error: any) => this.toaster.error(error)
-				});
-			}
+			dialog.afterClosed().subscribe((action: 'confirmed' | 'cancelled') => {
+				if (action === 'confirmed') {
+					this.apiService.delete(`fileImages/${pic.fileImageId}`).subscribe({
+						next: () => {
+							const id = this.file.file_images.indexOf(pic);
+							this.file.file_images.splice(id, 1);
+							this.imagesDeleted = true;
+						},
+						error: (error: any) => this.toaster.error(error)
+					});
+				}
+			});
 		});
+	}
+
+	getFileImage(picture: string): string {
+		const fileExtension = picture?.split('.').pop();
+
+		switch(fileExtension) {
+			case 'pdf':
+				return '/assets/images/pdf_img.jpg';
+
+			case 'docx':
+			case 'doc':
+				return '/assets/images/word_img.png';
+
+			case 'xlsx':
+				return '/assets/images/excel_img.png';
+
+			default:
+				return picture;
+		}
+	}
+
+	getFileExtension(image: string): string {
+		return image?.split('.').pop();
 	}
 }

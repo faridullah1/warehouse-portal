@@ -8,7 +8,7 @@
                         {{t('Search')}}
                     </ng-container>
                 </mat-label>
-                <input type="text" matInput placeholder="Search" formControlName="reference">
+                <input type="text" matInput [placeholder]="searchPlaceholder" formControlName="reference">
             </mat-form-field>
             
             <mat-form-field class="date-range-field" appearance="fill">
@@ -18,8 +18,8 @@
                     </ng-container>
                 </mat-label>
                 <mat-date-range-input [rangePicker]="picker" formGroupName="range">
-                    <input matStartDate formControlName="start" placeholder="Start date">
-                    <input matEndDate formControlName="end" placeholder="End date">
+                    <input matStartDate formControlName="start" [placeholder]="startDatePlaceholder">
+                    <input matEndDate formControlName="end" [placeholder]="endDatePlaceholder">
                 </mat-date-range-input>
     
                 <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
@@ -86,11 +86,15 @@
                     <div>{{ file.containerNumber }}</div>
                 </div>
 
-                <div class="flex mb-2">
-                    <ng-container *transloco="let t">
-                        <div class="bold">{{t('Uploaded_By')}}: &nbsp;</div>
-                    </ng-container>
-                    <div>{{ file.user.name }}</div>
+                <div class="flex items-center mb-2">
+                    <div class="flex mr-2">
+                        <ng-container *transloco="let t">
+                            <div class="bold">{{t('Uploaded_By')}}: &nbsp;</div>
+                        </ng-container>
+                        <div>{{ file.user.name }}</div>
+                    </div>
+
+                    <div class="file-date">({{ file.createdAt | date: 'dd/MM/YYYY HH:mm' }})</div>
                 </div>
         
                 <div class="flex items-center" *ngIf="file.noOfDamagedGoods > 0">
@@ -99,13 +103,11 @@
                         <div>{{t('Contains_Damage')}}</div>
                     </ng-container>
                 </div>
-
-                <div class="file-date">{{ file.createdAt | date: 'dd/MM/YYYY HH:mm' }}</div>
         
                 <div class="flex flex-wrap mt-6">
                     <img *ngFor="let picture of file.pictures | firstEight:file.maxImagesToShow"
                         class="w-14 h-14 rounded object-cover file-image"
-                        [src]="picture"
+                        [src]="getFileImage(picture)"
                         alt="File Image">
                 </div>
         
@@ -127,11 +129,11 @@
         <!-- File List View -->
         <ng-template #listView>
             <ul class="list-view">
-                <li *ngFor="let file of files">
+                <li class="cursor-pointer" (click)="onViewFileDetail(file)" *ngFor="let file of files">
                     <img class="file-image-list" [src]="file.file_images[0]?.url" alt="File Image">
 
                     <div class="item">{{ file.reference }}</div>
-                    <div class="item">{{ file.containerNumber ? file.containerNumber : 'NA' }}</div>
+                    <div class="item">{{ file.containerNumber || 'NA' }}</div>
                     <div class="item">
                         <span *ngIf="file.noOfDamagedGoods > 0; else noDamageGoods">
                             Contains {{file.noOfDamagedGoods}} damage goods

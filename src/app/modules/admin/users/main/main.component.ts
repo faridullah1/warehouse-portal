@@ -34,8 +34,8 @@ export class UsersComponent implements OnInit, OnDestroy {
 			searchColumnTranslationKey: 'Name',
 
 			rowActions: [
-				{ name: 'edit', title: 'Edit', action: 'OnEdit' },
-				{ name: 'delete', title: 'Delete', action: 'OnDelete', condition: this.showDeleteButton },
+				{ name: 'edit', title: 'Edit', translationKey: 'Edit', action: 'OnEdit' },
+				{ name: 'delete', title: 'Delete', translationKey: 'Delete', action: 'OnDelete', class: 'delete-fg', condition: this.showDeleteButton },
 			],
 
 			columns: [

@@ -51,7 +51,7 @@
 				</ng-container>
 			</mat-label>
 			<mat-select formControlName="type">
-				<mat-option *ngFor="let type of userTypes" [value]="type">{{ type }}</mat-option>
+				<mat-option *ngFor="let type of userTypes" [value]="type.name">{{ type.title }}</mat-option>
 			</mat-select>
 			<mat-error *ngIf="theForm.controls['type'].errors">
 				<div *ngIf="theForm.controls['type'].hasError('required')">
@@ -69,7 +69,7 @@
 				</ng-container>
 			</mat-label>
 			<mat-select formControlName="language">
-				<mat-option *ngFor="let lang of languages" [value]="lang">{{ lang }}</mat-option>
+				<mat-option *ngFor="let lang of languages" [value]="lang.name">{{ lang.title }}</mat-option>
 			</mat-select>
 			<mat-error *ngIf="theForm.controls['language'].errors">
 				<div *ngIf="theForm.controls['language'].hasError('required')">
