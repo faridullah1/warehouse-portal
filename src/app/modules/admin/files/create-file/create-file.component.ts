@@ -13,7 +13,7 @@ import { ApiService } from 'app/api.service';
 export class CreateFileComponent {
 	@ViewChild('uploadFilesField') uploadFilesField: ElementRef<HTMLInputElement>;
 
-	allowedFileTypes = ['.jpg', '.jpeg', '.png'];
+	allowedFileTypes = ['.jpg', '.jpeg', '.png', '.pdf', '.docx', '.doc'];
 	files: File[] = [];
 	theForm: FormGroup;
 	disableCreateBtn = false;
