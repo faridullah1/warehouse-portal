@@ -42,7 +42,7 @@
                 <div class="bold"><ng-container *transloco="let t">
                     {{t('Uploaded_By')}}:&nbsp;
                 </ng-container></div>
-                <div>{{ pic.file?.user?.name }}</div>
+                <div>{{ pic?.user?.name }}</div>
             </div>
 
             <mat-card-actions>
@@ -66,8 +66,8 @@
                     <img class="file-image-list" [src]="pic.url" alt="File Image">
                                         
                     <div class="list-item link" (click)="onViewFile($event, pic.file)">{{ pic.file.reference }}</div>
-                    <div class="list-item">{{ pic.file.containerNumber }}</div>
-                    <div class="list-item">{{ pic.file.user.name }}</div>
+                    <div class="list-item">{{ pic.file.containerNumber || 'NA' }}</div>
+                    <div class="list-item">{{ pic.user.name }}</div>
                     <div class="list-item">{{ pic.createdAt | date: 'dd MMM YYYY HH:mm' }}</div>
 
                     <div class="flex justify-end">

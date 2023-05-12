@@ -39,4 +39,5 @@ export interface FilePicture {
 	url: string;
 	createdAt: string;
 	file: KolliAppFile;
+	user: User;
 }
