@@ -4,7 +4,7 @@ import { Layout } from 'app/layout/layout.types';
 export type Scheme = 'auto' | 'dark' | 'light';
 export type Screens = { [key: string]: string };
 export type Theme = 'theme-default' | string;
-export type Themes = { id: string; name: string }[];
+export type Themes = { id: string; name: string; translationKey: string }[];
 
 /**
  * AppConfig interface. Update this interface to strictly type your config
@@ -45,27 +45,33 @@ export const appConfig: AppConfig = {
     themes : [
         {
             id  : 'theme-default',
-            name: 'Default'
+            name: 'Default',
+            translationKey: 'Theme_Default',
         },
         {
             id  : 'theme-brand',
-            name: 'Brand'
+            name: 'Brand',
+            translationKey: 'Theme_Brand',
         },
         {
             id  : 'theme-teal',
-            name: 'Teal'
+            name: 'Teal',
+            translationKey: 'Theme_Teal',
         },
         {
             id  : 'theme-rose',
-            name: 'Rose'
+            name: 'Rose',
+            translationKey: 'Theme_Rose',
         },
         {
             id  : 'theme-purple',
-            name: 'Purple'
+            name: 'Purple',
+            translationKey: 'Theme_Purple',
         },
         {
             id  : 'theme-amber',
-            name: 'Amber'
+            name: 'Amber',
+            translationKey: 'Theme_Amber',
         }
     ]
 };

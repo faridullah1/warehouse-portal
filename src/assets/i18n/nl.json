@@ -70,5 +70,22 @@
     "Users": "Gebruikers",
     "User": "Gebruiker",
     "Admin": "Administrator",
-    "Add_New": "Nieuwe toevoegen"
+    "Add_New": "Nieuwe toevoegen",
+
+    "Settings": "Instellingen",
+    "Theme": "THEMA",
+    "Theme_Default": "Standaard",
+    "Theme_Brand": "Brand",
+    "Theme_Teal": "Teal",
+    "Theme_Rose": "Rose",
+    "Theme_Purple": "Purple",
+    "Theme_Amber": "Amber",
+    "Scheme": "SCHEME",
+    "Scheme_Auto": "Auto",
+    "Scheme_Dark": "Dark",
+    "Scheme_Light": "Light",
+    "Layout": "LAYOUT",
+    "Layout_Classic": "Classic",
+    "Layout_Classy": "Classy",
+    "Layout_Material": "Material"
 }

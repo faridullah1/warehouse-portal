@@ -24,7 +24,11 @@
                 class="icon-size-7 text-current"
                 [svgIcon]="'heroicons_solid:cog'">
 			</mat-icon>
-            <div class="ml-3 text-2xl font-semibold tracking-tight">Settings</div>
+            <div class="ml-3 text-2xl font-semibold tracking-tight">
+                <ng-container *transloco="let t">
+                    {{t('Settings')}}
+                </ng-container>
+            </div>
             <button
                 class="ml-auto"
                 mat-icon-button
@@ -38,7 +42,11 @@
         <div class="flex flex-col p-6">
 
             <!-- Theme -->
-            <div class="text-md font-semibold text-secondary">THEME</div>
+            <div class="text-md font-semibold text-secondary">
+                <ng-container *transloco="let t">
+                    {{t('Theme')}}
+                </ng-container>
+            </div>
             <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mt-6">
                 <ng-container *ngFor="let theme of config.themes">
                     <div
@@ -52,7 +60,9 @@
                         <div
                             class="ml-2.5 font-medium leading-5 truncate"
                             [class.text-secondary]="config.theme !== theme.id">
-                            {{theme.name}}
+                            <ng-container *transloco="let t">
+                                {{t(theme.translationKey)}}
+                            </ng-container>
                         </div>
                     </div>
                 </ng-container>
@@ -61,7 +71,11 @@
             <hr class="my-8">
 
             <!-- Scheme -->
-            <div class="text-md font-semibold text-secondary">SCHEME</div>
+            <div class="text-md font-semibold text-secondary">
+                <ng-container *transloco="let t">
+                    {{t('Scheme')}}
+                </ng-container>
+            </div>
             <div class="grid grid-cols-3 gap-3 justify-items-start mt-6">
                 <!-- Auto -->
                 <div
@@ -77,7 +91,9 @@
                     <div
                         class="flex items-center ml-2 font-medium leading-5"
                         [class.text-secondary]="config.scheme !== 'auto'">
-                        Auto
+                        <ng-container *transloco="let t">
+                            {{t('Scheme_Auto')}}
+                        </ng-container>
                     </div>
                 </div>
                 <!-- Dark -->
@@ -93,7 +109,9 @@
                     <div
                         class="flex items-center ml-2 font-medium leading-5"
                         [class.text-secondary]="config.scheme !== 'dark'">
-                        Dark
+                        <ng-container *transloco="let t">
+                            {{t('Scheme_Dark')}}
+                        </ng-container>
                     </div>
                 </div>
                 <!-- Light -->
@@ -109,7 +127,9 @@
                     <div
                         class="flex items-center ml-2 font-medium leading-5"
                         [class.text-secondary]="config.scheme !== 'light'">
-                        Light
+                        <ng-container *transloco="let t">
+                            {{t('Scheme_Light')}}
+                        </ng-container>
                     </div>
                 </div>
             </div>
@@ -117,7 +137,11 @@
             <hr class="my-8">
 
             <!-- Layout -->
-            <div class="text-md font-semibold text-secondary">LAYOUT</div>
+            <div class="text-md font-semibold text-secondary">
+                <ng-container *transloco="let t">
+                    {{t('Layout')}}
+                </ng-container>
+            </div>
             <div class="grid grid-cols-3 gap-3 mt-6">
 				<!-- Classic -->
                 <div
@@ -149,7 +173,9 @@
                     <div
                         class="mt-2 text-md font-medium text-center text-secondary"
                         [class.text-primary]="config.layout === 'classic'">
-                        Classic
+                        <ng-container *transloco="let t">
+                            {{t('Layout_Classic')}}
+                        </ng-container>
                     </div>
                 </div>
 
@@ -186,7 +212,9 @@
 				 <div
 					 class="mt-2 text-md font-medium text-center text-secondary"
 					 [class.text-primary]="config.layout === 'classy'">
-					 Classy
+					 <ng-container *transloco="let t">
+                        {{t('Layout_Classy')}}
+                    </ng-container>
 				 </div>
 			 </div>
 
@@ -220,7 +248,9 @@
                     <div
                         class="mt-2 text-md font-medium text-center text-secondary"
                         [class.text-primary]="config.layout === 'material'">
-                        Material
+                        <ng-container *transloco="let t">
+                            {{t('Layout_Material')}}
+                        </ng-container>
                     </div>
                 </div>
             </div>

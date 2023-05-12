@@ -1,3 +1,4 @@
+import { TranslocoModule } from '@ngneat/transloco';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -17,7 +18,8 @@ import { MatButtonModule } from '@angular/material/button';
         MatIconModule,
         MatTooltipModule,
         FuseDrawerModule,
-        MatButtonModule
+        MatButtonModule,
+        TranslocoModule
     ],
     exports     : [
         SettingsComponent
