@@ -45,9 +45,18 @@
                 <img [class.object-contained]="['pdf', 'docx', 'doc', 'xlsx'].includes(getFileExtension(image.url))"  
                     [src]="getFileImage(image.url)" alt="File Image" class="file-image cursor-pointer" 
                     (click)="onViewImage(image)">
-                <button mat-icon-button color="warn" class="btn-remove" (click)="onDeleteImage(image)">
-                    <mat-icon>delete</mat-icon>
-                </button>
+                
+                <div class="actions">
+                    <button mat-icon-button color="warn" class="btn-remove" (click)="onDeleteImage(image)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+
+                    <button mat-icon-button color="primary" class="btn-download">
+                        <a class="flex items-center" [href]="image.url" download>
+                            <mat-icon>download</mat-icon>
+                        </a>
+                    </button>
+                </div>
            </div>
         </div>
 	</div>
