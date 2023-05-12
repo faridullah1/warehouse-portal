@@ -8,58 +8,29 @@ import { FileSaverService } from 'ngx-filesaver';
 import { jsPDF } from 'jspdf';
 import moment from 'moment';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
-import { FormGroup, FormControl } from '@angular/forms';
 import { FileDetailComponent } from './../file-detail/file-detail.component';
-import { debounceTime, distinctUntilChanged, take } from 'rxjs';
-import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
-import { DateAdapter, MAT_DATE_LOCALE, MAT_DATE_FORMATS } from '@angular/material/core';
+import { take } from 'rxjs';
 import { UploadPicturesToExistingFileComponent } from '../upload-new-pictures/upload-pictures.component';
-import { CreateFileComponent } from '../create-file/create-file.component';
 import { TranslocoService } from '@ngneat/transloco';
 import { UpdateFileComponent } from './../update-file/update-file.component';
-
-export const MY_FORMATS = {
-	parse: {
-	  	dateInput: 'L',
-	},
-	display: {
-		dateInput: 'L',
-		monthYearLabel: 'MM YYYY',
-		dateA11yLabel: 'L',
-		monthYearA11yLabel: 'MM YYYY',
-	}
-};
 
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
-  styleUrls: ['./main.component.scss'],
-  providers: [
-    {
-      provide: DateAdapter,
-      useClass: MomentDateAdapter,
-      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
-    },
-
-    {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS},
-  ],
+  styleUrls: ['./main.component.scss']
 })
 export class FileListComponent implements OnInit {
 	@ViewChild('scrollElem') scrollElem: ElementRef<HTMLElement>;
 
 	files: KolliAppFile[] = [];
-	filters: FormGroup;
 	viewType: 'list' | 'grid' = 'grid';
 	loadingPage = false;
 	disableLoadMoreBtn = false;
+	filters: any = {};
 
 	page = 1;
 	limit = 10;
 	total = 0;
-
-	searchPlaceholder: string;
-	startDatePlaceholder: string;
-	endDatePlaceholder: string;
 
     constructor(private apiService: ApiService,
 				private toaster: ToastrService,
@@ -67,38 +38,9 @@ export class FileListComponent implements OnInit {
 				private matDialog: MatDialog,
 				private fileSaverService: FileSaverService,
 				private translocoService: TranslocoService)
-	{
-		this.filters = new FormGroup({
-			reference: new FormControl(''),
-			isDamaged: new FormControl(false),
-			range: new FormGroup({
-				start: new FormControl<Date | null>(null),
-				end: new FormControl<Date | null>(null),
-			})
-		});
-
-		this.filters.valueChanges.pipe(debounceTime(500), distinctUntilChanged()).subscribe((form: any) => {
-			this.page = 1;
-			this.getAllFiles();
-		});
-	}
+	{ }
 
     ngOnInit(): void {
-		// Subscribe to language changes
-		this.translocoService.langChanges$.subscribe(() => {
-			this.translocoService.selectTranslate('File_Search_Placeholder').pipe(take(1)).subscribe((translation: string) => {
-				this.searchPlaceholder = translation;
-			});
-
-			this.translocoService.selectTranslate('Start_Date_Placeholder').pipe(take(1)).subscribe((translation: string) => {
-				this.startDatePlaceholder = translation;
-			});
-
-			this.translocoService.selectTranslate('End_Date_Placeholder').pipe(take(1)).subscribe((translation: string) => {
-				this.endDatePlaceholder = translation;
-			});
-        });
-
 		this.getAllFiles();
     }
 
@@ -145,6 +87,21 @@ export class FileListComponent implements OnInit {
 				this.disableLoadMoreBtn = false;
 			}
 		});
+	}
+
+	onFilterEvent(ev: any): void {
+		switch(ev.type) {
+			case 'FilterChange':
+				console.log('Filter change =', ev.data);
+				this.filters = ev.data;
+				this.page = 1;
+				this.getAllFiles();
+				break;
+
+			case 'LoadFiles':
+				this.getAllFiles();
+				break;
+		}
 	}
 
 	onViewFileDetail(file: KolliAppFile): void {
@@ -311,10 +268,6 @@ export class FileListComponent implements OnInit {
 		});
 	}
 
-	onReset(): void {
-		this.filters.reset();
-	}
-
 	onViewChange(view: 'list' | 'grid'): void {
 		this.viewType = view;
 	}
@@ -324,26 +277,9 @@ export class FileListComponent implements OnInit {
 		this.getAllFiles(true);
 	}
 
-	onApplyFilters(): void {
-		this.page = 1;
-		this.getAllFiles();
-	}
-
 	onSeeEntireList(event: MouseEvent, file: KolliAppFile): void {
 		event.stopPropagation();
 		file.maxImagesToShow = file.pictures.length;
-	}
-
-	onCreateFile(): void {
-		const dialog = this.matDialog.open(CreateFileComponent, {
-			width: '25vw'
-		});
-
-		dialog.afterClosed().subscribe((resp) => {
-			if (resp) {
-				this.getAllFiles();
-			}
-		});
 	}
 
 	onUpdateFile(file: KolliAppFile): void {
@@ -380,14 +316,12 @@ export class FileListComponent implements OnInit {
 	}
 
 	private getSlug(): string {
-		const filters = this.filters.value;
-
 		let slug = `files?page=${this.page}&limit=${this.limit}`;
 
-		for (const key of Object.keys(filters))
+		for (const key of Object.keys(this.filters))
 		{
 			if (key === 'range') {
-				const { start, end } = filters[key];
+				const { start, end } = this.filters[key];
 
 				if (start && end) {
 					const startOfDay = moment(start.valueOf()).startOf('day');
@@ -406,8 +340,8 @@ export class FileListComponent implements OnInit {
 				continue;
 			}
 
-			if (filters[key]) {
-				slug += `&${key}=${filters[key]}`;
+			if (this.filters[key]) {
+				slug += `&${key}=${this.filters[key]}`;
 			}
 		}
 

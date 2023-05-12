@@ -1,85 +1,89 @@
-<div class="p-8 flex flex-col items-start w-full" [class.justify-center]="filePictures.length === 0" *ngIf="!loadingPage">
-    <fuse-card class="mb-3 p-2 w-full" *ngIf="filePictures.length > 0">
-        <button mat-icon-button [class.selected-view]="viewType === 'grid'" (click)="onViewChange('grid')">
-            <mat-icon>grid_view</mat-icon>
-        </button>
+<div class="p-8 flex flex-col items-start w-full">
+    <app-search-filter class="w-full" (signal)="onFilterEvent($event)"></app-search-filter>
 
-        <button mat-icon-button [class.selected-view]="viewType === 'list'" (click)="onViewChange('list')">
-            <mat-icon>view_list</mat-icon>
-        </button>
-    </fuse-card>
-
-    <!-- Grid View-->
-    <div class="flex flex-wrap items-stretch w-full" *ngIf="viewType === 'grid'; else listView">
-        <mat-card class="file-image-card" *ngFor="let pic of filePictures">
-            <mat-card-header>
-                <mat-card-subtitle>{{ pic.createdAt | date:'dd/MM/YYYY HH:mm' }}</mat-card-subtitle>
-            </mat-card-header>
-            
-            <img class="file-image cursor-pointer" 
-                [class.object-contained]="['pdf', 'docx', 'doc', 'xlsx'].includes(getFileExtension(pic.url))" 
-                [src]="getFileImageSrc(pic.url)" alt="File Picture" (click)="onImageViewer(pic)">
-
-            <div class="flex mt-2">
-                <div class="bold">
-                    <ng-container *transloco="let t">
-                        {{t('Reference')}}:&nbsp;
-                    </ng-container>
-                </div>
-                <a class="link" (click)="onViewFile($event, pic.file)">{{pic.file.reference}}</a>
-            </div>
-
-            <div class="flex" *ngIf="pic.file.containerNumber">
-                <div class="bold">
-                    <ng-container *transloco="let t">
-                        {{t('Container_Number')}}:&nbsp;
-                    </ng-container>
-                </div>
-                <div>{{pic.file.containerNumber}}</div>
-            </div>
-
-            <div class="flex">
-                <div class="bold"><ng-container *transloco="let t">
-                    {{t('Uploaded_By')}}:&nbsp;
-                </ng-container></div>
-                <div>{{ pic?.user?.name }}</div>
-            </div>
-
-            <mat-card-actions>
-                <button mat-button>
-                    <a class="flex items-center" [href]="pic.url" download>
-                        <mat-icon class="mr-2">download</mat-icon>
-                        <div *transloco="let t" class="uppercase">
-                            {{t('Download')}}
-                        </div>
-                    </a>
-                </button>
-            </mat-card-actions>
-        </mat-card>
-    </div>
-
-    <!-- Grid View-->
-    <ng-template #listView>
-        <div class="flex flex-wrap items-stretch w-full">
-            <ul class="list-view">
-                <li class="justify-between cursor-pointer" (click)="onImageViewer(pic)" *ngFor="let pic of filePictures">
-                    <img class="file-image-list" [src]="pic.url" alt="File Image">
-                                        
-                    <div class="list-item link" (click)="onViewFile($event, pic.file)">{{ pic.file.reference }}</div>
-                    <div class="list-item">{{ pic.file.containerNumber || 'NA' }}</div>
-                    <div class="list-item">{{ pic.user.name }}</div>
-                    <div class="list-item">{{ pic.createdAt | date: 'dd MMM YYYY HH:mm' }}</div>
-
-                    <div class="flex justify-end">
-                        <a [href]="pic.url" download>
-                            <mat-icon class="mr-2">download</mat-icon>
-                        </a>
-                        <mat-icon class="delete-fg cursor-pointer" (click)="onDeleteFileImage(pic)">delete</mat-icon>
+    <div class="flex flex-col w-full" *ngIf="!loadingPage">
+        <fuse-card class="mb-3 p-2 w-full" *ngIf="filePictures.length > 0">
+            <button mat-icon-button [class.selected-view]="viewType === 'grid'" (click)="onViewChange('grid')">
+                <mat-icon>grid_view</mat-icon>
+            </button>
+    
+            <button mat-icon-button [class.selected-view]="viewType === 'list'" (click)="onViewChange('list')">
+                <mat-icon>view_list</mat-icon>
+            </button>
+        </fuse-card>
+    
+        <!-- Grid View-->
+        <div class="flex flex-wrap items-stretch w-full" *ngIf="viewType === 'grid'; else listView">
+            <mat-card class="file-image-card" *ngFor="let pic of filePictures">
+                <mat-card-header>
+                    <mat-card-subtitle>{{ pic.createdAt | date:'dd/MM/YYYY HH:mm' }}</mat-card-subtitle>
+                </mat-card-header>
+                
+                <img class="file-image cursor-pointer" 
+                    [class.object-contained]="['pdf', 'docx', 'doc', 'xlsx'].includes(getFileExtension(pic.url))" 
+                    [src]="getFileImageSrc(pic.url)" alt="File Picture" (click)="onImageViewer(pic)">
+    
+                <div class="flex mt-2">
+                    <div class="bold">
+                        <ng-container *transloco="let t">
+                            {{t('Reference')}}:&nbsp;
+                        </ng-container>
                     </div>
-                </li>
-            </ul>
+                    <a class="link" (click)="onViewFile($event, pic.file)">{{pic.file.reference}}</a>
+                </div>
+    
+                <div class="flex" *ngIf="pic.file.containerNumber">
+                    <div class="bold">
+                        <ng-container *transloco="let t">
+                            {{t('Container_Number')}}:&nbsp;
+                        </ng-container>
+                    </div>
+                    <div>{{pic.file.containerNumber}}</div>
+                </div>
+    
+                <div class="flex">
+                    <div class="bold"><ng-container *transloco="let t">
+                        {{t('Uploaded_By')}}:&nbsp;
+                    </ng-container></div>
+                    <div>{{ pic?.user?.name }}</div>
+                </div>
+    
+                <mat-card-actions>
+                    <button mat-button>
+                        <a class="flex items-center" [href]="pic.url" download>
+                            <mat-icon class="mr-2">download</mat-icon>
+                            <div *transloco="let t" class="uppercase">
+                                {{t('Download')}}
+                            </div>
+                        </a>
+                    </button>
+                </mat-card-actions>
+            </mat-card>
         </div>
-    </ng-template>
+    
+        <!-- Grid View-->
+        <ng-template #listView>
+            <div class="flex flex-wrap items-stretch w-full">
+                <ul class="list-view">
+                    <li class="justify-between cursor-pointer" (click)="onImageViewer(pic)" *ngFor="let pic of filePictures">
+                        <img class="file-image-list" [src]="pic.url" alt="File Image">
+                                            
+                        <div class="list-item link" (click)="onViewFile($event, pic.file)">{{ pic.file.reference }}</div>
+                        <div class="list-item">{{ pic.file.containerNumber || 'NA' }}</div>
+                        <div class="list-item">{{ pic.user.name }}</div>
+                        <div class="list-item">{{ pic.createdAt | date: 'dd MMM YYYY HH:mm' }}</div>
+    
+                        <div class="flex justify-end">
+                            <a [href]="pic.url" download>
+                                <mat-icon class="mr-2">download</mat-icon>
+                            </a>
+                            <mat-icon class="delete-fg cursor-pointer" (click)="onDeleteFileImage(pic)">delete</mat-icon>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </ng-template>
+    </div>
 
     <div class="flex justify-center w-full" #scrollElem>
         <button class="mt-4" *ngIf="filePictures.length < total" mat-flat-button
@@ -108,8 +112,8 @@
             </ng-container>
         </h3>
     </div>
-</div>
 
-<div class="p-8 w-full flex justify-center items-center" *ngIf="loadingPage">
-    <mat-spinner diameter="60"></mat-spinner>
+    <div class="p-8 w-full flex justify-center items-center" *ngIf="loadingPage">
+        <mat-spinner diameter="60"></mat-spinner>
+    </div>
 </div>

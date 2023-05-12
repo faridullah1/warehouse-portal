@@ -1,3 +1,4 @@
+import { SearchFilterComponent } from '../../../shared/search-filter/search-filter.component';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -27,7 +28,8 @@ const routes: Route[] = [
 		MaterialModule,
 		FuseCardModule,
 		TranslocoModule,
-		RouterModule.forChild(routes)
+		RouterModule.forChild(routes),
+		SearchFilterComponent
 	]
 })
 export class TimelineModule { }

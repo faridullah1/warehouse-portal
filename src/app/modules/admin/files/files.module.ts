@@ -1,3 +1,4 @@
+import { SearchFilterComponent } from '../../../shared/search-filter/search-filter.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from './../../material/material.module';
 import { NgModule } from '@angular/core';
@@ -36,7 +37,8 @@ const routes: Route[] = [
 		MaterialModule,
 		DialogHeaderComponent,
 		RouterModule.forChild(routes),
-		TranslocoModule
+		TranslocoModule,
+		SearchFilterComponent
 	]
 })
 export class FilesModule { }

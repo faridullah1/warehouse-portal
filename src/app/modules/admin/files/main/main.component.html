@@ -1,56 +1,5 @@
 <div class="p-8 flex flex-col files">
-    <!-- Search Filters -->
-    <fuse-card class="flex items-center w-full p-4 mb-3">
-        <form class="flex items-center w-full" [formGroup]="filters">
-            <mat-form-field appearance="fill" class="search-field">
-                <mat-label>
-                    <ng-container *transloco="let t">
-                        {{t('Search')}}
-                    </ng-container>
-                </mat-label>
-                <input type="text" matInput [placeholder]="searchPlaceholder" formControlName="reference">
-            </mat-form-field>
-            
-            <mat-form-field class="date-range-field" appearance="fill">
-                <mat-label>
-                    <ng-container *transloco="let t">
-                        {{t('Date_Range')}}
-                    </ng-container>
-                </mat-label>
-                <mat-date-range-input [rangePicker]="picker" formGroupName="range">
-                    <input matStartDate formControlName="start" [placeholder]="startDatePlaceholder">
-                    <input matEndDate formControlName="end" [placeholder]="endDatePlaceholder">
-                </mat-date-range-input>
-    
-                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-date-range-picker #picker></mat-date-range-picker>
-              
-                <mat-error *ngIf="filters.get('range')['controls'].start.hasError('matStartDateInvalid')">Invalid start date</mat-error>
-                <mat-error *ngIf="filters.get('range')['controls'].end.hasError('matEndDateInvalid')">Invalid end date</mat-error>
-            </mat-form-field>
-              
-            <mat-checkbox formControlName="isDamaged">
-                <ng-container *transloco="let t">
-                    {{t('Contains_Damage')}}
-                </ng-container>
-            </mat-checkbox>
-
-            <div class="flex justify-end flex-1">
-                <button type="button" mat-raised-button color="warn" class="mr-3"
-                    [disabled]="filters.invalid" (click)="onReset()"> 
-                    <ng-container *transloco="let t">
-                        {{t('Reset')}}
-                    </ng-container>
-                </button>
-
-                <button mat-raised-button type="button" color="primary" (click)="onCreateFile()">
-                    <ng-container *transloco="let t">
-                        {{t('Create_File')}}
-                    </ng-container>
-                </button>
-            </div>
-        </form>
-    </fuse-card>
+    <app-search-filter (signal)="onFilterEvent($event)"></app-search-filter>
 
     <div class="flex flex-col" *ngIf="!loadingPage">
         <!-- Toggle buttons for list and grid view -->

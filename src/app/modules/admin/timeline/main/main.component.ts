@@ -6,6 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ApiService } from './../../../../api.service';
 import { ImageViewerComponent } from './../../../../shared/image-viewer/image-viewer.component';
 import { FileDetailComponent } from '../../files/file-detail/file-detail.component';
+import moment from 'moment';
 
 
 @Component({
@@ -24,6 +25,7 @@ export class TimelineComponent implements OnInit {
 	page = 1;
 	limit = 20;
 	total = 0;
+	filters: any = {};
 
     constructor(private apiService: ApiService,
 				private confirmationService: FuseConfirmationService,
@@ -43,7 +45,7 @@ export class TimelineComponent implements OnInit {
 			this.loadingPage = true;
 		}
 
-		this.apiService.get(`fileImages?page=${this.page}&limit=${this.limit}`).subscribe({
+		this.apiService.get(this.getSlug()).subscribe({
 			next: (resp: GenericApiResponse) => {
 				const { rows, count } = resp.data.pictures;
 				this.total = count;
@@ -69,6 +71,20 @@ export class TimelineComponent implements OnInit {
 				this.loadMore = false;
 			}
 		});
+	}
+
+	onFilterEvent(ev: any): void {
+		switch(ev.type) {
+			case 'FilterChange':
+				this.filters = ev.data;
+				this.page = 1;
+				this.getAllFileImages();
+				break;
+
+			case 'LoadFiles':
+				this.getAllFileImages();
+				break;
+		}
 	}
 
 	onViewChange(view: 'list' | 'grid'): void {
@@ -151,5 +167,38 @@ export class TimelineComponent implements OnInit {
 			default:
 				return image;
 		}
+	}
+
+	private getSlug(): string {
+		let slug = `fileImages?page=${this.page}&limit=${this.limit}`;
+
+		for (const key of Object.keys(this.filters))
+		{
+			if (key === 'range') {
+				const { start, end } = this.filters[key];
+
+				if (start && end) {
+					const startOfDay = moment(start.valueOf()).startOf('day');
+					const endOfDay = moment(end.valueOf()).endOf('day');
+
+					slug += `&createdAt[gt]=${startOfDay}&createdAt[lt]=${endOfDay}`;
+				}
+
+				if (start && end == null) {
+					const startOfDay = moment(start.valueOf()).startOf('day');
+					const endOfDay = moment(start.valueOf()).endOf('day');
+
+					slug += `&createdAt[gt]=${startOfDay}&createdAt[lt]=${endOfDay}`;
+				}
+
+				continue;
+			}
+
+			if (this.filters[key]) {
+				slug += `&${key}=${this.filters[key]}`;
+			}
+		}
+
+		return slug;
 	}
 }
