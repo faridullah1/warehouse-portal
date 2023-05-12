@@ -87,5 +87,8 @@
     "Layout": "LAYOUT",
     "Layout_Classic": "Classic",
     "Layout_Classy": "Classy",
-    "Layout_Material": "Material"
+    "Layout_Material": "Material",
+
+    "Items_Per_Page": "Aantal per pagina",
+    "Pagination_Of": "van"
 }
