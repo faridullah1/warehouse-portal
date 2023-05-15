@@ -85,11 +85,17 @@
                     <div class="item">{{ file.containerNumber || 'NA' }}</div>
                     <div class="item">
                         <span *ngIf="file.noOfDamagedGoods > 0; else noDamageGoods">
-                            Contains {{file.noOfDamagedGoods}} damage goods
+                            <ng-container *transloco="let t">
+                                {{t('Contains_Damage')}}
+                            </ng-container>
                         </span>
-                        <ng-template #noDamageGoods>No damage goods</ng-template>
+                        <ng-template #noDamageGoods>
+                            <ng-container *transloco="let t">
+                                {{t('Contains_No_Damage')}}
+                            </ng-container>
+                        </ng-template>
                     </div>
-                    <div class="item">{{ file.createdAt | date: 'dd MMM YYYY HH:mm' }}</div>
+                    <div class="item">{{ file.createdAt | date: 'dd/MM/YYYY HH:mm' }}</div>
 
                     <div class="flex justify-end item">
                         <ng-container [ngTemplateOutlet]="fileMenuTemplate" [ngTemplateOutletContext]="{file: file}"></ng-container>

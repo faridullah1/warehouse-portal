@@ -71,7 +71,7 @@
                         <div class="list-item link" (click)="onViewFile($event, pic.file)">{{ pic.file.reference }}</div>
                         <div class="list-item">{{ pic.file.containerNumber || 'NA' }}</div>
                         <div class="list-item">{{ pic.user.name }}</div>
-                        <div class="list-item">{{ pic.createdAt | date: 'dd MMM YYYY HH:mm' }}</div>
+                        <div class="list-item">{{ pic.createdAt | date: 'dd/MM/YYYY HH:mm' }}</div>
     
                         <div class="flex justify-end">
                             <a [href]="pic.url" download>
