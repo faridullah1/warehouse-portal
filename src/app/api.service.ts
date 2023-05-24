@@ -41,6 +41,6 @@ export class ApiService {
 			errorMessage = 'Gateway Timeout';
 		}
 
-		return throwError(() => new Error(errorMessage));
+		return throwError(() => errorMessage);
 	}
 }
