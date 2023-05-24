@@ -66,7 +66,7 @@
             <div class="flex flex-wrap items-stretch w-full">
                 <ul class="list-view">
                     <li class="justify-between cursor-pointer" (click)="onImageViewer(pic)" *ngFor="let pic of filePictures">
-                        <img class="file-image-list" [src]="pic.url" alt="File Image">
+                        <img class="file-image-list" [src]="getFileImageSrc(pic.url)" alt="File Image">
                                             
                         <div class="list-item link" (click)="onViewFile($event, pic.file)">{{ pic.file.reference }}</div>
                         <div class="list-item">{{ pic.file.containerNumber || 'NA' }}</div>

@@ -79,7 +79,7 @@
         <ng-template #listView>
             <ul class="list-view">
                 <li class="cursor-pointer" (click)="onViewFileDetail(file)" *ngFor="let file of files">
-                    <img class="file-image-list" [src]="file.file_images[0]?.url" alt="File Image">
+                    <img class="file-image-list" [src]="getFileImage(file.file_images[0]?.url)" alt="File Image">
 
                     <div class="item">{{ file.reference }}</div>
                     <div class="item">{{ file.containerNumber || 'NA' }}</div>
