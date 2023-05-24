@@ -2,6 +2,8 @@
     width: 31.9%;
     min-width: 31.9%;
     margin: 0 1rem 1rem 0;
+    display: flex;
+    flex-direction: column;
 
     @media screen and (max-width: 960px) {
         min-width: 45%;

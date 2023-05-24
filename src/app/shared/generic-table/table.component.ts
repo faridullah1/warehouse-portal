@@ -77,7 +77,6 @@ export class TableComponent implements OnInit {
 		}
 	}
 
-
 	updateLanguage(): void {{
 		this.translocoService.selectTranslate(this.config.titleTranslationKey).pipe(take(1)).subscribe((translation: string) => {
 			this.config.title = translation;

@@ -29,7 +29,7 @@ import { MatPaginationIntlService } from './mat-paginator-intl-service';
 	providers: [
 		DatePipe,
 		DecimalPipe,
-		{ provide: MatPaginatorIntl, useClass: MatPaginationIntlService}
+		{ provide: MatPaginatorIntl, useClass: MatPaginationIntlService }
 	]
 })
 export class GenericTableModule { }
